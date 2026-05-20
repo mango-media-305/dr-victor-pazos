@@ -10,6 +10,16 @@ import {
     type LucideIcon,
 } from "lucide-astro";
 
+import Arrythmia from "../../components/icons/Arrythmia.astro";
+import CardiacTesting from "../../components/icons/CardiacTesting.astro";
+import Cardiology from "../../components/icons/Cardiology.astro";
+import ChestPain from "../../components/icons/ChestPain.astro";
+import HeartDisease from "../../components/icons/HeartDisease.astro";
+import Hypertension from "../../components/icons/Hypertension.astro";
+import InterventionalCardiology from "../../components/icons/InterventionalCardiology.astro";
+import PreventiveCardiology from "../../components/icons/PreventiveCardiology.astro";
+import ShortnessOfBreath from "../../components/icons/ShortnessOfBreath.astro";
+
 import type { LanguageCode } from "../site/siteConfig";
 
 export interface CardiologyService {
@@ -30,7 +40,7 @@ export const cardiologyServices: CardiologyService[] = [
     {
         id: "general-cardiology",
         slug: "general-cardiology",
-        icon: Stethoscope,
+        icon: Cardiology,
         title: {
             en: "General Cardiology",
             es: "Cardiología General",
@@ -73,7 +83,7 @@ export const cardiologyServices: CardiologyService[] = [
     {
         id: "interventional-cardiology",
         slug: "interventional-cardiology",
-        icon: HeartPulse,
+        icon: InterventionalCardiology,
         title: {
             en: "Interventional Cardiology",
             es: "Cardiología Intervencionista",
@@ -114,7 +124,7 @@ export const cardiologyServices: CardiologyService[] = [
     {
         id: "chest-pain-evaluation",
         slug: "chest-pain-evaluation",
-        icon: Activity,
+        icon: ChestPain,
         title: {
             en: "Chest Pain Evaluation",
             es: "Evaluación de Dolor en el Pecho",
@@ -155,7 +165,7 @@ export const cardiologyServices: CardiologyService[] = [
     {
         id: "hypertension-treatment",
         slug: "hypertension-treatment",
-        icon: Gauge,
+        icon: Hypertension,
         title: {
             en: "Hypertension Treatment",
             es: "Tratamiento de Hipertensión",
@@ -196,7 +206,7 @@ export const cardiologyServices: CardiologyService[] = [
     {
         id: "heart-disease-management",
         slug: "heart-disease-management",
-        icon: HeartHandshake,
+        icon: HeartDisease,
         title: {
             en: "Heart Disease Management",
             es: "Manejo de Enfermedades del Corazón",
@@ -237,7 +247,7 @@ export const cardiologyServices: CardiologyService[] = [
     {
         id: "ekg-cardiac-testing",
         slug: "ekg-cardiac-testing",
-        icon: ClipboardCheck,
+        icon: CardiacTesting,
         title: {
             en: "EKG & Cardiac Testing",
             es: "EKG y Pruebas Cardíacas",
@@ -277,7 +287,7 @@ export const cardiologyServices: CardiologyService[] = [
     {
         id: "shortness-of-breath-evaluation",
         slug: "shortness-of-breath-evaluation",
-        icon: Waves,
+        icon: ShortnessOfBreath,
         title: {
             en: "Shortness of Breath Evaluation",
             es: "Evaluación de Falta de Aire",
@@ -317,7 +327,7 @@ export const cardiologyServices: CardiologyService[] = [
     {
         id: "preventive-cardiology",
         slug: "preventive-cardiology",
-        icon: ShieldCheck,
+        icon: PreventiveCardiology,
         title: {
             en: "Preventive Cardiology",
             es: "Cardiología Preventiva",
@@ -354,6 +364,46 @@ export const cardiologyServices: CardiologyService[] = [
         },
         priority: 8,
     },
+    {
+        id: "arrhythmia-evaluation",
+        slug: "arrhythmia-evaluation",
+        icon: Arrythmia,
+        title: {
+            en: "Arrhythmia Evaluation",
+            es: "Evaluación de Arritmia",
+        },
+        shortTitle: {
+            en: "Arrhythmia",
+            es: "Arritmia",
+        },
+        description: {
+            en: "Cardiology evaluation for irregular heart rhythms, palpitations, or symptoms that may indicate arrhythmias.",
+            es: "Evaluación cardiológica para ritmos cardíacos irregulares, palpitaciones o síntomas que pueden indicar arritmias.",
+        },
+        shortDescription: {
+            en: "Evaluation for irregular heart rhythms and palpitations.",
+            es: "Evaluación de ritmos cardíacos irregulares y palpitaciones.",
+        },
+        keywords: {
+            en: [
+                "arrhythmia cardiologist Miami",
+                "irregular heartbeat doctor Hialeah",
+                "palpitations evaluation Miami",
+                "cardiologist for arrhythmia Miami-Dade",
+            ],
+            es: [
+                "cardiólogo para arritmia Miami",
+                "doctor para latidos irregulares Hialeah",
+                "evaluación de palpitaciones Miami",
+                "cardiólogo para arritmia Miami-Dade",
+            ],
+        },
+        href: {
+            en: "/services/arrhythmia-evaluation/",
+            es: "/es/servicios/evaluacion-arritmia/",
+        },
+        priority: 9,
+    }
 ];
 
 export const featuredCardiologyServices = cardiologyServices

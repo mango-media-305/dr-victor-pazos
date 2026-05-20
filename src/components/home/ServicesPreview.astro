@@ -2,6 +2,7 @@
 import { getLanguageFromUrl } from "../../data/i18n/language";
 import type { LanguageCode } from "../../data/site/siteConfig";
 import {
+cardiologyServices,
     featuredCardiologyServices,
     getCardiologyServiceHref,
 } from "../../data/services/cardiologyServices";
@@ -39,9 +40,7 @@ const content = {
 
 const t = content[currentLanguage];
 
-const services = featuredCardiologyServices
-    .sort((a, b) => a.priority - b.priority)
-    .slice(0, 6)
+const services = cardiologyServices
     .map((service) => ({
         ...service,
         Icon: service.icon,
@@ -83,7 +82,7 @@ const services = featuredCardiologyServices
                         >
                             <div class="service-card-top">
                                 <span class="service-icon" aria-hidden="true">
-                                    <Icon size={24} strokeWidth={2.1} />
+                                    <Icon class="w-7 h-7"/>
                                 </span>
 
                                 <span class="service-number">
