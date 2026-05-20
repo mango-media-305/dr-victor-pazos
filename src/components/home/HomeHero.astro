@@ -1,10 +1,17 @@
 ---
-// src/components/home/HomeHero.astro
+const heroBackgroundImages = [
+    "/images/home/hero/cardiology-office.webp",
+    "/images/home/hero/heart-care-miami.webp",
+    "/images/home/hero/doctor-consultation.webp",
+    "/images/home/hero/medical-technology.webp",
+];
 
-import { siteConfig, type LanguageCode } from "../../data/site/siteConfig";
 import { contactInfo } from "../../data/site/contact";
 import { ctaNavigation } from "../../data/site/navigation";
 import { getLanguageFromUrl } from "../../data/i18n/language";
+import type { LanguageCode } from "../../data/site/siteConfig";
+
+import AnatomicHeart from "../svg/anatomic-heart.astro";
 
 interface Props {
     language?: LanguageCode;
@@ -23,11 +30,6 @@ const content = {
             "Victor Pazos, MD. PA. provides cardiology and interventional cardiology care for patients in Hialeah, Miami, and nearby Miami-Dade communities.",
         call: ctaNavigation.call.label.en,
         appointment: ctaNavigation.appointment.label.en,
-        trust: [
-            "Cardiology & Interventional Cardiology",
-            "English & Spanish",
-            "Hialeah Office",
-        ],
         statOne: "35+",
         statOneLabel: "Years of medical experience",
         statTwo: "Miami-Dade",
@@ -36,7 +38,6 @@ const content = {
         cardSubtitle: "Cardiology Specialist",
         pulseLabel: "Live heart rhythm visual",
         locationLabel: "Office Location",
-        phoneLabel: "Phone-first appointments",
     },
     es: {
         eyebrow: "Cardiología intervencionista en el sur de Florida",
@@ -46,11 +47,6 @@ const content = {
             "Victor Pazos, MD. PA. ofrece atención cardiológica y cardiología intervencionista para pacientes en Hialeah, Miami y comunidades cercanas de Miami-Dade.",
         call: ctaNavigation.call.label.es,
         appointment: ctaNavigation.appointment.label.es,
-        trust: [
-            "Cardiología y cardiología intervencionista",
-            "Inglés y español",
-            "Oficina en Hialeah",
-        ],
         statOne: "35+",
         statOneLabel: "Años de experiencia médica",
         statTwo: "Miami-Dade",
@@ -59,14 +55,34 @@ const content = {
         cardSubtitle: "Especialista en cardiología",
         pulseLabel: "Visual de ritmo cardíaco",
         locationLabel: "Ubicación de la oficina",
-        phoneLabel: "Citas por teléfono primero",
     },
 };
 
 const t = content[currentLanguage];
 ---
 
-<section class="home-hero section-padding-lg medical-grid-bg">
+<section class="home-hero section-padding-lg medical-grid-bg -mt-25">
+    <div class="hero-bg-slider" aria-hidden="true">
+        {
+            heroBackgroundImages.map((image, index) => (
+                <div
+                    class="hero-bg-slide"
+                    style={`--slide-delay: ${index * 6}s;`}
+                >
+                    <img
+                        src={image}
+                        alt=""
+                        class="hero-bg-image"
+                        loading={index === 0 ? "eager" : "lazy"}
+                        decoding="async"
+                    />
+                </div>
+            ))
+        }
+    </div>
+
+    <div class="hero-bg-overlay opacity-75!" aria-hidden="true"></div>
+
     <div class="hero-orb hero-orb-one"></div>
     <div class="hero-orb hero-orb-two"></div>
     <div class="hero-orb hero-orb-three"></div>
@@ -109,22 +125,11 @@ const t = content[currentLanguage];
                 <div class="hero-heart-card">
                     <div class="heart-grid"></div>
 
-                    <div class="hero-logo-shell">
-                        <img
-                            src={siteConfig.assets.logo.light}
-                            alt=""
-                            class="hero-logo hero-logo-light"
-                            width="120"
-                            height="120"
-                        />
-
-                        <img
-                            src={siteConfig.assets.logo.dark}
-                            alt=""
-                            class="hero-logo hero-logo-dark"
-                            width="120"
-                            height="120"
-                        />
+                    <div
+                        class="hero-heart-illustration-shell opacity-45"
+                        aria-hidden="true"
+                    >
+                        <AnatomicHeart class="hero-anatomic-heart" />
                     </div>
 
                     <svg
@@ -136,11 +141,11 @@ const t = content[currentLanguage];
                         <path
                             class="heartbeat-shadow"
                             d="M0 92H150L178 92L205 92L230 32L270 150L305 92H360L385 92L410 62L440 122L470 92H720"
-                        />
+                        ></path>
                         <path
                             class="heartbeat-path"
                             d="M0 92H150L178 92L205 92L230 32L270 150L305 92H360L385 92L410 62L440 122L470 92H720"
-                        />
+                        ></path>
                     </svg>
 
                     <div class="heart-beat-ring ring-one"></div>
@@ -155,7 +160,6 @@ const t = content[currentLanguage];
                     <strong>{t.cardTitle}</strong>
 
                     <div class="doctor-card-line"></div>
-
                 </div>
 
                 <div class="hero-stat-card hero-stat-left medical-card">
@@ -182,6 +186,96 @@ const t = content[currentLanguage];
         position: relative;
         overflow: hidden;
         isolation: isolate;
+    }
+
+    .hero-bg-slider {
+        position: absolute;
+        inset: 0;
+        z-index: -4;
+        overflow: hidden;
+        pointer-events: none;
+    }
+
+    .hero-bg-slide {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        animation: hero-bg-fade 24s ease-in-out infinite;
+        animation-delay: var(--slide-delay);
+        will-change: opacity;
+    }
+
+    .hero-bg-image {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        object-fit: cover;
+        object-position: center center;
+        transform-origin: center center;
+        transform: scale(1.05);
+        filter: saturate(0.9) contrast(1.05);
+        animation: hero-bg-ken-burns-image 24s ease-in-out infinite;
+        animation-delay: var(--slide-delay);
+        will-change: transform;
+    }
+
+    .hero-bg-slide:nth-child(2) .hero-bg-image,
+    .hero-bg-slide:nth-child(3) .hero-bg-image,
+    .hero-bg-slide:nth-child(4) .hero-bg-image {
+        object-position: center center;
+        transform-origin: center center;
+    }
+
+    .hero-bg-overlay {
+        position: absolute;
+        inset: 0;
+        z-index: -3;
+        background:
+            linear-gradient(
+                90deg,
+                var(--color-bg) 0%,
+                color-mix(in srgb, var(--color-bg) 88%, transparent) 34%,
+                color-mix(in srgb, var(--color-bg) 66%, transparent) 62%,
+                color-mix(in srgb, var(--color-bg) 78%, transparent) 100%
+            ),
+            radial-gradient(
+                circle at 68% 48%,
+                color-mix(in srgb, var(--color-secondary) 18%, transparent),
+                transparent 30rem
+            ),
+            radial-gradient(
+                circle at 20% 20%,
+                color-mix(in srgb, var(--color-accent) 12%, transparent),
+                transparent 24rem
+            );
+        pointer-events: none;
+    }
+
+    :global(.dark) .hero-bg-image {
+        filter: saturate(0.85) contrast(1.05) brightness(0.75);
+    }
+
+    :global(.dark) .hero-bg-overlay {
+        background:
+            linear-gradient(
+                90deg,
+                var(--color-bg) 0%,
+                color-mix(in srgb, var(--color-bg) 88%, transparent) 36%,
+                color-mix(in srgb, var(--color-bg) 70%, transparent) 64%,
+                color-mix(in srgb, var(--color-bg) 84%, transparent) 100%
+            ),
+            radial-gradient(
+                circle at 68% 48%,
+                color-mix(in srgb, var(--color-secondary) 16%, transparent),
+                transparent 30rem
+            ),
+            radial-gradient(
+                circle at 20% 20%,
+                color-mix(in srgb, var(--color-accent) 10%, transparent),
+                transparent 24rem
+            );
     }
 
     .hero-container {
@@ -213,13 +307,14 @@ const t = content[currentLanguage];
         margin-top: 1.35rem;
         color: var(--color-heading);
         font-size: clamp(3.15rem, 15vw, 4.8rem);
-        line-height: 0.9;
-        letter-spacing: -0.06em;
+        overflow: visible;
     }
 
     .hero-title span {
-        display: block;
+        display: inline-block;
         margin-top: 0.2rem;
+        padding-bottom: 0.12em;
+        line-height: 1.12;
         color: transparent;
         background: linear-gradient(
             135deg,
@@ -229,6 +324,7 @@ const t = content[currentLanguage];
         );
         background-clip: text;
         -webkit-background-clip: text;
+        overflow: visible;
     }
 
     :global(.dark) .hero-title span {
@@ -272,13 +368,6 @@ const t = content[currentLanguage];
         animation: button-heartbeat 1.5s ease-in-out infinite;
     }
 
-    .hero-trust {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.65rem;
-        margin-top: 1.6rem;
-    }
-
     .hero-visual {
         position: relative;
         display: flex;
@@ -304,7 +393,8 @@ const t = content[currentLanguage];
         width: min(100%, 500px);
         aspect-ratio: 1;
         overflow: hidden;
-        border: 1px solid color-mix(in srgb, var(--color-secondary) 32%, var(--color-border));
+        border: 1px solid
+            color-mix(in srgb, var(--color-secondary) 32%, var(--color-border));
         border-radius: 42% 58% 52% 48% / 45% 43% 57% 55%;
         background:
             radial-gradient(
@@ -364,6 +454,11 @@ const t = content[currentLanguage];
         background:
             radial-gradient(
                 circle,
+                color-mix(in srgb, var(--color-heart) 18%, transparent),
+                transparent 46%
+            ),
+            radial-gradient(
+                circle,
                 color-mix(in srgb, var(--color-secondary) 20%, transparent),
                 transparent 62%
             ),
@@ -374,68 +469,57 @@ const t = content[currentLanguage];
             );
         filter: blur(8px);
         opacity: 0.8;
-        animation: halo-breathe 4.6s ease-in-out infinite;
+        animation: halo-heartbeat 1.55s ease-in-out infinite;
     }
 
-    .hero-logo-shell {
-        position: relative;
-        z-index: 4;
+    .hero-heart-illustration-shell {
+        position: absolute;
+        z-index: 0;
         display: grid;
         place-items: center;
-        width: clamp(7.5rem, 12vw, 10rem);
+        width: 960px;
         aspect-ratio: 1;
-        border: 1px solid color-mix(in srgb, var(--color-border) 75%, transparent);
-        border-radius: 2rem;
-        background:
-            radial-gradient(
-                circle at top,
-                color-mix(in srgb, var(--color-secondary) 12%, transparent),
-                transparent 6rem
-            ),
-            color-mix(in srgb, var(--color-surface) 78%, transparent);
-        box-shadow: var(--shadow-card);
-        backdrop-filter: blur(20px);
+        border-radius: 999px;
+        color: var(--color-heart);
+        filter:
+            drop-shadow(0 24px 40px rgba(15, 23, 42, 0.16))
+            drop-shadow(
+                0 0 28px color-mix(in srgb, var(--color-heart) 18%, transparent)
+            );
+        animation: anatomic-heartbeat 1.55s ease-in-out infinite;
     }
 
-    .hero-logo {
-        grid-area: 1 / 1;
-        width: 70%;
-        height: 70%;
-        object-fit: contain;
-        transition:
-            opacity 180ms ease,
-            transform 220ms var(--motion-smooth);
+    :global(.hero-anatomic-heart) {
+        display: block;
+        width: 128%;
+        height: 128%;
+        overflow: visible;
+        color: var(--color-heart);
+        fill: currentColor;
+        transform-origin: center;
+        animation: anatomic-heart-inner-beat 1.55s ease-in-out infinite;
     }
 
-    .hero-logo-light {
-        opacity: 1;
-        transform: scale(1);
+    :global(.hero-anatomic-heart .heart-main-layer),
+    :global(.hero-anatomic-heart .heart-main-layer path) {
+        fill: url("#heartBrandGradient");
+        stroke: none;
     }
 
-    .hero-logo-dark {
-        opacity: 0;
-        transform: scale(0.96);
-    }
-
-    :global(.dark) .hero-logo-light {
-        opacity: 0;
-        transform: scale(0.96);
-    }
-
-    :global(.dark) .hero-logo-dark {
-        opacity: 1;
-        transform: scale(1);
+    :global(.hero-anatomic-heart .heart-glow-layer),
+    :global(.hero-anatomic-heart .heart-glow-layer ellipse) {
+        fill: url("#heartBrandGlow");
     }
 
     .heartbeat-line {
         position: absolute;
-        z-index: 3;
+        z-index: 8;
         left: 50%;
         top: 50%;
         width: 128%;
         transform: translate(-50%, -50%);
         filter: drop-shadow(
-            0 0 12px color-mix(in srgb, var(--color-secondary) 48%, transparent)
+            0 0 14px color-mix(in srgb, var(--color-accent) 58%, transparent)
         );
         pointer-events: none;
     }
@@ -447,12 +531,12 @@ const t = content[currentLanguage];
     }
 
     .heartbeat-shadow {
-        stroke: color-mix(in srgb, var(--color-secondary) 18%, transparent);
-        stroke-width: 12;
+        stroke: color-mix(in srgb, var(--color-accent) 18%, transparent);
+        stroke-width: 13;
     }
 
     .heartbeat-path {
-        stroke: var(--color-secondary);
+        stroke: var(--color-accent);
         stroke-width: 5;
         stroke-dasharray: 930;
         stroke-dashoffset: 930;
@@ -462,7 +546,8 @@ const t = content[currentLanguage];
     .heart-beat-ring {
         position: absolute;
         inset: 9%;
-        border: 1px solid color-mix(in srgb, var(--color-secondary) 35%, transparent);
+        border: 1px solid
+            color-mix(in srgb, var(--color-secondary) 35%, transparent);
         border-radius: inherit;
         opacity: 0;
         animation: heartbeat-ring 1.55s ease-out infinite;
@@ -474,7 +559,7 @@ const t = content[currentLanguage];
 
     .hero-doctor-card {
         position: absolute;
-        z-index: 6;
+        z-index: 9;
         right: 20%;
         bottom: 2.75rem;
         display: grid;
@@ -512,25 +597,9 @@ const t = content[currentLanguage];
         );
     }
 
-    .doctor-card-meta {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.45rem;
-    }
-
-    .doctor-card-meta span {
-        border: 1px solid var(--color-border);
-        border-radius: 999px;
-        padding: 0.38rem 0.55rem;
-        color: var(--color-text-soft);
-        background: color-mix(in srgb, var(--color-surface) 68%, transparent);
-        font-size: 0.78rem;
-        font-weight: 800;
-    }
-
     .hero-stat-card {
         position: absolute;
-        z-index: 5;
+        z-index: 7;
         display: grid;
         gap: 0.25rem;
         padding: 1rem;
@@ -564,7 +633,7 @@ const t = content[currentLanguage];
 
     .hero-mini-card {
         position: absolute;
-        z-index: 5;
+        z-index: 7;
         display: grid;
         gap: 0.15rem;
         border: 1px solid var(--color-border);
@@ -592,11 +661,6 @@ const t = content[currentLanguage];
     .hero-location-card {
         left: 2rem;
         bottom: 6.25rem;
-    }
-
-    .hero-phone-card {
-        right: 2rem;
-        top: 13.5rem;
     }
 
     .hero-orb {
@@ -630,6 +694,46 @@ const t = content[currentLanguage];
         width: 18rem;
         height: 18rem;
         background: color-mix(in srgb, var(--color-heart) 16%, transparent);
+    }
+
+    @keyframes hero-bg-fade {
+        0% {
+            opacity: 0;
+        }
+
+        6% {
+            opacity: 0.22;
+        }
+
+        25% {
+            opacity: 0.22;
+        }
+
+        31% {
+            opacity: 0;
+        }
+
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes hero-bg-ken-burns-image {
+        0% {
+            transform: scale(1.05);
+        }
+
+        25% {
+            transform: scale(1.16);
+        }
+
+        31% {
+            transform: scale(1.2);
+        }
+
+        100% {
+            transform: scale(1.2);
+        }
     }
 
     @keyframes draw-heartbeat {
@@ -681,6 +785,90 @@ const t = content[currentLanguage];
         }
     }
 
+    @keyframes anatomic-heartbeat {
+        0%,
+        100% {
+            transform: scale(1);
+            filter:
+                drop-shadow(0 24px 40px rgba(15, 23, 42, 0.16))
+                drop-shadow(
+                    0 0 22px color-mix(in srgb, var(--color-heart) 16%, transparent)
+                );
+        }
+
+        10% {
+            transform: scale(1.055);
+            filter:
+                drop-shadow(0 28px 46px rgba(15, 23, 42, 0.2))
+                drop-shadow(
+                    0 0 34px color-mix(in srgb, var(--color-heart) 28%, transparent)
+                );
+        }
+
+        18% {
+            transform: scale(1);
+        }
+
+        28% {
+            transform: scale(1.035);
+        }
+
+        36% {
+            transform: scale(1);
+        }
+    }
+
+    @keyframes anatomic-heart-inner-beat {
+        0%,
+        100% {
+            transform: scale(1) rotate(-1deg);
+        }
+
+        10% {
+            transform: scale(1.045) rotate(1deg);
+        }
+
+        18% {
+            transform: scale(1) rotate(-1deg);
+        }
+
+        28% {
+            transform: scale(1.025) rotate(0.5deg);
+        }
+
+        36% {
+            transform: scale(1) rotate(-1deg);
+        }
+    }
+
+    @keyframes halo-heartbeat {
+        0%,
+        100% {
+            opacity: 0.55;
+            transform: scale(0.96);
+        }
+
+        10% {
+            opacity: 0.92;
+            transform: scale(1.04);
+        }
+
+        18% {
+            opacity: 0.62;
+            transform: scale(0.98);
+        }
+
+        28% {
+            opacity: 0.82;
+            transform: scale(1.025);
+        }
+
+        36% {
+            opacity: 0.58;
+            transform: scale(0.98);
+        }
+    }
+
     @keyframes heartbeat-ring {
         0% {
             opacity: 0.4;
@@ -695,19 +883,6 @@ const t = content[currentLanguage];
         100% {
             opacity: 0;
             transform: scale(1.12);
-        }
-    }
-
-    @keyframes halo-breathe {
-        0%,
-        100% {
-            opacity: 0.55;
-            transform: scale(0.96);
-        }
-
-        50% {
-            opacity: 0.9;
-            transform: scale(1.04);
         }
     }
 
@@ -773,8 +948,7 @@ const t = content[currentLanguage];
             margin-inline: auto;
         }
 
-        .hero-actions,
-        .hero-trust {
+        .hero-actions {
             justify-content: center;
         }
 
@@ -793,105 +967,53 @@ const t = content[currentLanguage];
     }
 
     @media (max-width: 720px) {
-        .hero-container {
-            gap: 2rem;
+        .home-hero {
+            min-height: 100svh;
+            display: flex;
+            align-items: center;
         }
 
-        .hero-title {
-            font-size: clamp(3.15rem, 15vw, 4.8rem);
+        .hero-bg-image {
+            object-position: center center;
+        }
+
+        .hero-bg-overlay {
+            background: linear-gradient(
+                180deg,
+                var(--color-bg) 0%,
+                color-mix(in srgb, var(--color-bg) 82%, transparent) 42%,
+                var(--color-bg) 100%
+            );
+        }
+
+        .hero-container {
+            gap: 2rem;
+            padding-top: 5rem;
+            padding-bottom: 3.5rem;
+        }
+
+        .hero-copy {
+            justify-items: start;
+            text-align: left;
+        }
+
+        .hero-description {
+            margin-inline: 0;
         }
 
         .hero-actions {
             width: 100%;
-        }
-
-        .hero-trust .trust-badge {
-            width: 100%;
-            justify-content: center;
+            justify-content: flex-start;
         }
 
         .hero-visual {
-            min-height: 500px;
-            width: 100%;
-            overflow: hidden;
-        }
-
-        .hero-heart-stage {
-            width: min(100%, 390px);
-            min-height: 500px;
-        }
-
-        .hero-heart-card {
-            width: min(100%, 340px);
-        }
-
-        .heartbeat-line {
-            width: 145%;
-        }
-
-        .hero-stat-card {
-            width: 140px;
-            padding: 0.85rem;
-        }
-
-        .hero-stat-card strong {
-            font-size: 1.65rem;
-        }
-
-        .hero-stat-left {
-            top: 1.5rem;
-            left: 0;
-        }
-
-        .hero-stat-right {
-            top: auto;
-            right: 0;
-            bottom: 1rem;
-        }
-
-        .hero-doctor-card {
-            right: 50%;
-            bottom: 4rem;
-            width: min(92%, 300px);
-            transform: translateX(50%);
-        }
-
-        .hero-location-card {
-            left: 0;
-            bottom: 10.5rem;
-        }
-
-        .hero-phone-card {
-            right: 0;
-            top: 8.5rem;
+            display: none;
         }
     }
 
     @media (max-width: 440px) {
-        .hero-heart-stage {
-            width: 100%;
-            min-height: 455px;
-        }
-
-        .hero-heart-card {
-            width: 300px;
-        }
-
-        .hero-logo-shell {
-            width: 6rem;
-            border-radius: 1.5rem;
-        }
-
-        .hero-mini-card {
-            display: none;
-        }
-
-        .hero-stat-card {
-            width: 128px;
-        }
-
-        .hero-doctor-card {
-            bottom: 3rem;
+        .hero-title {
+            font-size: clamp(2.85rem, 17vw, 4.2rem);
         }
     }
 </style>
