@@ -1,5 +1,5 @@
 ---
-// src/components/home/TrustStrip.astro
+import { HeartPulse } from "@lucide/astro";
 
 import { contactInfo } from "../../data/site/contact";
 import { ctaNavigation } from "../../data/site/navigation";
@@ -16,60 +16,68 @@ const currentLanguage = language ?? getLanguageFromUrl(Astro.url.pathname);
 
 const content = {
     en: {
-        kicker: "Trusted cardiology care",
-        title: "A strong local foundation for heart care in Miami-Dade.",
+        kicker: "Patient confidence starts here",
+        title: "Local heart care built around communication, access, and trust.",
         description:
-            "Victor Pazos, MD. PA. brings decades of medical experience, bilingual care, and a Hialeah office serving patients across Miami-Dade County.",
+            "From the first call to follow-up care, the practice is designed to help patients feel informed, respected, and supported in their heart-health decisions.",
         items: [
             {
                 value: "35+",
-                label: "Years of medical experience",
-                description: "Experienced cardiology care led by Victor Pazos, MD.",
+                label: "Medical experience",
+                description:
+                    "Decades of practice helping patients navigate cardiovascular concerns with confidence.",
             },
             {
                 value: "EN / ES",
-                label: "English & Spanish",
-                description: "Clear communication for Miami’s bilingual community.",
+                label: "Bilingual communication",
+                description:
+                    "Clear conversations in English and Spanish for patients and families.",
             },
             {
                 value: "Hialeah",
-                label: "Local office",
-                description: "Serving Hialeah, Miami, and nearby Miami-Dade areas.",
+                label: "Convenient access",
+                description:
+                    "A local office serving Hialeah, Miami Lakes, Doral, Miami, and nearby communities.",
             },
             {
-                value: "Heart",
-                label: "Cardiology focus",
-                description: "Cardiology and interventional cardiology services.",
+                value: "MD",
+                label: "Physician-led care",
+                description:
+                    "Evaluation and treatment planning guided by Victor Pazos, MD.",
             },
         ],
         callLabel: ctaNavigation.call.label.en,
         directionsLabel: contactInfo.map.directionsLabel.en,
     },
     es: {
-        kicker: "Atención cardiológica confiable",
-        title: "Una base local sólida para el cuidado del corazón en Miami-Dade.",
+        kicker: "Confianza desde el primer contacto",
+        title: "Cuidado del corazón basado en comunicación, acceso y confianza.",
         description:
-            "Victor Pazos, MD. PA. combina décadas de experiencia médica, atención bilingüe y una oficina en Hialeah para pacientes de Miami-Dade County.",
+            "Desde la primera llamada hasta el seguimiento, la práctica está diseñada para que los pacientes se sientan informados, respetados y acompañados en sus decisiones de salud cardíaca.",
         items: [
             {
                 value: "35+",
-                label: "Años de experiencia médica",
-                description: "Atención cardiológica con la experiencia de Victor Pazos, MD.",
+                label: "Experiencia médica",
+                description:
+                    "Décadas de práctica ayudando a pacientes a manejar sus preocupaciones cardiovasculares con confianza.",
             },
             {
                 value: "EN / ES",
-                label: "Inglés y español",
-                description: "Comunicación clara para la comunidad bilingüe de Miami.",
+                label: "Comunicación bilingüe",
+                description:
+                    "Conversaciones claras en inglés y español para pacientes y familiares.",
             },
             {
                 value: "Hialeah",
-                label: "Oficina local",
-                description: "Sirviendo Hialeah, Miami y áreas cercanas de Miami-Dade.",
+                label: "Acceso conveniente",
+                description:
+                    "Oficina local sirviendo a Hialeah, Miami Lakes, Doral, Miami y comunidades cercanas.",
             },
             {
-                value: "Corazón",
-                label: "Enfoque cardiológico",
-                description: "Servicios de cardiología y cardiología intervencionista.",
+                value: "MD",
+                label: "Atención dirigida por médico",
+                description:
+                    "Evaluación y planificación de tratamiento guiada por Victor Pazos, MD.",
             },
         ],
         callLabel: ctaNavigation.call.label.es,
@@ -80,66 +88,95 @@ const content = {
 const t = content[currentLanguage];
 ---
 
-<section class="trust-strip section-padding-sm">
+<section class="relative overflow-hidden section-padding-sm">
     <div class="site-container">
-        <div class="trust-panel glow-panel">
-            <div class="trust-heading">
+        <div
+            class="trust-panel glow-panel relative grid gap-[clamp(1.5rem,3vw,2.25rem)] p-[clamp(1.25rem,3vw,2rem)] max-[680px]:rounded-[1.65rem]"
+        >
+            <div class="relative z-[1] grid gap-3">
                 <span class="section-kicker">{t.kicker}</span>
 
-                <div class="trust-heading-grid">
-                    <h2>{t.title}</h2>
+                <div
+                    class="grid grid-cols-1 gap-[clamp(1rem,4vw,3rem)] md:grid-cols-2 max-[1020px]:grid-cols-1"
+                >
+                    <h2
+                        class="text-[clamp(2rem,5vw,4rem)] leading-[0.98] tracking-[-0.055em] text-[var(--color-heading)]"
+                    >
+                        {t.title}
+                    </h2>
 
-                    <p>{t.description}</p>
+                    <p
+                        class="text-[clamp(1rem,1.35vw,1.12rem)] leading-[1.8] text-[var(--color-text-soft)]"
+                    >
+                        {t.description}
+                    </p>
                 </div>
             </div>
 
-            <div class="trust-cards">
+            <div
+                class="relative z-[1] grid grid-cols-4 gap-[0.85rem] max-[1020px]:grid-cols-2 max-[680px]:grid-cols-1"
+            >
                 {
                     t.items.map((item, index) => (
                         <article
-                            class="trust-card medical-card"
+                            class="trust-card medical-card grid min-h-52 content-start gap-3 p-[1.15rem] max-[680px]:min-h-0"
                             style={`--trust-delay: ${index * 90}ms;`}
                         >
-                            <div class="trust-card-top">
-                                <span class="trust-value">{item.value}</span>
+                            <div class="flex items-center justify-between gap-[0.85rem]">
+                                <span
+                                    class="font-heading text-[clamp(1rem,2vw,2rem)] font-extrabold leading-none tracking-[-0.055em] text-[var(--color-heading)]"
+                                >
+                                    {item.value}
+                                </span>
 
-                                <span class="trust-icon" aria-hidden="true">
-                                    <svg
-                                        viewBox="0 0 24 24"
-                                        width="20"
-                                        height="20"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                    >
-                                        <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z" />
-                                        <path d="M3.5 12H8l1.5-3 3 7 2-4H20" />
-                                    </svg>
+                                <span
+                                    class="inline-grid size-11 flex-none place-items-center rounded-2xl border border-[color-mix(in_srgb,var(--color-heart)_24%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-heart-soft)_52%,transparent)] text-[var(--color-heart)]"
+                                    aria-hidden="true"
+                                >
+                                    <HeartPulse size={20} strokeWidth={2} />
                                 </span>
                             </div>
 
-                            <h3>{item.label}</h3>
+                            <h3
+                                class="font-body text-base font-black tracking-[-0.02em] text-[var(--color-heading)]"
+                            >
+                                {item.label}
+                            </h3>
 
-                            <p>{item.description}</p>
+                            <p class="text-[0.92rem] leading-[1.65] text-[var(--color-text-soft)]">
+                                {item.description}
+                            </p>
                         </article>
                     ))
                 }
             </div>
 
-            <div class="trust-footer">
-                <div class="trust-heartline" aria-hidden="true">
-                    <span></span>
-                    <svg viewBox="0 0 420 80" fill="none">
+            <div
+                class="relative z-[1] grid grid-cols-[1fr_auto] items-center gap-4 border-t border-[var(--color-border)] pt-[clamp(1rem,2vw,1.35rem)] max-[1020px]:grid-cols-1"
+            >
+                <div
+                    class="grid grid-cols-[minmax(2rem,1fr)_minmax(140px,280px)_minmax(2rem,1fr)] items-center gap-[0.85rem] text-[var(--color-accent)] max-[680px]:grid-cols-[1fr_minmax(120px,220px)_1fr]"
+                    aria-hidden="true"
+                >
+                    <span class="h-px bg-gradient-to-r from-transparent to-[color-mix(in_srgb,var(--color-border)_90%,transparent)]"></span>
+
+                    <svg
+                        viewBox="0 0 420 80"
+                        fill="none"
+                        class="h-auto w-full drop-shadow-[0_0_10px_color-mix(in_srgb,var(--color-accent)_42%,transparent)]"
+                    >
                         <path
+                            class="trust-heartline-path"
                             d="M0 42H86L104 42L122 42L139 15L165 68L188 42H222L240 42L258 28L278 56L298 42H420"
                         />
                     </svg>
-                    <span></span>
+
+                    <span class="h-px bg-gradient-to-r from-[color-mix(in_srgb,var(--color-border)_90%,transparent)] to-transparent"></span>
                 </div>
 
-                <div class="trust-actions">
+                <div
+                    class="flex justify-end gap-3 max-[1020px]:justify-start max-[680px]:grid max-[680px]:grid-cols-2"
+                >
                     <a href={contactInfo.phone.href} class="btn btn-primary">
                         {t.callLabel}
                     </a>
@@ -159,18 +196,6 @@ const t = content[currentLanguage];
 </section>
 
 <style>
-    .trust-strip {
-        position: relative;
-        overflow: hidden;
-    }
-
-    .trust-panel {
-        position: relative;
-        display: grid;
-        gap: clamp(1.5rem, 3vw, 2.25rem);
-        padding: clamp(1.25rem, 3vw, 2rem);
-    }
-
     .trust-panel::after {
         content: "";
         position: absolute;
@@ -183,140 +208,12 @@ const t = content[currentLanguage];
         pointer-events: none;
     }
 
-    .trust-heading {
-        position: relative;
-        z-index: 1;
-        display: grid;
-        gap: 0.75rem;
-    }
-
-    .trust-heading-grid {
-        display: grid;
-        grid-template-columns: minmax(0, 0.95fr) minmax(280px, 0.7fr);
-        gap: clamp(1rem, 4vw, 3rem);
-        align-items: end;
-    }
-
-    .trust-heading h2 {
-        max-width: 760px;
-        color: var(--color-heading);
-        font-size: clamp(2rem, 5vw, 4rem);
-        line-height: 0.98;
-        letter-spacing: -0.055em;
-    }
-
-    .trust-heading p {
-        max-width: 520px;
-        color: var(--color-text-soft);
-        font-size: clamp(1rem, 1.35vw, 1.12rem);
-        line-height: 1.8;
-    }
-
-    .trust-cards {
-        position: relative;
-        z-index: 1;
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 0.85rem;
-    }
-
     .trust-card {
-        display: grid;
-        align-content: start;
-        gap: 0.75rem;
-        min-height: 13rem;
-        padding: 1.15rem;
         animation: trust-card-in 650ms var(--motion-smooth) both;
         animation-delay: var(--trust-delay);
     }
 
-    .trust-card-top {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 0.85rem;
-    }
-
-    .trust-value {
-        color: var(--color-heading);
-        font-family: var(--font-heading);
-        font-size: clamp(1.7rem, 2.8vw, 2.55rem);
-        font-weight: 800;
-        line-height: 1;
-        letter-spacing: -0.055em;
-    }
-
-    .trust-icon {
-        display: inline-grid;
-        place-items: center;
-        width: 2.75rem;
-        height: 2.75rem;
-        flex: 0 0 auto;
-        border: 1px solid color-mix(in srgb, var(--color-heart) 24%, var(--color-border));
-        border-radius: 1rem;
-        color: var(--color-heart);
-        background: color-mix(in srgb, var(--color-heart-soft) 52%, transparent);
-    }
-
-    .trust-card h3 {
-        color: var(--color-heading);
-        font-family: var(--font-body);
-        font-size: 1rem;
-        font-weight: 900;
-        letter-spacing: -0.02em;
-    }
-
-    .trust-card p {
-        color: var(--color-text-soft);
-        font-size: 0.92rem;
-        line-height: 1.65;
-    }
-
-    .trust-footer {
-        position: relative;
-        z-index: 1;
-        display: grid;
-        grid-template-columns: 1fr auto;
-        gap: 1rem;
-        align-items: center;
-        border-top: 1px solid var(--color-border);
-        padding-top: clamp(1rem, 2vw, 1.35rem);
-    }
-
-    .trust-heartline {
-        display: grid;
-        grid-template-columns: minmax(2rem, 1fr) minmax(140px, 280px) minmax(2rem, 1fr);
-        gap: 0.85rem;
-        align-items: center;
-        color: var(--color-accent);
-    }
-
-    .trust-heartline span {
-        height: 1px;
-        background: linear-gradient(
-            90deg,
-            transparent,
-            color-mix(in srgb, var(--color-border) 90%, transparent)
-        );
-    }
-
-    .trust-heartline span:last-child {
-        background: linear-gradient(
-            90deg,
-            color-mix(in srgb, var(--color-border) 90%, transparent),
-            transparent
-        );
-    }
-
-    .trust-heartline svg {
-        width: 100%;
-        height: auto;
-        filter: drop-shadow(
-            0 0 10px color-mix(in srgb, var(--color-accent) 42%, transparent)
-        );
-    }
-
-    .trust-heartline path {
+    .trust-heartline-path {
         stroke: currentColor;
         stroke-width: 4;
         stroke-linecap: round;
@@ -324,12 +221,6 @@ const t = content[currentLanguage];
         stroke-dasharray: 540;
         stroke-dashoffset: 540;
         animation: trust-heartline-draw 2.7s ease-in-out infinite;
-    }
-
-    .trust-actions {
-        display: flex;
-        justify-content: flex-end;
-        gap: 0.75rem;
     }
 
     @keyframes trust-card-in {
@@ -367,47 +258,6 @@ const t = content[currentLanguage];
         100% {
             opacity: 0;
             stroke-dashoffset: -540;
-        }
-    }
-
-    @media (max-width: 1020px) {
-        .trust-heading-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .trust-cards {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-
-        .trust-footer {
-            grid-template-columns: 1fr;
-        }
-
-        .trust-actions {
-            justify-content: flex-start;
-        }
-    }
-
-    @media (max-width: 680px) {
-        .trust-panel {
-            border-radius: 1.65rem;
-        }
-
-        .trust-cards {
-            grid-template-columns: 1fr;
-        }
-
-        .trust-card {
-            min-height: auto;
-        }
-
-        .trust-actions {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-        }
-
-        .trust-heartline {
-            grid-template-columns: 1fr minmax(120px, 220px) 1fr;
         }
     }
 </style>

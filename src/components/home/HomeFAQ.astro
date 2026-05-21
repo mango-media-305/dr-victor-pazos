@@ -1,0 +1,207 @@
+---
+import { Plus } from "@lucide/astro";
+
+import { getLanguageFromUrl } from "../../data/i18n/language";
+import type { LanguageCode } from "../../data/site/siteConfig";
+import { contactInfo } from "../../data/site/contact";
+
+interface Props {
+    language?: LanguageCode;
+}
+
+const { language } = Astro.props as Props;
+
+const currentLanguage = language ?? getLanguageFromUrl(Astro.url.pathname);
+
+const content = {
+    en: {
+        kicker: "Frequently asked questions",
+        title: "Helpful answers before you call the cardiology office.",
+        description:
+            "These common questions can help patients understand when to contact a cardiologist, how appointments work, and when symptoms may require urgent attention.",
+        items: [
+            {
+                question: "When should I see a cardiologist?",
+                answer:
+                    "You may consider seeing a cardiologist if you have chest discomfort, shortness of breath, palpitations, high blood pressure, abnormal EKG results, a heart murmur, fatigue with activity, or a known history of heart disease. A cardiology evaluation can help clarify symptoms, review risk factors, and determine appropriate next steps.",
+            },
+            {
+                question: "Does the office serve Spanish-speaking patients?",
+                answer:
+                    "Yes. The office provides care in English and Spanish, helping patients and families communicate clearly about symptoms, test results, treatment options, and follow-up recommendations.",
+            },
+            {
+                question: "Where is the office located?",
+                answer: `The office is located at ${contactInfo.address.display}. The Hialeah location serves patients from Hialeah, Miami, Miami Lakes, Doral, Hialeah Gardens, Miami Gardens, and nearby Miami-Dade communities.`,
+            },
+            {
+                question: "How do I request an appointment?",
+                answer: `Appointments are prioritized by phone. You can call the office at ${contactInfo.phone.label}. Patients may also email the office or submit the appointment request form on the website.`,
+            },
+            {
+                question: "What symptoms may need urgent medical attention?",
+                answer:
+                    "Severe chest pain, sudden shortness of breath, fainting, stroke symptoms, severe weakness, or symptoms that feel like a medical emergency should not wait for a website form or routine appointment. Call 911 immediately or go to the nearest emergency room.",
+            },
+        ],
+    },
+    es: {
+        kicker: "Preguntas frecuentes",
+        title: "Respuestas útiles antes de llamar a la oficina de cardiología.",
+        description:
+            "Estas preguntas comunes ayudan a los pacientes a entender cuándo contactar a un cardiólogo, cómo solicitar una cita y cuándo los síntomas pueden requerir atención urgente.",
+        items: [
+            {
+                question: "¿Cuándo debo ver a un cardiólogo?",
+                answer:
+                    "Puede considerar ver a un cardiólogo si tiene molestia en el pecho, falta de aire, palpitaciones, presión alta, resultados anormales de EKG, un soplo cardíaco, fatiga con actividad o historial de enfermedad cardíaca. Una evaluación cardiológica puede ayudar a aclarar síntomas, revisar factores de riesgo y determinar próximos pasos.",
+            },
+            {
+                question: "¿La oficina atiende pacientes que hablan español?",
+                answer:
+                    "Sí. La oficina ofrece atención en inglés y español, ayudando a pacientes y familiares a comunicarse con claridad sobre síntomas, resultados, opciones de tratamiento y recomendaciones de seguimiento.",
+            },
+            {
+                question: "¿Dónde está ubicada la oficina?",
+                answer: `La oficina está ubicada en ${contactInfo.address.display}. La ubicación en Hialeah atiende pacientes de Hialeah, Miami, Miami Lakes, Doral, Hialeah Gardens, Miami Gardens y comunidades cercanas de Miami-Dade.`,
+            },
+            {
+                question: "¿Cómo puedo solicitar una cita?",
+                answer: `Las citas se priorizan por teléfono. Puede llamar a la oficina al ${contactInfo.phone.label}. También puede enviar un email o completar el formulario de solicitud de cita en el sitio web.`,
+            },
+            {
+                question: "¿Qué síntomas pueden necesitar atención médica urgente?",
+                answer:
+                    "Dolor fuerte en el pecho, falta de aire repentina, desmayo, síntomas de derrame cerebral, debilidad severa o síntomas que parezcan una emergencia médica no deben esperar por un formulario web o una cita rutinaria. Llame al 911 de inmediato o vaya a la sala de emergencias más cercana.",
+            },
+        ],
+    },
+};
+
+const t = content[currentLanguage];
+
+const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: t.items.map((item) => ({
+        "@type": "Question",
+        name: item.question,
+        acceptedAnswer: {
+            "@type": "Answer",
+            text: item.answer,
+        },
+    })),
+};
+---
+
+<section class="relative isolate overflow-hidden section-padding">
+    <div
+        class="pointer-events-none absolute left-[-5rem] top-[12%] z-[-1] aspect-square w-80 rounded-full bg-[color-mix(in_srgb,var(--color-secondary)_20%,transparent)] opacity-[0.42] blur-[58px]"
+    >
+    </div>
+
+    <div
+        class="pointer-events-none absolute bottom-[8%] right-[-5rem] z-[-1] aspect-square w-[22rem] rounded-full bg-[color-mix(in_srgb,var(--color-heart)_14%,transparent)] opacity-[0.42] blur-[58px]"
+    >
+    </div>
+
+    <div
+        class="site-container relative z-[1] grid items-start gap-[clamp(2rem,6vw,5rem)]"
+    >
+        <div class="grid content-start">
+            <span class="section-kicker">{t.kicker}</span>
+
+            <h2
+                class="text-[clamp(2.35rem,5.5vw,5rem)] leading-[0.98] tracking-[-0.06em] text-[var(--color-heading)] max-[440px]:text-[clamp(2.25rem,12vw,3.85rem)]"
+            >
+                {t.title}
+            </h2>
+
+            <p
+                class="mt-5 text-[clamp(1rem,1.35vw,1.15rem)] leading-[1.85] text-[var(--color-text-soft)]"
+            >
+                {t.description}
+            </p>
+        </div>
+
+        <div class="grid gap-[0.85rem]">
+            {
+                t.items.map((item, index) => (
+                    <details
+                        class="faq-item medical-card group relative overflow-hidden p-0 max-[720px]:rounded-[1.4rem]"
+                        style={`--faq-delay: ${index * 75}ms;`}
+                        open={index === 0}
+                    >
+                        <summary class="relative z-[1] flex cursor-pointer list-none items-center justify-between gap-4 p-[clamp(1rem,2vw,1.2rem)] marker:hidden [&::-webkit-details-marker]:hidden">
+                            <span class="font-heading text-[clamp(1.25rem,2vw,1.65rem)] font-extrabold leading-[1.1] tracking-[-0.045em] text-[var(--color-heading)]">
+                                {item.question}
+                            </span>
+
+                            <span
+                                class="faq-icon inline-grid size-[2.45rem] flex-none place-items-center rounded-full border border-[color-mix(in_srgb,var(--color-secondary)_28%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-surface)_78%,transparent)] text-[var(--color-secondary)] transition-[transform,color] duration-200"
+                                aria-hidden="true"
+                            >
+                                <Plus size={18} strokeWidth={2} />
+                            </span>
+                        </summary>
+
+                        <p class="relative z-[1] m-0 max-w-[760px] px-[clamp(1rem,2vw,1.2rem)] pb-[clamp(1rem,2vw,1.2rem)] text-[0.98rem] leading-[1.75] text-[var(--color-text-soft)]">
+                            {item.answer}
+                        </p>
+                    </details>
+                ))
+            }
+        </div>
+    </div>
+
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</section>
+
+<style>
+    .faq-item {
+        animation: faq-item-in 620ms var(--motion-smooth) both;
+        animation-delay: var(--faq-delay);
+    }
+
+    .faq-item::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        background:
+            radial-gradient(
+                circle at top right,
+                color-mix(in srgb, var(--color-secondary) 18%, transparent),
+                transparent 14rem
+            ),
+            radial-gradient(
+                circle at bottom left,
+                color-mix(in srgb, var(--color-heart) 10%, transparent),
+                transparent 12rem
+            );
+        pointer-events: none;
+        transition: opacity 220ms var(--motion-smooth);
+    }
+
+    .faq-item:hover::before,
+    .faq-item[open]::before {
+        opacity: 1;
+    }
+
+    .faq-item[open] .faq-icon {
+        transform: rotate(45deg);
+        color: var(--color-heart);
+    }
+
+    @keyframes faq-item-in {
+        from {
+            opacity: 0;
+            transform: translateY(1rem);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>

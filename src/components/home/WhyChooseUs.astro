@@ -1,0 +1,146 @@
+---
+import { getLanguageFromUrl } from "../../data/i18n/language";
+import type { LanguageCode } from "../../data/site/siteConfig";
+import { whyChooseUsContent } from "../../data/home/whyChooseUs";
+
+interface Props {
+    language?: LanguageCode;
+}
+
+const { language } = Astro.props as Props;
+
+const currentLanguage = language ?? getLanguageFromUrl(Astro.url.pathname);
+const t = whyChooseUsContent;
+---
+
+<section class="relative isolate overflow-hidden section-padding">
+    <div
+        class="pointer-events-none absolute left-[-5rem] top-[10%] z-[-1] aspect-square w-80 rounded-full bg-[color-mix(in_srgb,var(--color-secondary)_22%,transparent)] opacity-45 blur-[58px]"
+    >
+    </div>
+
+    <div
+        class="pointer-events-none absolute bottom-[8%] right-[-5rem] z-[-1] aspect-square w-[22rem] rounded-full bg-[color-mix(in_srgb,var(--color-heart)_14%,transparent)] opacity-45 blur-[58px]"
+    >
+    </div>
+
+    <div
+        class="site-container relative z-[1] grid grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] items-start gap-[clamp(2rem,6vw,5rem)] max-[1060px]:grid-cols-1"
+    >
+        <div class="sticky top-28 grid content-start max-[1060px]:relative max-[1060px]:top-auto">
+            <span class="section-kicker">{t.kicker[currentLanguage]}</span>
+
+            <h2
+                class="max-w-[720px] text-[clamp(2.35rem,5.5vw,5rem)] leading-[0.98] tracking-[-0.06em] text-[var(--color-heading)]"
+            >
+                {t.title[currentLanguage]}
+            </h2>
+
+            <p
+                class="mt-5 max-w-[620px] text-[clamp(1rem,1.35vw,1.15rem)] leading-[1.85] text-[var(--color-text-soft)]"
+            >
+                {t.description[currentLanguage]}
+            </p>
+
+            <div class="mt-7 flex flex-wrap gap-[0.85rem] max-[720px]:grid">
+                <a href={t.cta.href} class="btn btn-primary">
+                    {t.cta.label[currentLanguage]}
+                </a>
+
+                <a
+                    href={t.secondaryCta.href[currentLanguage]}
+                    class="btn btn-secondary"
+                >
+                    {t.secondaryCta.label[currentLanguage]}
+                </a>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-[0.9rem] max-[720px]:grid-cols-1">
+            {
+                t.items.map((item, index) => {
+                    const Icon = item.icon;
+
+                    return (
+                        <article
+                            class="why-card medical-card relative grid min-h-[17rem] content-start gap-4 overflow-hidden p-[clamp(1.1rem,2vw,1.35rem)] max-[720px]:min-h-0"
+                            style={`--why-delay: ${index * 80}ms;`}
+                        >
+                            <div
+                                class="why-icon relative z-[1] inline-grid size-[3.2rem] place-items-center rounded-[1.05rem] border border-[color-mix(in_srgb,var(--color-secondary)_32%,var(--color-border))] text-[var(--color-secondary)] shadow-[0_14px_34px_rgba(15,23,42,0.07)]"
+                                aria-hidden="true"
+                            >
+                                <Icon size={24} strokeWidth={2.15} />
+                            </div>
+
+                            <div class="relative z-[1] grid gap-[0.7rem]">
+                                <h3
+                                    class="max-w-[280px] font-heading text-[clamp(1.5rem,2.3vw,2.15rem)] leading-[1.02] tracking-[-0.045em] text-[var(--color-heading)]"
+                                >
+                                    {item.title[currentLanguage]}
+                                </h3>
+
+                                <p class="text-[0.95rem] leading-[1.7] text-[var(--color-text-soft)]">
+                                    {item.description[currentLanguage]}
+                                </p>
+                            </div>
+                        </article>
+                    );
+                })
+            }
+        </div>
+    </div>
+</section>
+
+<style>
+    .why-card {
+        animation: why-card-in 650ms var(--motion-smooth) both;
+        animation-delay: var(--why-delay);
+    }
+
+    .why-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        background:
+            radial-gradient(
+                circle at top right,
+                color-mix(in srgb, var(--color-secondary) 20%, transparent),
+                transparent 13rem
+            ),
+            radial-gradient(
+                circle at bottom left,
+                color-mix(in srgb, var(--color-accent) 14%, transparent),
+                transparent 12rem
+            );
+        transition: opacity 240ms var(--motion-smooth);
+        pointer-events: none;
+    }
+
+    .why-card:hover::before {
+        opacity: 1;
+    }
+
+    .why-icon {
+        background:
+            radial-gradient(
+                circle at top,
+                color-mix(in srgb, var(--color-secondary) 18%, transparent),
+                transparent 4rem
+            ),
+            color-mix(in srgb, var(--color-surface) 76%, transparent);
+    }
+
+    @keyframes why-card-in {
+        from {
+            opacity: 0;
+            transform: translateY(1.15rem) scale(0.985);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+</style>

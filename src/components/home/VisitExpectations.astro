@@ -1,0 +1,263 @@
+---
+import { getLanguageFromUrl } from "../../data/i18n/language";
+import type { LanguageCode } from "../../data/site/siteConfig";
+import { contactInfo } from "../../data/site/contact";
+
+interface Props {
+    language?: LanguageCode;
+}
+
+const { language } = Astro.props as Props;
+
+const currentLanguage = language ?? getLanguageFromUrl(Astro.url.pathname);
+
+const content = {
+    en: {
+        kicker: "What to expect",
+        title: "Your cardiology visit should feel clear, organized, and supportive.",
+        description:
+            "A cardiology appointment is an opportunity to understand your symptoms, review your risk factors, and discuss the next steps for your heart health.",
+        cta: "Call to Schedule",
+        note:
+            "Every patient is different. Testing and recommendations depend on your symptoms, history, and clinical evaluation.",
+        steps: [
+            {
+                title: "Medical history review",
+                description:
+                    "The visit may begin with a review of your medical history, medications, previous diagnoses, family history, and heart-related concerns.",
+            },
+            {
+                title: "Symptom discussion",
+                description:
+                    "You can discuss symptoms such as chest discomfort, shortness of breath, palpitations, fatigue, dizziness, or other concerns.",
+            },
+            {
+                title: "Blood pressure and risk review",
+                description:
+                    "Cardiovascular risk factors such as high blood pressure, cholesterol, diabetes, smoking history, and lifestyle may be reviewed.",
+            },
+            {
+                title: "Possible EKG or testing recommendation",
+                description:
+                    "Depending on your situation, the doctor may recommend an EKG, additional cardiac testing, monitoring, or follow-up evaluation.",
+            },
+            {
+                title: "Clear next steps",
+                description:
+                    "The goal is to help you understand what may be happening, what to watch for, and what steps may be recommended next.",
+            },
+            {
+                title: "Bilingual communication",
+                description:
+                    "Care is available in English and Spanish so patients and families can ask questions and understand the plan clearly.",
+            },
+        ],
+    },
+    es: {
+        kicker: "Qué esperar",
+        title: "Su visita cardiológica debe sentirse clara, organizada y con apoyo.",
+        description:
+            "Una cita de cardiología es una oportunidad para entender sus síntomas, revisar sus factores de riesgo y hablar sobre los próximos pasos para su salud cardíaca.",
+        cta: "Llamar para cita",
+        note:
+            "Cada paciente es diferente. Las pruebas y recomendaciones dependen de sus síntomas, historial y evaluación clínica.",
+        steps: [
+            {
+                title: "Revisión del historial médico",
+                description:
+                    "La visita puede comenzar con una revisión de su historial médico, medicamentos, diagnósticos previos, historial familiar y preocupaciones relacionadas con el corazón.",
+            },
+            {
+                title: "Conversación sobre síntomas",
+                description:
+                    "Puede hablar sobre síntomas como molestia en el pecho, falta de aire, palpitaciones, fatiga, mareos u otras preocupaciones.",
+            },
+            {
+                title: "Revisión de presión y riesgos",
+                description:
+                    "Se pueden revisar factores de riesgo cardiovascular como presión alta, colesterol, diabetes, historial de fumar y estilo de vida.",
+            },
+            {
+                title: "Posible EKG o recomendación de pruebas",
+                description:
+                    "Dependiendo de su situación, el doctor puede recomendar un EKG, pruebas cardíacas adicionales, monitoreo o evaluación de seguimiento.",
+            },
+            {
+                title: "Próximos pasos claros",
+                description:
+                    "El objetivo es ayudarle a entender qué puede estar ocurriendo, qué debe observar y qué pasos pueden recomendarse después.",
+            },
+            {
+                title: "Comunicación bilingüe",
+                description:
+                    "La atención está disponible en inglés y español para que pacientes y familiares puedan hacer preguntas y entender el plan con claridad.",
+            },
+        ],
+    },
+};
+
+const t = content[currentLanguage];
+---
+
+<section class="relative isolate overflow-hidden section-padding">
+    <div
+        class="pointer-events-none absolute right-[-5rem] top-[12%] z-[-1] aspect-square w-[22rem] rounded-full bg-[color-mix(in_srgb,var(--color-secondary)_20%,transparent)] opacity-[0.42] blur-[58px]"
+    >
+    </div>
+
+    <div
+        class="pointer-events-none absolute bottom-[8%] left-[-5rem] z-[-1] aspect-square w-80 rounded-full bg-[color-mix(in_srgb,var(--color-accent)_18%,transparent)] opacity-[0.42] blur-[58px]"
+    >
+    </div>
+
+    <div
+        class="site-container relative z-[1] grid grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] items-start gap-[clamp(2rem,6vw,5rem)] max-[1060px]:grid-cols-1"
+    >
+        <div class="sticky top-28 grid content-start max-[1060px]:relative max-[1060px]:top-auto">
+            <span class="section-kicker">{t.kicker}</span>
+
+            <h2
+                class="max-w-[740px] text-[clamp(2.35rem,5.5vw,5rem)] leading-[0.98] tracking-[-0.06em] text-[var(--color-heading)] max-[440px]:text-[clamp(2.25rem,12vw,3.85rem)]"
+            >
+                {t.title}
+            </h2>
+
+            <p
+                class="mt-5 max-w-[640px] text-[clamp(1rem,1.35vw,1.15rem)] leading-[1.85] text-[var(--color-text-soft)]"
+            >
+                {t.description}
+            </p>
+
+            <div
+                class="glow-panel mt-[1.55rem] grid w-[min(100%,620px)] gap-[0.45rem] p-[clamp(1rem,2vw,1.25rem)]"
+            >
+                <span
+                    class="text-xs font-black uppercase tracking-[0.12em] text-[var(--color-secondary)]"
+                >
+                    {currentLanguage === "es" ? "Nota para pacientes" : "Patient note"}
+                </span>
+
+                <p class="text-[0.94rem] leading-[1.65] text-[var(--color-text-soft)]">
+                    {t.note}
+                </p>
+            </div>
+
+            <a
+                href={contactInfo.phone.href}
+                class="btn btn-primary mt-[1.35rem] w-fit max-[720px]:w-full"
+            >
+                {t.cta}
+            </a>
+        </div>
+
+        <div class="visit-timeline relative grid gap-[0.85rem]">
+            {
+                t.steps.map((step, index) => (
+                    <article
+                        class="visit-step medical-card relative grid grid-cols-[auto_1fr] gap-4 overflow-hidden p-[clamp(1rem,2vw,1.2rem)] max-[720px]:gap-[0.85rem] max-[440px]:rounded-[1.4rem]"
+                        style={`--visit-delay: ${index * 80}ms;`}
+                    >
+                        <div
+                            class="visit-step-marker relative z-[1] inline-grid size-[3.2rem] place-items-center rounded-[1.05rem] border border-[color-mix(in_srgb,var(--color-secondary)_34%,var(--color-border))] text-[var(--color-secondary)] shadow-[0_14px_34px_rgba(15,23,42,0.07)] max-[720px]:size-[2.9rem]"
+                            aria-hidden="true"
+                        >
+                            <span
+                                class="font-heading text-xl font-extrabold leading-none tracking-[-0.055em]"
+                            >
+                                {String(index + 1).padStart(2, "0")}
+                            </span>
+                        </div>
+
+                        <div class="relative z-[1] grid gap-[0.45rem]">
+                            <h3
+                                class="font-heading text-[clamp(1.35rem,2vw,1.85rem)] leading-[1.02] tracking-[-0.045em] text-[var(--color-heading)]"
+                            >
+                                {step.title}
+                            </h3>
+
+                            <p class="text-[0.94rem] leading-[1.7] text-[var(--color-text-soft)]">
+                                {step.description}
+                            </p>
+                        </div>
+                    </article>
+                ))
+            }
+        </div>
+    </div>
+</section>
+
+<style>
+    .visit-timeline::before {
+        content: "";
+        position: absolute;
+        top: 1rem;
+        bottom: 1rem;
+        left: 1.6rem;
+        width: 1px;
+        background: linear-gradient(
+            180deg,
+            transparent,
+            color-mix(in srgb, var(--color-secondary) 38%, var(--color-border)),
+            color-mix(in srgb, var(--color-accent) 34%, var(--color-border)),
+            transparent
+        );
+        pointer-events: none;
+    }
+
+    .visit-step {
+        animation: visit-step-in 640ms var(--motion-smooth) both;
+        animation-delay: var(--visit-delay);
+    }
+
+    .visit-step::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        background:
+            radial-gradient(
+                circle at top right,
+                color-mix(in srgb, var(--color-secondary) 18%, transparent),
+                transparent 12rem
+            ),
+            radial-gradient(
+                circle at bottom left,
+                color-mix(in srgb, var(--color-accent) 14%, transparent),
+                transparent 12rem
+            );
+        pointer-events: none;
+        transition: opacity 220ms var(--motion-smooth);
+    }
+
+    .visit-step:hover::before {
+        opacity: 1;
+    }
+
+    .visit-step-marker {
+        background:
+            radial-gradient(
+                circle at top,
+                color-mix(in srgb, var(--color-secondary) 18%, transparent),
+                transparent 4rem
+            ),
+            color-mix(in srgb, var(--color-surface) 86%, transparent);
+    }
+
+    @keyframes visit-step-in {
+        from {
+            opacity: 0;
+            transform: translateY(1rem);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @media (max-width: 720px) {
+        .visit-timeline::before {
+            left: 1.45rem;
+        }
+    }
+</style>

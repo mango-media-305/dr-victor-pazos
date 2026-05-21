@@ -1,0 +1,253 @@
+---
+import { HeartPulse } from "@lucide/astro";
+
+import { getLanguageFromUrl } from "../../data/i18n/language";
+import type { LanguageCode } from "../../data/site/siteConfig";
+import { contactInfo } from "../../data/site/contact";
+
+interface Props {
+    language?: LanguageCode;
+}
+
+const { language } = Astro.props as Props;
+
+const currentLanguage = language ?? getLanguageFromUrl(Astro.url.pathname);
+
+const content = {
+    en: {
+        kicker: "Symptoms we help evaluate",
+        title: "When heart symptoms need answers, a cardiology evaluation can help.",
+        description:
+            "Patients often contact the office when they are experiencing symptoms, risk factors, or abnormal results that may involve the heart.",
+        cta: "Call to Schedule",
+        disclaimer:
+            "If you are experiencing severe chest pain, sudden shortness of breath, fainting, stroke symptoms, or a medical emergency, call 911 immediately.",
+        symptoms: [
+            {
+                title: "Chest discomfort",
+                description:
+                    "Pressure, tightness, burning, or discomfort that may need a heart-focused evaluation.",
+            },
+            {
+                title: "Shortness of breath",
+                description:
+                    "Breathing difficulty, especially with activity, that may be related to cardiovascular health.",
+            },
+            {
+                title: "Palpitations",
+                description:
+                    "Fluttering, racing, skipped beats, or irregular heartbeat sensations.",
+            },
+            {
+                title: "High blood pressure",
+                description:
+                    "Hypertension concerns, medication review, and cardiovascular risk management.",
+            },
+            {
+                title: "Abnormal EKG",
+                description:
+                    "Follow-up evaluation for abnormal heart rhythm or electrical activity findings.",
+            },
+            {
+                title: "Heart murmur",
+                description:
+                    "Evaluation of unusual heart sounds and possible valve-related concerns.",
+            },
+            {
+                title: "Fatigue with activity",
+                description:
+                    "Reduced stamina or unusual tiredness during daily movement or exercise.",
+            },
+            {
+                title: "Known heart disease",
+                description:
+                    "Ongoing care, monitoring, and treatment planning for existing cardiovascular conditions.",
+            },
+        ],
+    },
+    es: {
+        kicker: "Síntomas que evaluamos",
+        title: "Cuando los síntomas del corazón necesitan respuestas, una evaluación cardiológica puede ayudar.",
+        description:
+            "Los pacientes suelen comunicarse con la oficina cuando tienen síntomas, factores de riesgo o resultados anormales que pueden involucrar el corazón.",
+        cta: "Llamar para cita",
+        disclaimer:
+            "Si tiene dolor fuerte en el pecho, falta de aire repentina, desmayo, síntomas de derrame cerebral o una emergencia médica, llame al 911 de inmediato.",
+        symptoms: [
+            {
+                title: "Molestia en el pecho",
+                description:
+                    "Presión, opresión, ardor o molestia que puede necesitar una evaluación enfocada en el corazón.",
+            },
+            {
+                title: "Falta de aire",
+                description:
+                    "Dificultad para respirar, especialmente con actividad, que puede relacionarse con la salud cardiovascular.",
+            },
+            {
+                title: "Palpitaciones",
+                description:
+                    "Sensación de latidos rápidos, irregulares, saltados o aleteo en el pecho.",
+            },
+            {
+                title: "Presión alta",
+                description:
+                    "Evaluación de hipertensión, revisión de medicamentos y manejo de riesgo cardiovascular.",
+            },
+            {
+                title: "EKG anormal",
+                description:
+                    "Seguimiento para resultados anormales del ritmo o actividad eléctrica del corazón.",
+            },
+            {
+                title: "Soplo cardíaco",
+                description:
+                    "Evaluación de sonidos cardíacos inusuales y posibles preocupaciones relacionadas con válvulas.",
+            },
+            {
+                title: "Fatiga con actividad",
+                description:
+                    "Cansancio inusual o menor resistencia durante actividades diarias o ejercicio.",
+            },
+            {
+                title: "Enfermedad cardíaca conocida",
+                description:
+                    "Cuidado continuo, monitoreo y planificación de tratamiento para condiciones cardiovasculares existentes.",
+            },
+        ],
+    },
+};
+
+const t = content[currentLanguage];
+---
+
+<section class="relative isolate overflow-hidden section-padding">
+    <div
+        class="pointer-events-none absolute left-[-5rem] top-[10%] z-[-1] aspect-square w-80 rounded-full bg-[color-mix(in_srgb,var(--color-heart)_16%,transparent)] opacity-[0.42] blur-[58px]"
+    >
+    </div>
+
+    <div
+        class="pointer-events-none absolute bottom-[8%] right-[-5rem] z-[-1] aspect-square w-[22rem] rounded-full bg-[color-mix(in_srgb,var(--color-secondary)_20%,transparent)] opacity-[0.42] blur-[58px]"
+    >
+    </div>
+
+    <div class="site-container">
+        <div
+            class="relative z-[1] mb-[clamp(1.75rem,4vw,3rem)] grid gap-[0.85rem]"
+        >
+            <span class="section-kicker">{t.kicker}</span>
+
+            <div class="grid items-end gap-[clamp(1.25rem,5vw,4rem)]">
+                <h2
+                    class="text-[clamp(2.3rem,5.5vw,5.15rem)] leading-[0.98] tracking-[-0.06em] text-[var(--color-heading)]"
+                >
+                    {t.title}
+                </h2>
+
+                <div class="grid justify-items-start gap-5 max-[680px]:justify-items-stretch">
+                    <p
+                        class="text-[clamp(1rem,1.35vw,1.15rem)] leading-[1.85] text-[var(--color-text-soft)]"
+                    >
+                        {t.description}
+                    </p>
+
+                    <a href={contactInfo.phone.href} class="btn btn-primary">
+                        {t.cta}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div
+            class="relative z-[1] grid grid-cols-4 gap-[0.85rem] max-[1120px]:grid-cols-2 max-[680px]:grid-cols-1"
+        >
+            {
+                t.symptoms.map((symptom, index) => (
+                    <article
+                        class="symptom-card medical-card relative grid min-h-60 content-start gap-4 overflow-hidden p-[clamp(1rem,2vw,1.2rem)] max-[680px]:min-h-0"
+                        style={`--symptom-delay: ${index * 70}ms;`}
+                    >
+                        <div
+                            class="symptom-icon relative z-[1] inline-grid size-12 place-items-center rounded-2xl border border-[color-mix(in_srgb,var(--color-heart)_28%,var(--color-border))] text-[var(--color-heart)] shadow-[0_14px_34px_rgba(15,23,42,0.07)]"
+                            aria-hidden="true"
+                        >
+                            <HeartPulse size={22} strokeWidth={2} />
+                        </div>
+
+                        <div class="relative z-[1]">
+                            <h3
+                                class="font-heading text-[clamp(1.35rem,2vw,1.85rem)] leading-[1.02] tracking-[-0.045em] text-[var(--color-heading)]"
+                            >
+                                {symptom.title}
+                            </h3>
+
+                            <p class="mt-[0.6rem] text-sm leading-[1.65] text-[var(--color-text-soft)]">
+                                {symptom.description}
+                            </p>
+                        </div>
+                    </article>
+                ))
+            }
+        </div>
+
+        <p
+            class="relative z-[1] mt-[clamp(1.25rem,3vw,2rem)] rounded-[1.25rem] border border-[color-mix(in_srgb,var(--color-heart)_28%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-heart-soft)_38%,transparent)] px-4 py-[0.85rem] text-[0.88rem] font-extrabold leading-[1.6] text-[var(--color-heart)]"
+        >
+            {t.disclaimer}
+        </p>
+    </div>
+</section>
+
+<style>
+    .symptom-card {
+        animation: symptom-card-in 620ms var(--motion-smooth) both;
+        animation-delay: var(--symptom-delay);
+    }
+
+    .symptom-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        background:
+            radial-gradient(
+                circle at top right,
+                color-mix(in srgb, var(--color-heart) 18%, transparent),
+                transparent 10rem
+            ),
+            radial-gradient(
+                circle at bottom left,
+                color-mix(in srgb, var(--color-secondary) 14%, transparent),
+                transparent 11rem
+            );
+        pointer-events: none;
+        transition: opacity 220ms var(--motion-smooth);
+    }
+
+    .symptom-card:hover::before {
+        opacity: 1;
+    }
+
+    .symptom-icon {
+        background:
+            radial-gradient(
+                circle at top,
+                color-mix(in srgb, var(--color-heart) 18%, transparent),
+                transparent 4rem
+            ),
+            color-mix(in srgb, var(--color-surface) 76%, transparent);
+    }
+
+    @keyframes symptom-card-in {
+        from {
+            opacity: 0;
+            transform: translateY(1rem) scale(0.985);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+</style>

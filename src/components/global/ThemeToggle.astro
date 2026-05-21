@@ -1,4 +1,6 @@
 ---
+import { Moon, Sun } from "@lucide/astro";
+
 interface Props {
     label?: string;
 }
@@ -8,85 +10,39 @@ const { label = "Toggle theme" } = Astro.props;
 
 <button
     type="button"
-    class="theme-toggle"
+    class="theme-toggle relative inline-grid size-11 place-items-center rounded-full border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface)_86%,transparent)] text-[var(--color-heading)] shadow-[0_12px_32px_rgba(15,23,42,0.06)] backdrop-blur-2xl transition-[transform,border-color,background,color] duration-200 hover:-translate-y-0.5 hover:border-[color-mix(in_srgb,var(--color-secondary)_42%,var(--color-border))] max-[720px]:size-[2.55rem]"
     aria-label={label}
     aria-pressed="false"
     data-theme-toggle
 >
-    <span class="theme-toggle__icon theme-toggle__sun" aria-hidden="true">
-        <svg
-        viewBox="0 0 24 24"
-        width="18"
-        height="18"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        >
-        <circle cx="12" cy="12" r="4"></circle>
-        <path d="M12 2v2"></path>
-        <path d="M12 20v2"></path>
-        <path d="m4.93 4.93 1.41 1.41"></path>
-        <path d="m17.66 17.66 1.41 1.41"></path>
-        <path d="M2 12h2"></path>
-        <path d="M20 12h2"></path>
-        <path d="m6.34 17.66-1.41 1.41"></path>
-        <path d="m19.07 4.93-1.41 1.41"></path>
-        </svg>
+    <span
+        class="theme-toggle__icon theme-toggle__sun col-start-1 row-start-1 inline-grid place-items-center"
+        aria-hidden="true"
+    >
+        <Sun size={18} strokeWidth={2} />
     </span>
 
-    <span class="theme-toggle__icon theme-toggle__moon" aria-hidden="true">
-        <svg
-        viewBox="0 0 24 24"
-        width="18"
-        height="18"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        >
-        <path d="M20.99 13.23A8.5 8.5 0 1 1 10.77 3.01 7 7 0 0 0 20.99 13.23Z"
-        ></path>
-        </svg>
+    <span
+        class="theme-toggle__icon theme-toggle__moon col-start-1 row-start-1 inline-grid place-items-center"
+        aria-hidden="true"
+    >
+        <Moon size={18} strokeWidth={2} />
     </span>
 </button>
 
 <style>
     .theme-toggle {
-        position: relative;
-        display: inline-grid;
-        place-items: center;
-        width: 2.75rem;
-        height: 2.75rem;
-        border: 1px solid var(--color-border);
-        border-radius: 999px;
-        color: var(--color-heading);
-        background: color-mix(in srgb, var(--color-surface) 86%, transparent);
-        box-shadow: 0 12px 32px rgba(15, 23, 42, 0.06);
-        backdrop-filter: blur(16px);
         transition:
-        transform 220ms var(--motion-smooth),
-        border-color var(--theme-transition),
-        background var(--theme-transition),
-        color var(--theme-transition);
-    }
-
-    .theme-toggle:hover {
-        transform: translateY(-2px);
-        border-color: color-mix(
-        in srgb,
-        var(--color-secondary) 42%,
-        var(--color-border)
-        );
+            transform 220ms var(--motion-smooth),
+            border-color var(--theme-transition),
+            background var(--theme-transition),
+            color var(--theme-transition);
     }
 
     .theme-toggle__icon {
-        grid-area: 1 / 1;
         transition:
-        opacity 180ms ease,
-        transform 220ms var(--motion-smooth);
+            opacity 180ms ease,
+            transform 220ms var(--motion-smooth);
     }
 
     .theme-toggle__moon {

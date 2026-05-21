@@ -34,18 +34,18 @@ export const siteConfig = {
 
     seo: {
         defaultTitle: {
-            en: "Victor Pazos, MD. PA. | Cardiologist in Hialeah, FL",
-            es: "Victor Pazos, MD. PA. | Cardiólogo en Hialeah, FL",
+            en: "Cardiologist in Hialeah, FL | Victor Pazos, MD",
+            es: "Cardiólogo en Hialeah, FL | Victor Pazos, MD",
         },
 
         titleTemplate: {
-            en: "%s | Victor Pazos, MD. PA.",
-            es: "%s | Victor Pazos, MD. PA.",
+            en: "%s | Victor Pazos, MD",
+            es: "%s | Victor Pazos, MD",
         },
 
         defaultDescription: {
-            en: "Looking for an experienced cardiologist in Hialeah, FL? Victor Pazos, MD. PA. serves patients in Hialeah, Miami, and Miami-Dade County.",
-            es: "¿Busca un cardiólogo con experiencia en Hialeah, FL? Victor Pazos, MD. PA. atiende pacientes en Hialeah, Miami y Miami-Dade County.",
+            en: "Looking for a cardiologist in Hialeah, FL? Victor Pazos, MD provides cardiology and interventional cardiology care for patients across Miami-Dade.",
+            es: "¿Busca un cardiólogo en Hialeah, FL? Victor Pazos, MD ofrece atención en cardiología y cardiología intervencionista para pacientes de Miami-Dade.",
         },
 
         defaultImage: "/images/og/default-og.webp",

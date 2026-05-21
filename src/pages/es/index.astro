@@ -1,0 +1,52 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+import HomeHero from "../../components/home/HomeHero.astro";
+import TrustStrip from "../../components/home/TrustStrip.astro";
+import ServicesPreview from "../../components/home/ServicesPreview.astro";
+import SymptomsPreview from "../../components/home/SymptomsPreview.astro";
+import AboutDoctorPreview from "../../components/home/AboutDoctorPreview.astro";
+import VisitExpectations from "../../components/home/VisitExpectations.astro";
+import WhyChooseUs from "../../components/home/WhyChooseUs.astro";
+import LocationsPreview from "../../components/home/LocationsPreview.astro";
+import AppointmentCTA from "../../components/home/AppointmentCTA.astro";
+import FinalCTA from "../../components/home/FinalCTA.astro";
+
+import { homeMetadata } from "../../data/seo/pageMetadata";
+import {
+    getGlobalSchema,
+    getWebPageSchema,
+} from "../../data/seo/schema";
+
+const metadata = homeMetadata;
+---
+
+<MainLayout
+    fullTitle
+    language="es"
+    title={metadata.title.es}
+    description={metadata.description.es}
+    canonical={metadata.canonical.es}
+    alternateUrls={{
+        en: metadata.canonical.en,
+        es: metadata.canonical.es,
+    }}
+    schema={[
+        ...getGlobalSchema(),
+        getWebPageSchema({
+            title: metadata.title.es,
+            description: metadata.description.es,
+            path: metadata.canonical.es,
+        }),
+    ]}
+>
+    <HomeHero language="es" />
+    <TrustStrip language="es" />
+    <ServicesPreview language="es" />
+    <SymptomsPreview language="es" />
+    <AboutDoctorPreview language="es" />
+    <VisitExpectations language="es" />
+    <WhyChooseUs language="es" />
+    <LocationsPreview language="es" />
+    <AppointmentCTA language="es" />
+    <FinalCTA language="es" />
+</MainLayout>

@@ -1,9 +1,10 @@
 ---
+import { ArrowRight, CircleAlert } from "@lucide/astro";
+
 import { getLanguageFromUrl } from "../../data/i18n/language";
 import type { LanguageCode } from "../../data/site/siteConfig";
 import {
-cardiologyServices,
-    featuredCardiologyServices,
+    cardiologyServices,
     getCardiologyServiceHref,
 } from "../../data/services/cardiologyServices";
 
@@ -17,22 +18,22 @@ const currentLanguage = language ?? getLanguageFromUrl(Astro.url.pathname);
 
 const content = {
     en: {
-        kicker: "Cardiology services",
-        title: "Focused heart care for symptoms, prevention, and long-term cardiovascular health.",
+        kicker: "How we can help",
+        title: "Care for common heart symptoms, risk factors, and ongoing conditions.",
         description:
-            "Explore common cardiology services for patients in Hialeah, Miami, and surrounding Miami-Dade communities.",
+            "Patients often visit a cardiologist for chest discomfort, high blood pressure, palpitations, shortness of breath, abnormal test results, or long-term heart disease management.",
         viewAll: "View all cardiology services",
-        viewService: "Learn more",
+        viewService: "Explore service",
         href: "/services/",
         note: "If you are experiencing a medical emergency, call 911 or go to the nearest emergency room.",
     },
     es: {
-        kicker: "Servicios de cardiología",
-        title: "Cuidado del corazón para síntomas, prevención y salud cardiovascular a largo plazo.",
+        kicker: "Cómo podemos ayudarle",
+        title: "Atención para síntomas cardíacos, factores de riesgo y condiciones continuas.",
         description:
-            "Explore servicios cardiológicos comunes para pacientes en Hialeah, Miami y comunidades cercanas de Miami-Dade.",
+            "Los pacientes suelen visitar a un cardiólogo por dolor en el pecho, presión alta, palpitaciones, falta de aire, resultados anormales o manejo continuo de enfermedades del corazón.",
         viewAll: "Ver todos los servicios de cardiología",
-        viewService: "Conocer más",
+        viewService: "Explorar servicio",
         href: "/es/servicios/",
         note: "Si está experimentando una emergencia médica, llame al 911 o vaya a la sala de emergencias más cercana.",
     },
@@ -40,35 +41,56 @@ const content = {
 
 const t = content[currentLanguage];
 
-const services = cardiologyServices
-    .map((service) => ({
-        ...service,
-        Icon: service.icon,
-    }));
+const services = cardiologyServices.map((service) => ({
+    ...service,
+    Icon: service.icon,
+}));
 ---
 
-<section class="services-preview section-padding">
-    <div class="service-orb service-orb-one"></div>
-    <div class="service-orb service-orb-two"></div>
+<section class="relative isolate overflow-hidden section-padding">
+    <div
+        class="pointer-events-none absolute right-[-4rem] top-[10%] z-[-1] aspect-square w-80 rounded-full bg-[color-mix(in_srgb,var(--color-secondary)_24%,transparent)] opacity-45 blur-[58px]"
+    >
+    </div>
+
+    <div
+        class="pointer-events-none absolute bottom-[6%] left-[-5rem] z-[-1] aspect-square w-72 rounded-full bg-[color-mix(in_srgb,var(--color-accent)_20%,transparent)] opacity-45 blur-[58px]"
+    >
+    </div>
 
     <div class="site-container">
-        <div class="services-heading">
+        <div
+            class="relative z-[1] mb-[clamp(1.75rem,4vw,3rem)] grid gap-[0.85rem]"
+        >
             <span class="section-kicker">{t.kicker}</span>
 
-            <div class="services-heading-grid">
-                <h2>{t.title}</h2>
+            <div class="grid grid-cols-1 gap-8">
+                <h2
+                    class="text-[clamp(2.3rem,5.5vw,5.15rem)] leading-[0.98] tracking-[-0.06em] text-[var(--color-heading)]"
+                >
+                    {t.title}
+                </h2>
 
-                <div class="services-heading-copy">
-                    <p>{t.description}</p>
+                <div class="grid justify-items-start gap-5 max-[680px]:justify-items-stretch">
+                    <p
+                        class="text-[clamp(1rem,1.35vw,1.15rem)] leading-[1.85] text-[var(--color-text-soft)]"
+                    >
+                        {t.description}
+                    </p>
 
-                    <a href={t.href} class="btn btn-secondary services-all-link">
+                    <a
+                        href={t.href}
+                        class="btn btn-secondary w-fit max-[680px]:w-full"
+                    >
                         {t.viewAll}
                     </a>
                 </div>
             </div>
         </div>
 
-        <div class="services-grid">
+        <div
+            class="relative z-[1] grid grid-cols-3 gap-[0.95rem] max-[1060px]:grid-cols-2 max-[680px]:grid-cols-1"
+        >
             {
                 services.map((service, index) => {
                     const Icon = service.Icon;
@@ -76,43 +98,43 @@ const services = cardiologyServices
                     return (
                         <a
                             href={getCardiologyServiceHref(service, currentLanguage)}
-                            class="service-card-link medical-card"
+                            class="service-card-link medical-card group grid min-h-72 content-between p-[clamp(1.1rem,2vw,1.35rem)] text-inherit max-[680px]:min-h-0"
                             style={`--service-delay: ${index * 80}ms;`}
                             aria-label={`${t.viewService}: ${service.title[currentLanguage]}`}
                         >
-                            <div class="service-card-top">
-                                <span class="service-icon" aria-hidden="true">
-                                    <Icon class="w-7 h-7"/>
+                            <div class="relative z-[1] flex items-center justify-between gap-4">
+                                <span
+                                    class="inline-grid size-[3.2rem] place-items-center rounded-[1.05rem] border border-[color-mix(in_srgb,var(--color-secondary)_32%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-surface)_76%,transparent)] text-[var(--color-secondary)] shadow-[0_14px_34px_rgba(15,23,42,0.07)]"
+                                    aria-hidden="true"
+                                >
+                                    <Icon class="h-7 w-7" />
                                 </span>
 
-                                <span class="service-number">
+                                <span
+                                    class="font-heading text-[2.4rem] font-extrabold leading-none tracking-[-0.06em] text-[color-mix(in_srgb,var(--color-accent)_76%,var(--color-text-muted))] opacity-55"
+                                >
                                     {String(index + 1).padStart(2, "0")}
                                 </span>
                             </div>
 
-                            <div class="service-card-content">
-                                <h3>{service.shortTitle[currentLanguage]}</h3>
+                            <div class="relative z-[1] mt-[2.4rem] grid gap-3 max-[680px]:mt-7">
+                                <h3
+                                    class="font-heading text-[clamp(1.55rem,2.4vw,2.25rem)] leading-[1.02] tracking-[-0.045em] text-[var(--color-heading)]"
+                                >
+                                    {service.shortTitle[currentLanguage]}
+                                </h3>
 
-                                <p>{service.shortDescription[currentLanguage]}</p>
+                                <p class="text-[0.96rem] leading-[1.7] text-[var(--color-text-soft)]">
+                                    {service.shortDescription[currentLanguage]}
+                                </p>
                             </div>
 
-                            <span class="service-card-cta">
+                            <span
+                                class="relative z-[1] mt-[1.35rem] inline-flex w-fit items-center gap-[0.45rem] text-[0.88rem] font-black tracking-[-0.01em] text-[var(--color-secondary)] transition-[color,transform] duration-200 group-hover:translate-x-1 group-hover:text-[var(--color-accent-dark)] dark:group-hover:text-[var(--color-accent)]"
+                            >
                                 {t.viewService}
 
-                                <svg
-                                    viewBox="0 0 24 24"
-                                    width="18"
-                                    height="18"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    aria-hidden="true"
-                                >
-                                    <path d="M5 12h14" />
-                                    <path d="m12 5 7 7-7 7" />
-                                </svg>
+                                <ArrowRight size={18} strokeWidth={2} aria-hidden="true" />
                             </span>
                         </a>
                     );
@@ -120,90 +142,22 @@ const services = cardiologyServices
             }
         </div>
 
-        <div class="services-note">
-            <span aria-hidden="true">
-                <svg
-                    viewBox="0 0 24 24"
-                    width="18"
-                    height="18"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                >
-                    <circle cx="12" cy="12" r="10" />
-                    <path d="M12 8v4" />
-                    <path d="M12 16h.01" />
-                </svg>
+        <div
+            class="relative z-[1] mt-[clamp(1.25rem,3vw,2rem)] flex w-fit max-w-[760px] items-start gap-[0.65rem] rounded-[1.25rem] border border-[color-mix(in_srgb,var(--color-accent)_30%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-accent-soft)_44%,transparent)] px-4 py-[0.85rem] text-[var(--color-accent-dark)] dark:bg-[color-mix(in_srgb,var(--color-accent-soft)_34%,transparent)] dark:text-[var(--color-accent)] max-[680px]:w-full"
+        >
+            <span class="mt-[0.12rem] flex-none" aria-hidden="true">
+                <CircleAlert size={18} strokeWidth={2} />
             </span>
 
-            <p>{t.note}</p>
+            <p class="text-sm leading-[1.55] text-current">{t.note}</p>
         </div>
     </div>
 </section>
 
 <style>
-    .services-preview {
+    .service-card-link {
         position: relative;
         overflow: hidden;
-        isolation: isolate;
-    }
-
-    .services-heading {
-        position: relative;
-        z-index: 1;
-        display: grid;
-        gap: 0.85rem;
-        margin-bottom: clamp(1.75rem, 4vw, 3rem);
-    }
-
-    .services-heading-grid {
-        display: grid;
-        grid-template-columns: minmax(0, 0.95fr) minmax(280px, 0.65fr);
-        gap: clamp(1.25rem, 5vw, 4rem);
-        align-items: end;
-    }
-
-    .services-heading h2 {
-        max-width: 840px;
-        color: var(--color-heading);
-        font-size: clamp(2.3rem, 5.5vw, 5.15rem);
-        line-height: 0.98;
-        letter-spacing: -0.06em;
-    }
-
-    .services-heading-copy {
-        display: grid;
-        justify-items: start;
-        gap: 1.25rem;
-    }
-
-    .services-heading-copy p {
-        max-width: 540px;
-        color: var(--color-text-soft);
-        font-size: clamp(1rem, 1.35vw, 1.15rem);
-        line-height: 1.85;
-    }
-
-    .services-all-link {
-        width: fit-content;
-    }
-
-    .services-grid {
-        position: relative;
-        z-index: 1;
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 0.95rem;
-    }
-
-    .service-card-link {
-        display: grid;
-        align-content: space-between;
-        min-height: 18rem;
-        padding: clamp(1.1rem, 2vw, 1.35rem);
-        color: inherit;
         animation: service-card-in 650ms var(--motion-smooth) both;
         animation-delay: var(--service-delay);
     }
@@ -232,23 +186,7 @@ const services = cardiologyServices
         opacity: 1;
     }
 
-    .service-card-top {
-        position: relative;
-        z-index: 1;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
-    }
-
-    .service-icon {
-        display: inline-grid;
-        place-items: center;
-        width: 3.2rem;
-        height: 3.2rem;
-        border: 1px solid color-mix(in srgb, var(--color-secondary) 32%, var(--color-border));
-        border-radius: 1.05rem;
-        color: var(--color-secondary);
+    .service-card-link span[aria-hidden="true"] {
         background:
             radial-gradient(
                 circle at top,
@@ -256,122 +194,6 @@ const services = cardiologyServices
                 transparent 4rem
             ),
             color-mix(in srgb, var(--color-surface) 76%, transparent);
-        box-shadow: 0 14px 34px rgba(15, 23, 42, 0.07);
-    }
-
-    .service-number {
-        color: color-mix(in srgb, var(--color-accent) 76%, var(--color-text-muted));
-        font-family: var(--font-heading);
-        font-size: 2.4rem;
-        font-weight: 800;
-        line-height: 1;
-        letter-spacing: -0.06em;
-        opacity: 0.55;
-    }
-
-    .service-card-content {
-        position: relative;
-        z-index: 1;
-        display: grid;
-        gap: 0.75rem;
-        margin-top: 2.4rem;
-    }
-
-    .service-card-content h3 {
-        color: var(--color-heading);
-        font-family: var(--font-heading);
-        font-size: clamp(1.55rem, 2.4vw, 2.25rem);
-        line-height: 1.02;
-        letter-spacing: -0.045em;
-    }
-
-    .service-card-content p {
-        color: var(--color-text-soft);
-        font-size: 0.96rem;
-        line-height: 1.7;
-    }
-
-    .service-card-cta {
-        position: relative;
-        z-index: 1;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.45rem;
-        width: fit-content;
-        margin-top: 1.35rem;
-        color: var(--color-secondary);
-        font-size: 0.88rem;
-        font-weight: 900;
-        letter-spacing: -0.01em;
-        transition:
-            color var(--theme-transition),
-            transform 220ms var(--motion-smooth);
-    }
-
-    .service-card-link:hover .service-card-cta {
-        color: var(--color-accent-dark);
-        transform: translateX(0.25rem);
-    }
-
-    :global(.dark) .service-card-link:hover .service-card-cta {
-        color: var(--color-accent);
-    }
-
-    .services-note {
-        position: relative;
-        z-index: 1;
-        display: flex;
-        align-items: flex-start;
-        gap: 0.65rem;
-        width: fit-content;
-        max-width: 760px;
-        margin-top: clamp(1.25rem, 3vw, 2rem);
-        border: 1px solid color-mix(in srgb, var(--color-accent) 30%, var(--color-border));
-        border-radius: 1.25rem;
-        padding: 0.85rem 1rem;
-        color: var(--color-accent-dark);
-        background: color-mix(in srgb, var(--color-accent-soft) 44%, transparent);
-    }
-
-    :global(.dark) .services-note {
-        color: var(--color-accent);
-        background: color-mix(in srgb, var(--color-accent-soft) 34%, transparent);
-    }
-
-    .services-note span {
-        flex: 0 0 auto;
-        margin-top: 0.12rem;
-    }
-
-    .services-note p {
-        color: currentColor;
-        font-size: 0.9rem;
-        line-height: 1.55;
-    }
-
-    .service-orb {
-        position: absolute;
-        z-index: -1;
-        border-radius: 999px;
-        filter: blur(58px);
-        opacity: 0.45;
-        pointer-events: none;
-    }
-
-    .service-orb-one {
-        top: 10%;
-        right: -4rem;
-        width: 20rem;
-        aspect-ratio: 1;
-        background: color-mix(in srgb, var(--color-secondary) 24%, transparent);
-    }
-
-    .service-orb-two {
-        left: -5rem;
-        bottom: 6%;
-        width: 18rem;
-        aspect-ratio: 1;
-        background: color-mix(in srgb, var(--color-accent) 20%, transparent);
     }
 
     @keyframes service-card-in {
@@ -383,42 +205,6 @@ const services = cardiologyServices
         to {
             opacity: 1;
             transform: translateY(0) scale(1);
-        }
-    }
-
-    @media (max-width: 1060px) {
-        .services-heading-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .services-grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-    }
-
-    @media (max-width: 680px) {
-        .services-heading-copy {
-            justify-items: stretch;
-        }
-
-        .services-all-link {
-            width: 100%;
-        }
-
-        .services-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .service-card-link {
-            min-height: auto;
-        }
-
-        .service-card-content {
-            margin-top: 1.75rem;
-        }
-
-        .services-note {
-            width: 100%;
         }
     }
 </style>

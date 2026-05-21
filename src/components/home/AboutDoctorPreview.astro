@@ -1,0 +1,377 @@
+---
+
+import { contactInfo } from "../../data/site/contact";
+import { getLanguageFromUrl } from "../../data/i18n/language";
+import type { LanguageCode } from "../../data/site/siteConfig";
+import { doctorProfile } from "../../data/doctor/doctorProfile";
+
+interface Props {
+    language?: LanguageCode;
+}
+
+const { language } = Astro.props as Props;
+
+const currentLanguage = language ?? getLanguageFromUrl(Astro.url.pathname);
+
+const content = {
+    en: {
+        kicker: "About Dr. Pazos",
+        title: "A cardiologist focused on clarity, evaluation, and long-term heart health.",
+        description:
+            "Learn more about Victor Pazos, MD, his clinical focus, public physician profiles, and the heart-care approach patients can expect from the Hialeah office.",
+        eyebrow: doctorProfile.legalPracticeName,
+        specialtyLabel: "Clinical focus",
+        locationLabel: "Office location",
+        languagesLabel: "Languages",
+        experienceLabel: doctorProfile.experience.label.en,
+        bioTitle: "A practical, patient-centered cardiology approach.",
+        profileCta: "Learn more about Dr. Pazos",
+        callCta: "Call to Schedule",
+        profileHref: "/about/",
+        publicProfilesLabel: "Public physician profiles",
+        profileLinkLabel: "View profile",
+        credentialsLabel: "Profile highlights",
+        approvalNote:
+            "Some credential details should be confirmed with the practice before being displayed as final website content.",
+    },
+    es: {
+        kicker: "Sobre Dr. Pazos",
+        title: "Un cardiólogo enfocado en claridad, evaluación y salud cardíaca a largo plazo.",
+        description:
+            "Conozca más sobre Victor Pazos, MD, su enfoque clínico, perfiles médicos públicos y el tipo de atención cardíaca que los pacientes pueden esperar en la oficina de Hialeah.",
+        eyebrow: doctorProfile.legalPracticeName,
+        specialtyLabel: "Enfoque clínico",
+        locationLabel: "Ubicación de la oficina",
+        languagesLabel: "Idiomas",
+        experienceLabel: doctorProfile.experience.label.es,
+        bioTitle: "Un enfoque cardiológico práctico y centrado en el paciente.",
+        profileCta: "Conocer más sobre Dr. Pazos",
+        callCta: "Llamar para cita",
+        profileHref: "/es/sobre-nosotros/",
+        publicProfilesLabel: "Perfiles médicos públicos",
+        profileLinkLabel: "Ver perfil",
+        credentialsLabel: "Puntos destacados",
+        approvalNote:
+            "Algunos detalles de credenciales deben confirmarse con la práctica antes de mostrarse como contenido final del sitio web.",
+    },
+};
+
+const t = content[currentLanguage];
+
+const credentials = doctorProfile.credentials.slice(0, 3);
+
+const bioParagraph =
+    doctorProfile.biography[currentLanguage][3] ??
+    doctorProfile.shortBio[currentLanguage];
+
+const languagesDisplay = doctorProfile.languages[currentLanguage].join(" / ");
+---
+
+<section class="relative isolate overflow-hidden section-padding">
+    <div
+        class="about-orb absolute left-[-5rem] top-[16%] z-[-1] aspect-square w-72 rounded-full bg-[color-mix(in_srgb,var(--color-secondary)_24%,transparent)] opacity-45 blur-[58px]"
+    >
+    </div>
+
+    <div
+        class="about-orb absolute bottom-[8%] right-[-4rem] z-[-1] aspect-square w-[21rem] rounded-full bg-[color-mix(in_srgb,var(--color-accent)_20%,transparent)] opacity-45 blur-[58px]"
+    >
+    </div>
+
+    <div
+        class="site-container relative z-[1] grid grid-cols-[minmax(320px,0.82fr)_minmax(0,1.18fr)] items-center gap-[clamp(2rem,6vw,5rem)] max-[1080px]:grid-cols-1"
+    >
+        <div
+            class="relative grid min-h-[620px] place-items-center max-[1080px]:order-2 max-[1080px]:min-h-0"
+        >
+            <div
+                class="doctor-profile-card glass-panel-strong relative z-[2] grid w-[min(100%,440px)] gap-[1.35rem] overflow-hidden p-[clamp(1.2rem,3vw,1.65rem)] max-[1080px]:w-[min(100%,620px)] max-[440px]:rounded-[1.65rem]"
+            >
+                <div
+                    class="relative z-[1] flex items-center justify-between gap-4 max-[720px]:flex-col max-[720px]:items-start"
+                >
+                    <span
+                        class="text-xs font-black uppercase tracking-[0.12em] text-[var(--color-secondary)]"
+                    >
+                        {t.eyebrow}
+                    </span>
+
+                    <span
+                        class="inline-flex items-center gap-[0.45rem] whitespace-nowrap rounded-full border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface)_72%,transparent)] px-[0.65rem] py-[0.42rem] text-[0.78rem] font-black text-[var(--color-heading)]"
+                    >
+                        <span
+                            class="profile-status-dot size-[0.45rem] rounded-full bg-[var(--color-heart)]"
+                            aria-hidden="true"
+                        >
+                        </span>
+
+                        {doctorProfile.location.label[currentLanguage]}
+                    </span>
+                </div>
+
+                <div class="relative z-[1] grid min-h-[245px] place-items-center">
+                    <div
+                        class="doctor-avatar-glow absolute aspect-square w-72 rounded-full blur-[10px]"
+                    >
+                    </div>
+
+                    <div
+                        class="doctor-avatar relative grid aspect-square w-[13.5rem] place-items-center border border-[color-mix(in_srgb,var(--color-secondary)_34%,var(--color-border))] shadow-[var(--shadow-glow)] max-[720px]:w-[11.5rem]"
+                    >
+                        <span
+                            class="translate-x-[-0.08em] font-heading text-[4.5rem] font-extrabold leading-none tracking-[-0.08em] text-white max-[720px]:text-[3.85rem] dark:text-[var(--color-bg)]"
+                        >
+                            VP
+                        </span>
+                    </div>
+                </div>
+
+                <div class="relative z-[1] grid gap-[0.45rem] text-center">
+                    <h3
+                        class="text-[clamp(2rem,3vw,2.7rem)] leading-none tracking-[-0.055em] text-[var(--color-heading)]"
+                    >
+                        {doctorProfile.displayName}
+                    </h3>
+
+                    <p class="text-base font-extrabold text-[var(--color-text-soft)]">
+                        {doctorProfile.specialty[currentLanguage]}
+                    </p>
+                </div>
+
+                <div class="relative z-[1] grid gap-[0.65rem]">
+                    <div
+                        class="grid gap-1 rounded-[1.1rem] border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface)_72%,transparent)] px-4 py-[0.9rem]"
+                    >
+                        <span
+                            class="text-[0.72rem] font-black uppercase tracking-[0.1em] text-[var(--color-text-soft)]"
+                        >
+                            {t.specialtyLabel}
+                        </span>
+
+                        <strong class="text-[0.95rem] leading-[1.35] text-[var(--color-heading)]">
+                            {doctorProfile.specialty[currentLanguage]}
+                        </strong>
+                    </div>
+
+                    <div
+                        class="grid gap-1 rounded-[1.1rem] border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface)_72%,transparent)] px-4 py-[0.9rem]"
+                    >
+                        <span
+                            class="text-[0.72rem] font-black uppercase tracking-[0.1em] text-[var(--color-text-soft)]"
+                        >
+                            {t.locationLabel}
+                        </span>
+
+                        <strong class="text-[0.95rem] leading-[1.35] text-[var(--color-heading)]">
+                            {doctorProfile.location.display}
+                        </strong>
+                    </div>
+
+                    <div
+                        class="grid gap-1 rounded-[1.1rem] border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface)_72%,transparent)] px-4 py-[0.9rem]"
+                    >
+                        <span
+                            class="text-[0.72rem] font-black uppercase tracking-[0.1em] text-[var(--color-text-soft)]"
+                        >
+                            {t.languagesLabel}
+                        </span>
+
+                        <strong class="text-[0.95rem] leading-[1.35] text-[var(--color-heading)]">
+                            {languagesDisplay}
+                        </strong>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                class="medical-card absolute bottom-20 right-0 z-[3] grid w-[180px] gap-[0.35rem] p-4 animate-[float-soft_6.5s_ease-in-out_infinite] max-[1080px]:bottom-12 max-[1080px]:right-[calc(50%-310px)] max-[720px]:hidden"
+            >
+                <span
+                    class="font-heading text-[2.5rem] font-extrabold leading-none tracking-[-0.06em] text-[var(--color-heading)]"
+                >
+                    {doctorProfile.experience.yearsDisplay}
+                </span>
+
+                <p class="text-[0.82rem] font-extrabold leading-[1.35] text-[var(--color-text-soft)]">
+                    {t.experienceLabel}
+                </p>
+            </div>
+        </div>
+
+        <div class="grid content-center max-[1080px]:order-1">
+            <span class="section-kicker">{t.kicker}</span>
+
+            <h2
+                class="max-w-[820px] text-[clamp(2.35rem,5.5vw,5rem)] leading-[0.98] tracking-[-0.06em] text-[var(--color-heading)] max-[720px]:text-[clamp(2.35rem,12vw,4rem)]"
+            >
+                {t.title}
+            </h2>
+
+            <div
+                class="glow-panel mt-6 grid gap-[0.65rem] p-[clamp(1rem,2vw,1.25rem)]"
+            >
+                <h3
+                    class="font-body text-[1.05rem] font-black tracking-[-0.02em] text-[var(--color-heading)]"
+                >
+                    {t.bioTitle}
+                </h3>
+
+                <p class="text-[0.98rem] leading-[1.75] text-[var(--color-text-soft)]">
+                    {bioParagraph}
+                </p>
+            </div>
+
+            <div class="mt-5 grid gap-[0.8rem]">
+                <span
+                    class="text-xs font-black uppercase tracking-[0.12em] text-[var(--color-secondary)]"
+                >
+                    {t.credentialsLabel}
+                </span>
+
+                <div class="grid gap-3">
+                    {
+                        credentials.map((credential) => (
+                            <article class="grid grid-cols-[auto_1fr] items-start gap-[0.8rem]">
+                                <span
+                                    class="mt-[0.35rem] size-[0.8rem] rounded-full bg-[var(--color-accent)] shadow-[0_0_0_5px_color-mix(in_srgb,var(--color-accent)_18%,transparent)]"
+                                    aria-hidden="true"
+                                />
+
+                                <div>
+                                    <h3 class="font-body text-base font-black tracking-[-0.02em] text-[var(--color-heading)]">
+                                        {credential.label[currentLanguage]}
+                                    </h3>
+
+                                    <p class="mt-0.5 text-[0.94rem] leading-[1.65] text-[var(--color-text-soft)]">
+                                        {credential.description[currentLanguage]}
+                                    </p>
+                                </div>
+                            </article>
+                        ))
+                    }
+                </div>
+            </div>
+
+            <div class="mt-[1.65rem] flex flex-wrap gap-[0.85rem] max-[720px]:grid">
+                <a href={t.profileHref} class="btn btn-secondary">
+                    {t.profileCta}
+                </a>
+
+                <a href={contactInfo.phone.href} class="btn btn-primary">
+                    {t.callCta}
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .doctor-profile-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+            radial-gradient(
+                circle at top left,
+                color-mix(in srgb, var(--color-secondary) 16%, transparent),
+                transparent 18rem
+            ),
+            radial-gradient(
+                circle at bottom right,
+                color-mix(in srgb, var(--color-accent) 18%, transparent),
+                transparent 16rem
+            );
+        pointer-events: none;
+    }
+
+    .profile-status-dot {
+        box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-heart) 42%, transparent);
+        animation: about-dot-pulse 1.8s ease-in-out infinite;
+    }
+
+    .doctor-avatar-glow {
+        background:
+            radial-gradient(
+                circle,
+                color-mix(in srgb, var(--color-secondary) 20%, transparent),
+                transparent 62%
+            ),
+            radial-gradient(
+                circle,
+                color-mix(in srgb, var(--color-heart) 12%, transparent),
+                transparent 76%
+            );
+        animation: about-glow-breathe 4.5s ease-in-out infinite;
+    }
+
+    .doctor-avatar {
+        border-radius: 42% 58% 52% 48% / 45% 43% 57% 55%;
+        background:
+            radial-gradient(
+                circle at 50% 35%,
+                color-mix(in srgb, var(--color-accent) 22%, transparent),
+                transparent 8rem
+            ),
+            linear-gradient(
+                135deg,
+                var(--color-primary-dark),
+                var(--color-secondary)
+            );
+        animation: about-avatar-morph 9s ease-in-out infinite;
+    }
+
+    :global(.dark) .doctor-avatar {
+        background:
+            radial-gradient(
+                circle at 50% 35%,
+                color-mix(in srgb, var(--color-accent) 22%, transparent),
+                transparent 8rem
+            ),
+            linear-gradient(
+                135deg,
+                color-mix(in srgb, var(--color-primary) 82%, transparent),
+                color-mix(in srgb, var(--color-secondary) 88%, transparent)
+            );
+    }
+
+    @keyframes about-dot-pulse {
+        0%,
+        100% {
+            transform: scale(1);
+            box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-heart) 42%, transparent);
+        }
+
+        50% {
+            transform: scale(1.12);
+            box-shadow: 0 0 0 8px color-mix(in srgb, var(--color-heart) 0%, transparent);
+        }
+    }
+
+    @keyframes about-glow-breathe {
+        0%,
+        100% {
+            opacity: 0.55;
+            transform: scale(0.95);
+        }
+
+        50% {
+            opacity: 0.9;
+            transform: scale(1.05);
+        }
+    }
+
+    @keyframes about-avatar-morph {
+        0%,
+        100% {
+            border-radius: 42% 58% 52% 48% / 45% 43% 57% 55%;
+        }
+
+        35% {
+            border-radius: 50% 50% 45% 55% / 47% 55% 45% 53%;
+        }
+
+        70% {
+            border-radius: 46% 54% 58% 42% / 55% 45% 55% 45%;
+        }
+    }
+</style>

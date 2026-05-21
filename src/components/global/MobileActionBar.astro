@@ -1,10 +1,20 @@
 ---
-// src/components/global/MobileActionBar.astro
+// src/components/global/Header.astro
 
+import ThemeToggle from "./ThemeToggle.astro";
+
+import { siteConfig, type LanguageCode } from "../../data/site/siteConfig";
 import { contactInfo } from "../../data/site/contact";
-import { ctaNavigation } from "../../data/site/navigation";
-import { getLanguageFromUrl } from "../../data/i18n/language";
-import type { LanguageCode } from "../../data/site/siteConfig";
+import {
+    ctaNavigation,
+    mainNavigation,
+    mobileNavigationLabels,
+} from "../../data/site/navigation";
+import {
+    getAlternateLanguagePath,
+    getLanguageFromUrl,
+    languageShortLabels,
+} from "../../data/i18n/language";
 
 interface Props {
     language?: LanguageCode;
@@ -13,200 +23,295 @@ interface Props {
 const { language } = Astro.props as Props;
 
 const currentLanguage = language ?? getLanguageFromUrl(Astro.url.pathname);
+const alternatePath = getAlternateLanguagePath(Astro.url.pathname);
+const alternateLanguage = currentLanguage === "en" ? "es" : "en";
 ---
 
-<nav
-    class="mobile-action-bar"
-    aria-label={
-        currentLanguage === "es"
-        ? "Acciones rápidas de contacto"
-        : "Quick contact actions"
-    }
+<header
+    class="site-header sticky top-0 z-[100] p-4 transition-[padding,background] duration-200 max-[720px]:p-[0.65rem]"
+    data-site-header
 >
-    <a href={contactInfo.phone.href} class="mobile-action-link primary">
-        <span class="mobile-action-icon" aria-hidden="true">
-        <svg
-            viewBox="0 0 24 24"
-            width="20"
-            height="20"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+    <div
+        class="header-shell mx-auto grid min-h-[4.35rem] w-[min(100%-1rem,1240px)] grid-cols-[auto_1fr_auto] items-center gap-4 rounded-full border border-[color-mix(in_srgb,var(--color-border)_82%,transparent)] bg-[color-mix(in_srgb,var(--color-surface)_82%,transparent)] py-[0.45rem] pl-4 pr-[0.55rem] shadow-[0_18px_55px_rgba(15,23,42,0.07)] backdrop-blur-[22px] transition-[border-color,background,box-shadow,transform] duration-200 max-[1080px]:grid-cols-[auto_1fr] max-[720px]:min-h-16 max-[720px]:w-full max-[720px]:py-[0.4rem] max-[720px]:pl-3 max-[720px]:pr-[0.45rem]"
+    >
+        <a
+            href={currentLanguage === "es" ? "/es/" : "/"}
+            class="inline-flex min-w-0 items-center gap-[0.65rem]"
+            aria-label={`${siteConfig.name} home`}
         >
-            <path
-            d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.1 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.33 1.77.62 2.61a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.47-1.19a2 2 0 0 1 2.11-.45c.84.29 1.71.5 2.61.62A2 2 0 0 1 22 16.92Z"
+            <span
+                class="relative inline-grid size-12 flex-none place-items-center"
+                aria-hidden="true"
+            >
+                <img
+                    src={siteConfig.assets.logo.light}
+                    alt=""
+                    class="brand-logo-mark brand-logo-light col-start-1 row-start-1 size-12 object-contain"
+                    width="48"
+                    height="48"
+                />
+
+                <img
+                    src={siteConfig.assets.logo.dark}
+                    alt=""
+                    class="brand-logo-mark brand-logo-dark col-start-1 row-start-1 size-12 object-contain"
+                    width="48"
+                    height="48"
+                />
+            </span>
+
+            <span class="grid gap-[0.1rem] leading-none">
+                <strong
+                    class="font-heading text-[1.05rem] tracking-[-0.03em] text-[var(--color-heading)]"
+                >
+                    Victor Pazos, MD. PA.
+                </strong>
+
+                <small
+                    class="text-[0.72rem] font-extrabold uppercase tracking-[0.08em] text-[var(--color-text-soft)]"
+                >
+                    Cardiology
+                </small>
+            </span>
+        </a>
+
+        <nav
+            class="flex items-center justify-center gap-1 max-[1080px]:hidden"
+            aria-label="Primary navigation"
+        >
+            {
+                mainNavigation.map((item) => (
+                    <a
+                        href={item.href[currentLanguage]}
+                        class="relative rounded-full px-[0.9rem] py-[0.72rem] text-sm font-extrabold text-[var(--color-text)] transition-[color,background] hover:bg-[color-mix(in_srgb,var(--color-secondary-soft)_46%,transparent)] hover:text-[var(--color-heading)]"
+                    >
+                        {item.label[currentLanguage]}
+                    </a>
+                ))
+            }
+        </nav>
+
+        <div class="flex items-center justify-end gap-[0.45rem] max-[390px]:gap-[0.3rem]">
+            <a
+                href={alternatePath}
+                class="grid size-11 place-items-center rounded-full border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface)_86%,transparent)] text-[0.8rem] font-black text-[var(--color-heading)] shadow-[0_12px_32px_rgba(15,23,42,0.06)] transition-[transform,border-color,background] duration-200 hover:-translate-y-0.5 hover:border-[color-mix(in_srgb,var(--color-secondary)_42%,var(--color-border))] max-[720px]:size-[2.55rem]"
+                aria-label={`Switch to ${
+                    alternateLanguage === "es" ? "Spanish" : "English"
+                }`}
+            >
+                {languageShortLabels[alternateLanguage]}
+            </a>
+
+            <ThemeToggle
+                label={currentLanguage === "es" ? "Cambiar tema" : "Toggle theme"}
             />
-        </svg>
-        </span>
 
-        <span>{ctaNavigation.call.shortLabel[currentLanguage]}</span>
-    </a>
+            <a
+                href={contactInfo.phone.href}
+                class="btn btn-primary min-h-11 px-[1.1rem] text-[0.88rem] max-[720px]:hidden"
+            >
+                <span>{ctaNavigation.call.label[currentLanguage]}</span>
+            </a>
 
-    <a href={contactInfo.email.href} class="mobile-action-link">
-        <span class="mobile-action-icon" aria-hidden="true">
-        <svg
-            viewBox="0 0 24 24"
-            width="20"
-            height="20"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-        >
-            <rect width="20" height="16" x="2" y="4" rx="2" />
-            <path d="m22 7-10 6L2 7" />
-        </svg>
-        </span>
+            <button
+                type="button"
+                class="hidden size-11 place-items-center gap-[0.26rem] rounded-full border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface)_86%,transparent)] text-[var(--color-heading)] max-[1080px]:inline-grid max-[720px]:size-[2.55rem]"
+                aria-label={mobileNavigationLabels.openMenu[currentLanguage]}
+                aria-expanded="false"
+                aria-controls="mobile-menu"
+                data-menu-toggle
+            >
+                <span class="block h-0.5 w-[1.05rem] rounded-full bg-current"></span>
+                <span class="block h-0.5 w-[1.05rem] rounded-full bg-current"></span>
+                <span class="block h-0.5 w-[1.05rem] rounded-full bg-current"></span>
+            </button>
+        </div>
+    </div>
 
-        <span>{ctaNavigation.email.shortLabel[currentLanguage]}</span>
-    </a>
-
-    <a
-        href={contactInfo.map.googleMapsUrl}
-        class="mobile-action-link"
-        target="_blank"
-        rel="noopener noreferrer"
+    <div
+        id="mobile-menu"
+        class="fixed inset-0 z-[120] bg-[rgba(6,21,34,0.38)] p-4 backdrop-blur-[14px]"
+        data-mobile-menu
+        hidden
     >
-        <span class="mobile-action-icon" aria-hidden="true">
-        <svg
-            viewBox="0 0 24 24"
-            width="20"
-            height="20"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+        <div
+            class="mobile-menu-panel flex max-h-[calc(100vh-2rem)] flex-col gap-4 overflow-y-auto rounded-[2rem] border border-[var(--color-border)] p-4 shadow-[var(--shadow-card)]"
         >
-            <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z" />
-            <circle cx="12" cy="10" r="3" />
-        </svg>
-        </span>
+            <div class="flex items-center justify-between gap-4">
+                <span
+                    class="font-heading text-2xl font-extrabold text-[var(--color-heading)]"
+                >
+                    {mobileNavigationLabels.menu[currentLanguage]}
+                </span>
 
-        <span>{ctaNavigation.directions.shortLabel[currentLanguage]}</span>
-    </a>
+                <button
+                    type="button"
+                    class="grid size-[2.6rem] place-items-center rounded-full border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface-soft)_74%,transparent)] text-[1.65rem] leading-none text-[var(--color-heading)]"
+                    aria-label={mobileNavigationLabels.closeMenu[currentLanguage]}
+                    data-menu-close
+                >
+                    ×
+                </button>
+            </div>
 
-    <a
-        href={ctaNavigation.appointment.href[currentLanguage]}
-        class="mobile-action-link"
-    >
-        <span class="mobile-action-icon" aria-hidden="true">
-        <svg
-            viewBox="0 0 24 24"
-            width="20"
-            height="20"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-        >
-            <path d="M8 2v4" />
-            <path d="M16 2v4" />
-            <rect width="18" height="18" x="3" y="4" rx="2" />
-            <path d="M3 10h18" />
-            <path d="M8 14h.01" />
-            <path d="M12 14h.01" />
-            <path d="M16 14h.01" />
-            <path d="M8 18h.01" />
-            <path d="M12 18h.01" />
-        </svg>
-        </span>
+            <nav class="grid gap-[0.65rem]" aria-label="Mobile navigation">
+                {
+                    mainNavigation.map((item) => (
+                        <a
+                            href={item.href[currentLanguage]}
+                            class="mobile-nav-link grid gap-1 rounded-[1.2rem] border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface-soft)_54%,transparent)] p-4"
+                        >
+                            <span class="font-black text-[var(--color-heading)]">
+                                {item.label[currentLanguage]}
+                            </span>
 
-        <span>{ctaNavigation.appointment.shortLabel[currentLanguage]}</span>
-    </a>
-</nav>
+                            {item.description && (
+                                <small class="text-[0.84rem] leading-normal text-[var(--color-text-soft)]">
+                                    {item.description[currentLanguage]}
+                                </small>
+                            )}
+                        </a>
+                    ))
+                }
+            </nav>
+
+            <div class="grid gap-[0.65rem]">
+                <a href={contactInfo.phone.href} class="btn btn-primary">
+                    {ctaNavigation.call.label[currentLanguage]}
+                </a>
+
+                <a
+                    href={ctaNavigation.appointment.href[currentLanguage]}
+                    class="btn btn-secondary"
+                >
+                    {ctaNavigation.appointment.label[currentLanguage]}
+                </a>
+            </div>
+
+            <div
+                class="grid gap-[0.35rem] rounded-[1.25rem] border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-secondary-soft)_34%,transparent)] p-4 text-sm leading-normal text-[var(--color-text-soft)]"
+            >
+                <strong class="text-[var(--color-heading)]">
+                    {contactInfo.practiceName}
+                </strong>
+
+                <span>{contactInfo.address.display}</span>
+
+                <a
+                    href={contactInfo.phone.href}
+                    class="w-fit font-black text-[var(--color-secondary)]"
+                >
+                    {contactInfo.phone.label}
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<script>
+    const header = document.querySelector("[data-site-header]");
+    const menu = document.querySelector("[data-mobile-menu]");
+    const toggle = document.querySelector("[data-menu-toggle]");
+    const closeButton = document.querySelector("[data-menu-close]");
+    const mobileLinks = document.querySelectorAll(".mobile-nav-link");
+
+    function openMenu() {
+        if (!menu || !toggle) return;
+
+        menu.removeAttribute("hidden");
+        toggle.setAttribute("aria-expanded", "true");
+        document.documentElement.classList.add("menu-open");
+    }
+
+    function closeMenu() {
+        if (!menu || !toggle) return;
+
+        menu.setAttribute("hidden", "");
+        toggle.setAttribute("aria-expanded", "false");
+        document.documentElement.classList.remove("menu-open");
+    }
+
+    toggle?.addEventListener("click", () => {
+        const isExpanded = toggle.getAttribute("aria-expanded") === "true";
+
+        if (isExpanded) {
+            closeMenu();
+        } else {
+            openMenu();
+        }
+    });
+
+    closeButton?.addEventListener("click", closeMenu);
+
+    mobileLinks.forEach((link) => {
+        link.addEventListener("click", closeMenu);
+    });
+
+    window.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+            closeMenu();
+        }
+    });
+
+    window.addEventListener("scroll", () => {
+        if (!header) return;
+
+        header.classList.toggle("is-scrolled", window.scrollY > 16);
+    });
+</script>
 
 <style>
-    .mobile-action-bar {
-        position: fixed;
-        right: 0.75rem;
-        bottom: 0.75rem;
-        left: 0.75rem;
-        z-index: 90;
-        display: none;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 0.35rem;
-        border: 1px solid color-mix(in srgb, var(--color-border) 86%, transparent);
-        border-radius: 1.45rem;
-        padding: 0.45rem;
-        background:
-        radial-gradient(
-            circle at top left,
-            color-mix(in srgb, var(--color-secondary) 12%, transparent),
-            transparent 14rem
-        ),
-        color-mix(in srgb, var(--color-surface) 88%, transparent);
-        box-shadow: 0 20px 60px rgba(15, 23, 42, 0.18);
-        backdrop-filter: blur(24px);
-    }
-
-    .mobile-action-link {
-        display: grid;
-        place-items: center;
-        gap: 0.28rem;
-        min-height: 4rem;
-        border-radius: 1.05rem;
-        color: var(--color-text);
-        font-size: 0.72rem;
-        font-weight: 900;
-        line-height: 1;
-        text-align: center;
+    .site-header {
         transition:
-        transform 220ms var(--motion-smooth),
-        color var(--theme-transition),
-        background var(--theme-transition);
+            padding 220ms var(--motion-smooth),
+            background var(--theme-transition);
     }
 
-    .mobile-action-link:hover {
-        transform: translateY(-2px);
-        color: var(--color-heading);
-        background: color-mix(in srgb, var(--color-secondary-soft) 44%, transparent);
+    .site-header.is-scrolled {
+        padding-block: 0.65rem;
     }
 
-    .mobile-action-link.primary {
-        color: #ffffff;
-        background: linear-gradient(135deg, #0b2d4d, #0e7490);
-        box-shadow: 0 12px 30px rgba(14, 116, 144, 0.25);
+    .site-header.is-scrolled .header-shell {
+        box-shadow: var(--shadow-card);
     }
 
-    :global(.dark) .mobile-action-link.primary {
-        color: #061522;
-        background: linear-gradient(135deg, #8fd3e8, #22d3ee);
-        box-shadow: 0 12px 30px rgba(34, 211, 238, 0.18);
+    .brand-logo-mark {
+        transition:
+            opacity 180ms ease,
+            transform 220ms var(--motion-smooth);
     }
 
-    .mobile-action-icon {
-        display: inline-grid;
-        place-items: center;
-        width: 1.45rem;
-        height: 1.45rem;
+    .brand-logo-light {
+        opacity: 1;
+        transform: scale(1);
     }
 
-    .mobile-action-link:not(.primary) .mobile-action-icon {
-        color: var(--color-secondary);
+    .brand-logo-dark {
+        opacity: 0;
+        transform: scale(0.96);
     }
 
-    @media (max-width: 720px) {
-        .mobile-action-bar {
-        display: grid;
-        }
+    :global(.dark) .brand-logo-light {
+        opacity: 0;
+        transform: scale(0.96);
     }
 
-    @media (max-width: 360px) {
-        .mobile-action-bar {
-        right: 0.5rem;
-        bottom: 0.5rem;
-        left: 0.5rem;
-        border-radius: 1.25rem;
-        }
+    :global(.dark) .brand-logo-dark {
+        opacity: 1;
+        transform: scale(1);
+    }
 
-        .mobile-action-link {
-        min-height: 3.75rem;
-        font-size: 0.68rem;
-        }
+    .mobile-menu-panel {
+        background:
+            radial-gradient(
+                circle at top right,
+                color-mix(in srgb, var(--color-secondary) 12%, transparent),
+                transparent 16rem
+            ),
+            var(--color-surface);
+    }
+
+    :global(.menu-open) {
+        overflow: hidden;
     }
 </style>

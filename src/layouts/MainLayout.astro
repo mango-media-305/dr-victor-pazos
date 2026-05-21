@@ -25,6 +25,7 @@ interface Props {
     bodyClass?: string;
     schema?: SchemaObject | SchemaObject[];
     alternateUrls?: Partial<Record<LanguageCode, string>>;
+    fullTitle?: boolean;
 }
 
 const {
@@ -37,6 +38,7 @@ const {
     bodyClass = "",
     schema = [],
     alternateUrls = {},
+    fullTitle = false,
 }: Props = Astro.props;
 
 const resolvedLanguage = language ?? getLanguageFromUrl(Astro.url.pathname);
@@ -52,7 +54,9 @@ const defaultTitle = siteConfig.seo.defaultTitle[currentLanguage];
 const defaultDescription = siteConfig.seo.defaultDescription[currentLanguage];
 
 const pageTitle = title
-    ? siteConfig.seo.titleTemplate[currentLanguage].replace("%s", title)
+    ? fullTitle
+        ? title
+        : siteConfig.seo.titleTemplate[currentLanguage].replace("%s", title)
     : defaultTitle;
 
 const pageDescription = description ?? defaultDescription;

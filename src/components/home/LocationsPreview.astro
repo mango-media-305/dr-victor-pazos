@@ -1,0 +1,243 @@
+---
+import { ArrowRight } from "@lucide/astro";
+
+import { getLanguageFromUrl } from "../../data/i18n/language";
+import type { LanguageCode } from "../../data/site/siteConfig";
+import { contactInfo } from "../../data/site/contact";
+import {
+    featuredMiamiDadeLocations,
+    getMiamiDadeLocationHref,
+} from "../../data/locations/miamiDadeLocations";
+
+interface Props {
+    language?: LanguageCode;
+}
+
+const { language } = Astro.props as Props;
+
+const currentLanguage = language ?? getLanguageFromUrl(Astro.url.pathname);
+
+const content = {
+    en: {
+        kicker: "Areas served",
+        title: "Cardiology care for patients across Miami-Dade County.",
+        description:
+            "The main office is located in Hialeah, with convenient access for patients from Miami, Miami Lakes, Doral, Hialeah Gardens, Miami Gardens, and nearby communities.",
+        viewAll: "View all locations",
+        directions: contactInfo.map.directionsLabel.en,
+        officeLabel: "Main office",
+        officeName: "Hialeah Office",
+        viewLocation: "View location",
+        mapTitle: "Map of Victor Pazos, MD. PA. office in Hialeah",
+        href: "/locations/",
+    },
+    es: {
+        kicker: "Áreas servidas",
+        title: "Atención cardiológica para pacientes de Miami-Dade County.",
+        description:
+            "La oficina principal está ubicada en Hialeah, con acceso conveniente para pacientes de Miami, Miami Lakes, Doral, Hialeah Gardens, Miami Gardens y comunidades cercanas.",
+        viewAll: "Ver todas las ubicaciones",
+        directions: contactInfo.map.directionsLabel.es,
+        officeLabel: "Oficina principal",
+        officeName: "Oficina en Hialeah",
+        viewLocation: "Ver ubicación",
+        mapTitle: "Mapa de la oficina de Victor Pazos, MD. PA. en Hialeah",
+        href: "/es/ubicaciones/",
+    },
+};
+
+const t = content[currentLanguage];
+
+const locations = featuredMiamiDadeLocations
+    .sort((a, b) => a.priority - b.priority)
+    .slice(0, 6);
+---
+
+<section class="relative isolate overflow-hidden section-padding">
+    <div
+        class="pointer-events-none absolute right-[-5rem] top-[12%] z-[-1] aspect-square w-[22rem] rounded-full bg-[color-mix(in_srgb,var(--color-secondary)_22%,transparent)] opacity-45 blur-[58px]"
+    >
+    </div>
+
+    <div
+        class="pointer-events-none absolute bottom-[10%] left-[-5rem] z-[-1] aspect-square w-72 rounded-full bg-[color-mix(in_srgb,var(--color-accent)_18%,transparent)] opacity-45 blur-[58px]"
+    >
+    </div>
+
+    <div
+        class="site-container relative z-[1] grid grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] items-center gap-[clamp(2rem,6vw,5rem)] max-[1060px]:grid-cols-1"
+    >
+        <div class="grid content-center">
+            <span class="section-kicker">{t.kicker}</span>
+
+            <h2
+                class="max-w-[760px] text-[clamp(2.35rem,5.5vw,5rem)] leading-[0.98] tracking-[-0.06em] text-[var(--color-heading)] max-[440px]:text-[clamp(2.25rem,12vw,3.85rem)]"
+            >
+                {t.title}
+            </h2>
+
+            <p
+                class="mt-5 max-w-[640px] text-[clamp(1rem,1.35vw,1.15rem)] leading-[1.85] text-[var(--color-text-soft)]"
+            >
+                {t.description}
+            </p>
+
+            <div
+                class="glow-panel mt-[1.65rem] grid w-[min(100%,560px)] gap-[0.45rem] p-[clamp(1rem,2vw,1.35rem)]"
+            >
+                <span
+                    class="text-xs font-black uppercase tracking-[0.12em] text-[var(--color-secondary)]"
+                >
+                    {t.officeLabel}
+                </span>
+
+                <strong
+                    class="font-heading text-[clamp(1.6rem,2.6vw,2.35rem)] leading-none tracking-[-0.045em] text-[var(--color-heading)]"
+                >
+                    {t.officeName}
+                </strong>
+
+                <p class="text-[0.96rem] leading-[1.6] text-[var(--color-text-soft)]">
+                    {contactInfo.address.display}
+                </p>
+
+                <div class="mt-[0.8rem] flex flex-wrap gap-3 max-[720px]:grid">
+                    <a
+                        href={contactInfo.map.googleMapsUrl}
+                        class="btn btn-primary"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        {t.directions}
+                    </a>
+
+                    <a href={t.href} class="btn btn-secondary">
+                        {t.viewAll}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid gap-4">
+            <div
+                class="glass-panel-strong relative min-h-[420px] overflow-hidden p-0 max-[1060px]:min-h-[360px] max-[720px]:min-h-[320px]"
+            >
+                <iframe
+                    src={contactInfo.map.embedUrl}
+                    title={t.mapTitle}
+                    class="office-map absolute inset-0 h-full w-full border-0 contrast-[1.04] saturate-[0.88]"
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                    allowfullscreen
+                ></iframe>
+
+                <div class="map-overlay pointer-events-none absolute inset-0" aria-hidden="true"></div>
+
+                <div
+                    class="absolute bottom-4 left-4 z-[2] grid w-[min(calc(100%-2rem),280px)] gap-1 rounded-[1.25rem] border border-[color-mix(in_srgb,var(--color-secondary)_34%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-surface)_86%,transparent)] px-4 py-[0.95rem] shadow-[var(--shadow-card)] backdrop-blur-[18px] max-[720px]:bottom-3 max-[720px]:left-3 max-[720px]:w-[min(calc(100%-1.5rem),260px)]"
+                >
+                    <span
+                        class="text-[0.72rem] font-black uppercase tracking-[0.1em] text-[var(--color-text-soft)]"
+                    >
+                        {t.officeName}
+                    </span>
+
+                    <strong
+                        class="font-heading text-[1.75rem] leading-none tracking-[-0.045em] text-[var(--color-heading)] max-[720px]:text-2xl max-[440px]:text-[1.4rem]"
+                    >
+                        Hialeah, FL
+                    </strong>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-[0.85rem] max-[720px]:grid-cols-1">
+                {
+                    locations.map((location, index) => (
+                        <a
+                            href={getMiamiDadeLocationHref(location, currentLanguage)}
+                            class="location-card medical-card group relative flex min-h-36 justify-between gap-4 overflow-hidden p-4 text-inherit max-[720px]:min-h-0"
+                            style={`--location-delay: ${index * 70}ms;`}
+                            aria-label={`${t.viewLocation}: ${location.title[currentLanguage]}`}
+                        >
+                            <div class="relative z-[1]">
+                                <h3 class="font-heading text-[1.45rem] leading-none tracking-[-0.045em] text-[var(--color-heading)]">
+                                    {location.shortTitle[currentLanguage]}
+                                </h3>
+
+                                <p class="mt-[0.45rem] text-sm leading-[1.55] text-[var(--color-text-soft)]">
+                                    {location.shortDescription[currentLanguage]}
+                                </p>
+                            </div>
+
+                            <span
+                                class="location-arrow relative z-[1] inline-grid size-9 flex-none place-items-center rounded-full border border-[color-mix(in_srgb,var(--color-secondary)_28%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-surface)_78%,transparent)] text-[var(--color-secondary)] transition-[transform,color] duration-200 group-hover:translate-x-[0.2rem] group-hover:text-[var(--color-accent-dark)] dark:group-hover:text-[var(--color-accent)]"
+                                aria-hidden="true"
+                            >
+                                <ArrowRight size={18} strokeWidth={2} />
+                            </span>
+                        </a>
+                    ))
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .office-map {
+        filter: saturate(0.88) contrast(1.04);
+    }
+
+    :global(.dark) .office-map {
+        filter: saturate(0.78) contrast(1.05) brightness(0.72);
+    }
+
+    .map-overlay {
+        background:
+            linear-gradient(
+                180deg,
+                color-mix(in srgb, var(--color-bg) 10%, transparent),
+                color-mix(in srgb, var(--color-bg) 24%, transparent)
+            ),
+            radial-gradient(
+                circle at 50% 50%,
+                transparent 0%,
+                color-mix(in srgb, var(--color-bg) 18%, transparent) 72%
+            );
+    }
+
+    .location-card {
+        animation: location-card-in 620ms var(--motion-smooth) both;
+        animation-delay: var(--location-delay);
+    }
+
+    .location-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        background: radial-gradient(
+            circle at top right,
+            color-mix(in srgb, var(--color-secondary) 18%, transparent),
+            transparent 10rem
+        );
+        pointer-events: none;
+        transition: opacity 220ms var(--motion-smooth);
+    }
+
+    .location-card:hover::before {
+        opacity: 1;
+    }
+
+    @keyframes location-card-in {
+        from {
+            opacity: 0;
+            transform: translateY(1rem);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>

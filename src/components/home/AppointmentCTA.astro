@@ -1,0 +1,338 @@
+---
+import { Mail, Phone } from "@lucide/astro";
+
+import { contactInfo } from "../../data/site/contact";
+import { getLanguageFromUrl } from "../../data/i18n/language";
+import type { LanguageCode } from "../../data/site/siteConfig";
+
+interface Props {
+    language?: LanguageCode;
+}
+
+const { language } = Astro.props as Props;
+
+const currentLanguage = language ?? getLanguageFromUrl(Astro.url.pathname);
+
+const content = {
+    en: {
+        kicker: "Request an appointment",
+        title: "Ready to speak with the office?",
+        description:
+            "Call first to request an appointment with Victor Pazos, MD. PA. You can also email the office or send a contact request through the form below.",
+        phoneLabel: "Call the office",
+        emailLabel: "Email the office",
+        formTitle: "Send an appointment request",
+        formDescription:
+            "Share your contact information and the office will follow up as availability allows.",
+        nameLabel: "Full name",
+        namePlaceholder: "Your name",
+        phoneInputLabel: "Phone number",
+        phonePlaceholder: "(305) 000-0000",
+        emailInputLabel: "Email address",
+        emailPlaceholder: "you@example.com",
+        reasonLabel: "How can we help?",
+        reasonPlaceholder:
+            "Example: I would like to request a cardiology appointment.",
+        submitLabel: "Submit Request",
+        disclaimer: contactInfo.appointment.disclaimer.en,
+        officeLabel: "Office location",
+        contactPriority: "Appointments are prioritized by phone.",
+        successMessage:
+            "Thank you. Your request has been received. Please call the office for the fastest response.",
+    },
+    es: {
+        kicker: "Solicitar una cita",
+        title: "¿Listo para comunicarse con la oficina?",
+        description:
+            "Llame primero para solicitar una cita con Victor Pazos, MD. PA. También puede enviar un email o completar el formulario de contacto.",
+        phoneLabel: "Llamar a la oficina",
+        emailLabel: "Enviar email",
+        formTitle: "Enviar solicitud de cita",
+        formDescription:
+            "Comparta su información de contacto y la oficina le dará seguimiento según disponibilidad.",
+        nameLabel: "Nombre completo",
+        namePlaceholder: "Su nombre",
+        phoneInputLabel: "Número de teléfono",
+        phonePlaceholder: "(305) 000-0000",
+        emailInputLabel: "Correo electrónico",
+        emailPlaceholder: "usted@ejemplo.com",
+        reasonLabel: "¿Cómo podemos ayudarle?",
+        reasonPlaceholder:
+            "Ejemplo: Me gustaría solicitar una cita de cardiología.",
+        submitLabel: "Enviar solicitud",
+        disclaimer: contactInfo.appointment.disclaimer.es,
+        officeLabel: "Ubicación de la oficina",
+        contactPriority: "Las citas se priorizan por teléfono.",
+        successMessage:
+            "Gracias. Su solicitud ha sido recibida. Por favor llame a la oficina para una respuesta más rápida.",
+    },
+};
+
+const t = content[currentLanguage];
+
+const formName =
+    currentLanguage === "es"
+        ? "solicitud-cita-cardiologia"
+        : "cardiology-appointment-request";
+---
+
+<section
+    class="relative isolate overflow-hidden section-padding"
+    id="appointment"
+>
+    <div
+        class="pointer-events-none absolute right-[-5rem] top-[10%] z-[-1] aspect-square w-[22rem] rounded-full bg-[color-mix(in_srgb,var(--color-secondary)_22%,transparent)] opacity-45 blur-[58px]"
+    >
+    </div>
+
+    <div
+        class="pointer-events-none absolute bottom-[8%] left-[-5rem] z-[-1] aspect-square w-80 rounded-full bg-[color-mix(in_srgb,var(--color-heart)_14%,transparent)] opacity-45 blur-[58px]"
+    >
+    </div>
+
+    <div
+        class="site-container relative z-[1] grid grid-cols-[minmax(0,0.9fr)_minmax(320px,0.8fr)] items-center gap-[clamp(2rem,6vw,5rem)] max-[1060px]:grid-cols-1"
+    >
+        <div class="grid content-center">
+            <span class="section-kicker">{t.kicker}</span>
+
+            <h2
+                class="max-w-[760px] text-[clamp(2.35rem,5.5vw,5rem)] leading-[0.98] tracking-[-0.06em] text-[var(--color-heading)]"
+            >
+                {t.title}
+            </h2>
+
+            <p
+                class="mt-5 max-w-[680px] text-[clamp(1rem,1.35vw,1.16rem)] leading-[1.85] text-[var(--color-text-soft)]"
+            >
+                {t.description}
+            </p>
+
+            <div
+                class="glow-panel mt-[1.65rem] grid w-[min(100%,680px)] gap-4 p-[clamp(1rem,2vw,1.3rem)]"
+            >
+                <span
+                    class="text-[0.78rem] font-black uppercase tracking-[0.12em] text-[var(--color-secondary)]"
+                >
+                    {t.contactPriority}
+                </span>
+
+                <div class="grid grid-cols-2 gap-3 max-[720px]:grid-cols-1">
+                    <a
+                        href={contactInfo.phone.href}
+                        class="group flex items-center gap-3 rounded-[1.2rem] border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface)_78%,transparent)] p-[0.95rem] transition-[transform,border-color,background] duration-200 hover:-translate-y-0.5 hover:border-[color-mix(in_srgb,var(--color-secondary)_42%,var(--color-border))] hover:bg-[color-mix(in_srgb,var(--color-secondary-soft)_34%,transparent)]"
+                    >
+                        <span
+                            class="inline-grid size-12 flex-none place-items-center rounded-2xl bg-[color-mix(in_srgb,var(--color-secondary-soft)_58%,transparent)] text-[var(--color-secondary)]"
+                            aria-hidden="true"
+                        >
+                            <Phone size={22} strokeWidth={2} />
+                        </span>
+
+                        <span class="grid min-w-0 gap-0.5">
+                            <small
+                                class="text-[0.74rem] font-black uppercase tracking-[0.08em] text-[var(--color-text-soft)]"
+                            >
+                                {t.phoneLabel}
+                            </small>
+
+                            <strong
+                                class="break-words text-[0.95rem] font-black text-[var(--color-heading)]"
+                            >
+                                {contactInfo.phone.label}
+                            </strong>
+                        </span>
+                    </a>
+
+                    <a
+                        href={contactInfo.email.href}
+                        class="group flex items-center gap-3 rounded-[1.2rem] border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface)_78%,transparent)] p-[0.95rem] transition-[transform,border-color,background] duration-200 hover:-translate-y-0.5 hover:border-[color-mix(in_srgb,var(--color-secondary)_42%,var(--color-border))] hover:bg-[color-mix(in_srgb,var(--color-secondary-soft)_34%,transparent)]"
+                    >
+                        <span
+                            class="inline-grid size-12 flex-none place-items-center rounded-2xl bg-[color-mix(in_srgb,var(--color-secondary-soft)_58%,transparent)] text-[var(--color-secondary)]"
+                            aria-hidden="true"
+                        >
+                            <Mail size={22} strokeWidth={2} />
+                        </span>
+
+                        <span class="grid min-w-0 gap-0.5">
+                            <small
+                                class="text-[0.74rem] font-black uppercase tracking-[0.08em] text-[var(--color-text-soft)]"
+                            >
+                                {t.emailLabel}
+                            </small>
+
+                            <strong
+                                class="break-words text-[0.95rem] font-black text-[var(--color-heading)]"
+                            >
+                                {contactInfo.email.label}
+                            </strong>
+                        </span>
+                    </a>
+                </div>
+            </div>
+
+            <div
+                class="medical-card mt-4 grid w-[min(100%,560px)] gap-[0.3rem] p-4"
+            >
+                <span
+                    class="text-[0.72rem] font-black uppercase tracking-[0.1em] text-[var(--color-text-soft)]"
+                >
+                    {t.officeLabel}
+                </span>
+
+                <strong
+                    class="text-[0.98rem] leading-[1.45] text-[var(--color-heading)]"
+                >
+                    {contactInfo.address.display}
+                </strong>
+
+                <a
+                    href={contactInfo.map.googleMapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="w-fit text-[0.88rem] font-black text-[var(--color-secondary)]"
+                >
+                    {contactInfo.map.directionsLabel[currentLanguage]}
+                </a>
+            </div>
+        </div>
+
+        <div
+            class="appointment-form-panel glass-panel-strong relative grid gap-4 overflow-hidden p-[clamp(1rem,2.4vw,1.5rem)] max-[720px]:rounded-[1.65rem]"
+        >
+            <div class="relative z-[1] grid gap-[0.35rem]">
+                <span
+                    class="font-heading text-[clamp(1.65rem,3vw,2.35rem)] font-extrabold leading-none tracking-[-0.05em] text-[var(--color-heading)]"
+                >
+                    {t.formTitle}
+                </span>
+
+                <p class="text-[0.95rem] leading-[1.65] text-[var(--color-text-soft)]">
+                    {t.formDescription}
+                </p>
+            </div>
+
+            <form
+                name={formName}
+                method="POST"
+                data-netlify="true"
+                netlify-honeypot="bot-field"
+                class="relative z-[1] grid gap-[0.85rem]"
+            >
+                <input type="hidden" name="form-name" value={formName} />
+
+                <p class="hidden">
+                    <label>
+                        Do not fill this out:
+                        <input name="bot-field" />
+                    </label>
+                </p>
+
+                <div class="grid grid-cols-2 gap-[0.85rem] max-[720px]:grid-cols-1">
+                    <label class="grid gap-[0.4rem]">
+                        <span
+                            class="text-[0.8rem] font-black tracking-[0.05em] text-[var(--color-heading)]"
+                        >
+                            {t.nameLabel}
+                        </span>
+
+                        <input
+                            type="text"
+                            name="name"
+                            placeholder={t.namePlaceholder}
+                            autocomplete="name"
+                            required
+                            class="rounded-2xl bg-[color-mix(in_srgb,var(--color-surface)_82%,transparent)]"
+                        />
+                    </label>
+
+                    <label class="grid gap-[0.4rem]">
+                        <span
+                            class="text-[0.8rem] font-black tracking-[0.05em] text-[var(--color-heading)]"
+                        >
+                            {t.phoneInputLabel}
+                        </span>
+
+                        <input
+                            type="tel"
+                            name="phone"
+                            placeholder={t.phonePlaceholder}
+                            autocomplete="tel"
+                            required
+                            class="rounded-2xl bg-[color-mix(in_srgb,var(--color-surface)_82%,transparent)]"
+                        />
+                    </label>
+                </div>
+
+                <label class="grid gap-[0.4rem]">
+                    <span
+                        class="text-[0.8rem] font-black tracking-[0.05em] text-[var(--color-heading)]"
+                    >
+                        {t.emailInputLabel}
+                    </span>
+
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder={t.emailPlaceholder}
+                        autocomplete="email"
+                        class="rounded-2xl bg-[color-mix(in_srgb,var(--color-surface)_82%,transparent)]"
+                    />
+                </label>
+
+                <label class="grid gap-[0.4rem]">
+                    <span
+                        class="text-[0.8rem] font-black tracking-[0.05em] text-[var(--color-heading)]"
+                    >
+                        {t.reasonLabel}
+                    </span>
+
+                    <textarea
+                        name="message"
+                        placeholder={t.reasonPlaceholder}
+                        rows="5"
+                        required
+                        class="resize-y rounded-2xl bg-[color-mix(in_srgb,var(--color-surface)_82%,transparent)]"
+                    ></textarea>
+                </label>
+
+                <input type="hidden" name="language" value={currentLanguage} />
+
+                <input
+                    type="hidden"
+                    name="source"
+                    value="Homepage Appointment CTA"
+                />
+
+                <button type="submit" class="btn btn-primary mt-1 w-full">
+                    {t.submitLabel}
+                </button>
+
+                <p class="text-[0.82rem] leading-[1.55] text-[var(--color-text-soft)]">
+                    {t.disclaimer}
+                </p>
+            </form>
+        </div>
+    </div>
+</section>
+
+<style>
+    .appointment-form-panel::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+            radial-gradient(
+                circle at top right,
+                color-mix(in srgb, var(--color-secondary) 18%, transparent),
+                transparent 16rem
+            ),
+            radial-gradient(
+                circle at bottom left,
+                color-mix(in srgb, var(--color-accent) 14%, transparent),
+                transparent 14rem
+            );
+        pointer-events: none;
+    }
+</style>

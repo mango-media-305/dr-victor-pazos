@@ -3,13 +3,51 @@ import MainLayout from "../layouts/MainLayout.astro";
 import HomeHero from "../components/home/HomeHero.astro";
 import TrustStrip from "../components/home/TrustStrip.astro";
 import ServicesPreview from "../components/home/ServicesPreview.astro";
+import SymptomsPreview from "../components/home/SymptomsPreview.astro";
+import AboutDoctorPreview from "../components/home/AboutDoctorPreview.astro";
+import VisitExpectations from "../components/home/VisitExpectations.astro";
+import WhyChooseUs from "../components/home/WhyChooseUs.astro";
+import LocationsPreview from "../components/home/LocationsPreview.astro";
+import AppointmentCTA from "../components/home/AppointmentCTA.astro";
+import HomeFAQ from "../components/home/HomeFAQ.astro";
+import FinalCTA from "../components/home/FinalCTA.astro";
+
+import { homeMetadata } from "../data/seo/pageMetadata";
+import {
+    getGlobalSchema,
+    getWebPageSchema,
+} from "../data/seo/schema";
+
+const metadata = homeMetadata;
 ---
 
 <MainLayout
-	title="Cardiologist in Hialeah, FL"
-	description="Victor Pazos, MD. PA. provides experienced cardiology and interventional cardiology care for patients in Hialeah, Miami, and Miami-Dade County."
+    fullTitle
+    title={metadata.title.en}
+    description={metadata.description.en}
+    canonical={metadata.canonical.en}
+    alternateUrls={{
+        en: metadata.canonical.en,
+        es: metadata.canonical.es,
+    }}
+    schema={[
+        ...getGlobalSchema(),
+        getWebPageSchema({
+            title: metadata.title.en,
+            description: metadata.description.en,
+            path: metadata.canonical.en,
+        }),
+    ]}
 >
-	<HomeHero language="en" />
-	<TrustStrip language="en"/>
-	<ServicesPreview language="en" />
+    <HomeHero language="en" />
+    <TrustStrip language="en" />
+    <ServicesPreview language="en" />
+    <SymptomsPreview language="en" />
+    <AboutDoctorPreview language="en" />
+    <VisitExpectations language="en" />
+    <WhyChooseUs language="en" />
+    <LocationsPreview language="en" />
+    <AppointmentCTA language="en" />
+	<HomeFAQ language="en" />
+    <FinalCTA language="en" />
 </MainLayout>

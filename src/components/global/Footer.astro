@@ -1,12 +1,7 @@
 ---
-// src/components/global/Footer.astro
-
 import { siteConfig, type LanguageCode } from "../../data/site/siteConfig";
 import { contactInfo } from "../../data/site/contact";
-import {
-    ctaNavigation,
-    footerNavigation,
-} from "../../data/site/navigation";
+import { ctaNavigation, footerNavigation } from "../../data/site/navigation";
 import { getLanguageFromUrl } from "../../data/i18n/language";
 
 interface Props {
@@ -16,239 +11,268 @@ interface Props {
 const { language } = Astro.props as Props;
 
 const currentLanguage = language ?? getLanguageFromUrl(Astro.url.pathname);
-
 const currentYear = new Date().getFullYear();
 
 const logoLight = siteConfig.assets.logo.light;
 const logoDark = siteConfig.assets.logo.dark;
 ---
 
-<footer class="site-footer">
-    <div class="footer-shell">
-        <div class="footer-main">
-        <div class="footer-brand">
-            <a
-            href={currentLanguage === "es" ? "/es/" : "/"}
-            class="footer-logo-link"
-            aria-label={`${siteConfig.name} home`}
+<footer class="site-footer relative p-4 max-[680px]:p-3">
+    <div
+        class="footer-shell mx-auto w-[min(100%-1rem,1240px)] rounded-[2.25rem] border border-[var(--color-border)] p-[clamp(1.25rem,3vw,2rem)] shadow-[var(--shadow-soft)] backdrop-blur-[22px] max-[680px]:w-full max-[680px]:rounded-[1.75rem]"
+    >
+        <div
+            class="grid grid-cols-[minmax(0,0.9fr)_minmax(0,1.4fr)] gap-[clamp(2rem,5vw,4rem)] max-[980px]:grid-cols-1"
+        >
+            <div class="grid content-start gap-5">
+                <a
+                    href={currentLanguage === "es" ? "/es/" : "/"}
+                    class="inline-flex w-fit items-center gap-[0.85rem] max-[680px]:items-start"
+                    aria-label={`${siteConfig.name} home`}
+                >
+                    <span
+                        class="relative inline-grid size-16 flex-none place-items-center max-[680px]:size-[3.3rem]"
+                        aria-hidden="true"
+                    >
+                        <img
+                            src={logoLight}
+                            alt=""
+                            class="footer-logo footer-logo-light col-start-1 row-start-1 size-16 object-contain max-[680px]:size-[3.3rem]"
+                            width="64"
+                            height="64"
+                            loading="lazy"
+                        />
+
+                        <img
+                            src={logoDark}
+                            alt=""
+                            class="footer-logo footer-logo-dark col-start-1 row-start-1 size-16 object-contain max-[680px]:size-[3.3rem]"
+                            width="64"
+                            height="64"
+                            loading="lazy"
+                        />
+                    </span>
+
+                    <span class="grid gap-[0.15rem] leading-none">
+                        <strong
+                            class="font-heading text-[clamp(1.35rem,2vw,1.85rem)] tracking-[-0.04em] text-[var(--color-heading)]"
+                        >
+                            {siteConfig.name}
+                        </strong>
+
+                        <small
+                            class="text-xs font-black uppercase tracking-[0.08em] text-[var(--color-secondary)]"
+                        >
+                            {siteConfig.doctor.specialtyExtended[currentLanguage]}
+                        </small>
+                    </span>
+                </a>
+
+                <p class="max-w-[34rem] text-base leading-[1.75] text-[var(--color-text-soft)]">
+                    {siteConfig.description[currentLanguage]}
+                </p>
+
+                <div class="flex flex-wrap gap-3 max-[680px]:grid">
+                    <a href={contactInfo.phone.href} class="btn btn-primary min-h-12 text-sm">
+                        {ctaNavigation.call.label[currentLanguage]}
+                    </a>
+
+                    <a
+                        href={ctaNavigation.appointment.href[currentLanguage]}
+                        class="btn btn-secondary min-h-12 text-sm"
+                    >
+                        {ctaNavigation.appointment.label[currentLanguage]}
+                    </a>
+                </div>
+            </div>
+
+            <div
+                class="grid grid-cols-3 gap-[clamp(1rem,3vw,2rem)] max-[980px]:grid-cols-2 max-[680px]:grid-cols-1"
             >
-            <span class="footer-logo-wrap" aria-hidden="true">
-                <img
-                src={logoLight}
-                alt=""
-                class="footer-logo footer-logo-light"
-                width="64"
-                height="64"
-                loading="lazy"
-                />
+                <div class="grid content-start gap-4">
+                    <h2
+                        class="font-body text-[0.84rem] font-black uppercase tracking-[0.12em] text-[var(--color-heading)]"
+                    >
+                        {currentLanguage === "es" ? "Práctica" : "Practice"}
+                    </h2>
 
-                <img
-                src={logoDark}
-                alt=""
-                class="footer-logo footer-logo-dark"
-                width="64"
-                height="64"
-                loading="lazy"
-                />
+                    <nav
+                        class="grid gap-[0.65rem]"
+                        aria-label={currentLanguage === "es" ? "Enlaces de práctica" : "Practice links"}
+                    >
+                        {
+                            footerNavigation.practice.map((item) => (
+                                <a
+                                    href={item.href[currentLanguage]}
+                                    class="w-fit text-[0.94rem] font-bold leading-[1.35] text-[var(--color-text-soft)] transition-[color,transform] duration-200 hover:translate-x-[3px] hover:text-[var(--color-secondary)]"
+                                >
+                                    {item.label[currentLanguage]}
+                                </a>
+                            ))
+                        }
+                    </nav>
+                </div>
+
+                <div class="grid content-start gap-4">
+                    <h2
+                        class="font-body text-[0.84rem] font-black uppercase tracking-[0.12em] text-[var(--color-heading)]"
+                    >
+                        {currentLanguage === "es" ? "Servicios" : "Services"}
+                    </h2>
+
+                    <nav
+                        class="grid gap-[0.65rem]"
+                        aria-label={currentLanguage === "es" ? "Enlaces de servicios" : "Service links"}
+                    >
+                        {
+                            footerNavigation.services.map((item) => (
+                                <a
+                                    href={item.href[currentLanguage]}
+                                    class="w-fit text-[0.94rem] font-bold leading-[1.35] text-[var(--color-text-soft)] transition-[color,transform] duration-200 hover:translate-x-[3px] hover:text-[var(--color-secondary)]"
+                                >
+                                    {item.label[currentLanguage]}
+                                </a>
+                            ))
+                        }
+                    </nav>
+                </div>
+
+                <div class="grid content-start gap-4">
+                    <h2
+                        class="font-body text-[0.84rem] font-black uppercase tracking-[0.12em] text-[var(--color-heading)]"
+                    >
+                        {currentLanguage === "es" ? "Contacto" : "Contact"}
+                    </h2>
+
+                    <address
+                        class="grid gap-[0.3rem] text-[0.94rem] not-italic leading-[1.55] text-[var(--color-text-soft)]"
+                    >
+                        <span>{contactInfo.address.street}</span>
+                        <span>{contactInfo.address.suite}</span>
+                        <span>
+                            {contactInfo.address.city}, {contactInfo.address.state}{" "}
+                            {contactInfo.address.zip}
+                        </span>
+                    </address>
+
+                    <div class="grid gap-[0.55rem]">
+                        <a
+                            href={contactInfo.phone.href}
+                            class="w-fit text-[0.94rem] font-bold leading-[1.35] text-[var(--color-text-soft)] transition-[color,transform] duration-200 hover:translate-x-[3px] hover:text-[var(--color-secondary)]"
+                        >
+                            {contactInfo.phone.label}
+                        </a>
+
+                        <a
+                            href={contactInfo.email.href}
+                            class="w-fit text-[0.94rem] font-bold leading-[1.35] text-[var(--color-text-soft)] transition-[color,transform] duration-200 hover:translate-x-[3px] hover:text-[var(--color-secondary)]"
+                        >
+                            {contactInfo.email.label}
+                        </a>
+
+                        <a
+                            href={contactInfo.map.googleMapsUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="w-fit text-[0.94rem] font-bold leading-[1.35] text-[var(--color-text-soft)] transition-[color,transform] duration-200 hover:translate-x-[3px] hover:text-[var(--color-secondary)]"
+                        >
+                            {contactInfo.map.directionsLabel[currentLanguage]}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div
+            class="mt-[clamp(2rem,5vw,3.5rem)] grid gap-[0.85rem] rounded-3xl border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface-soft)_52%,transparent)] p-[clamp(1rem,2vw,1.25rem)]"
+        >
+            <span
+                class="text-xs font-black uppercase tracking-[0.14em] text-[var(--color-secondary)]"
+            >
+                {currentLanguage === "es" ? "Áreas de servicio" : "Service Areas"}
             </span>
 
-            <span class="footer-brand-text">
-                <strong>{siteConfig.name}</strong>
-                <small>
-                {siteConfig.doctor.specialtyExtended[currentLanguage]}
-                </small>
-            </span>
-            </a>
-
-            <p class="footer-description">
-            {siteConfig.description[currentLanguage]}
+            <p class="max-w-[56rem] leading-[1.7] text-[var(--color-text-soft)]">
+                {
+                    currentLanguage === "es"
+                        ? "Atención cardiológica para pacientes en Hialeah, Miami y comunidades cercanas de Miami-Dade County."
+                        : "Cardiology care for patients in Hialeah, Miami, and nearby Miami-Dade County communities."
+                }
             </p>
 
-            <div class="footer-cta-row">
-            <a href={contactInfo.phone.href} class="btn btn-primary footer-btn">
-                {ctaNavigation.call.label[currentLanguage]}
-            </a>
-
-            <a
-                href={ctaNavigation.appointment.href[currentLanguage]}
-                class="btn btn-secondary footer-btn"
+            <div
+                class="flex flex-wrap gap-[0.55rem]"
+                aria-label={currentLanguage === "es" ? "Áreas cercanas" : "Nearby areas"}
             >
-                {ctaNavigation.appointment.label[currentLanguage]}
-            </a>
+                {
+                    contactInfo.serviceArea.nearbyAreas.map((area) => (
+                        <span class="rounded-full border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface)_74%,transparent)] px-[0.7rem] py-[0.45rem] text-[0.83rem] font-extrabold text-[var(--color-text)]">
+                            {area}
+                        </span>
+                    ))
+                }
             </div>
         </div>
 
-        <div class="footer-columns">
-            <div class="footer-column">
-            <h2>{currentLanguage === "es" ? "Práctica" : "Practice"}</h2>
-
-            <nav aria-label={currentLanguage === "es" ? "Enlaces de práctica" : "Practice links"}>
+        <div class="mt-4 rounded-[1.2rem] p-4">
+            <p class="text-[0.5rem] leading-[1.65] text-[var(--color-text-soft)]">
                 {
-                footerNavigation.practice.map((item) => (
-                    <a href={item.href[currentLanguage]}>
-                    {item.label[currentLanguage]}
-                    </a>
-                ))
+                    currentLanguage === "es"
+                        ? "Este sitio web proporciona información general y no reemplaza una consulta médica profesional. Si tiene una emergencia médica, llame al 911 de inmediato."
+                        : "This website provides general information and does not replace professional medical advice. If you are experiencing a medical emergency, call 911 immediately."
+                }
+            </p>
+        </div>
+
+        <div
+            class="mt-5 flex items-center justify-between gap-4 border-t border-[var(--color-border)] pt-5 text-[0.88rem] text-[var(--color-text-soft)] max-[680px]:grid max-[680px]:gap-[0.9rem]"
+        >
+            <p>
+                © {currentYear} {siteConfig.name}.{" "}
+                {currentLanguage === "es"
+                    ? "Todos los derechos reservados."
+                    : "All rights reserved."}
+            </p>
+
+            <nav
+                class="flex flex-wrap justify-end gap-[0.9rem] max-[680px]:justify-start"
+                aria-label={currentLanguage === "es" ? "Enlaces legales" : "Legal links"}
+            >
+                {
+                    footerNavigation.legal.map((item) => (
+                        <a
+                            href={item.href[currentLanguage]}
+                            class="font-extrabold text-[var(--color-text-soft)] hover:text-[var(--color-secondary)]"
+                        >
+                            {item.label[currentLanguage]}
+                        </a>
+                    ))
                 }
             </nav>
-            </div>
-
-            <div class="footer-column">
-            <h2>{currentLanguage === "es" ? "Servicios" : "Services"}</h2>
-
-            <nav aria-label={currentLanguage === "es" ? "Enlaces de servicios" : "Service links"}>
-                {
-                footerNavigation.services.map((item) => (
-                    <a href={item.href[currentLanguage]}>
-                    {item.label[currentLanguage]}
-                    </a>
-                ))
-                }
-            </nav>
-            </div>
-
-            <div class="footer-column footer-contact">
-            <h2>{currentLanguage === "es" ? "Contacto" : "Contact"}</h2>
-
-            <address>
-                <span>{contactInfo.address.street}</span>
-                <span>{contactInfo.address.suite}</span>
-                <span>
-                {contactInfo.address.city}, {contactInfo.address.state}{" "}
-                {contactInfo.address.zip}
-                </span>
-            </address>
-
-            <div class="footer-contact-links">
-                <a href={contactInfo.phone.href}>{contactInfo.phone.label}</a>
-                <a href={contactInfo.email.href}>{contactInfo.email.label}</a>
-                <a
-                href={contactInfo.map.googleMapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                >
-                {contactInfo.map.directionsLabel[currentLanguage]}
-                </a>
-            </div>
-            </div>
-        </div>
-        </div>
-
-        <div class="footer-service-area">
-        <span class="footer-kicker">
-            {currentLanguage === "es" ? "Áreas de servicio" : "Service Areas"}
-        </span>
-
-        <p>
-            {currentLanguage === "es"
-            ? "Atención cardiológica para pacientes en Hialeah, Miami y comunidades cercanas de Miami-Dade County."
-            : "Cardiology care for patients in Hialeah, Miami, and nearby Miami-Dade County communities."}
-        </p>
-
-        <div class="footer-area-list" aria-label={currentLanguage === "es" ? "Áreas cercanas" : "Nearby areas"}>
-            {
-            contactInfo.serviceArea.nearbyAreas.map((area) => (
-                <span>{area}</span>
-            ))
-            }
-        </div>
-        </div>
-
-        <div class="footer-disclaimer">
-        <p>
-            {
-            currentLanguage === "es"
-                ? "Este sitio web proporciona información general y no reemplaza una consulta médica profesional. Si tiene una emergencia médica, llame al 911 de inmediato."
-                : "This website provides general information and does not replace professional medical advice. If you are experiencing a medical emergency, call 911 immediately."
-            }
-        </p>
-        </div>
-
-        <div class="footer-bottom">
-        <p>
-            © {currentYear} {siteConfig.name}.{" "}
-            {currentLanguage === "es"
-            ? "Todos los derechos reservados."
-            : "All rights reserved."}
-        </p>
-
-        <nav aria-label={currentLanguage === "es" ? "Enlaces legales" : "Legal links"}>
-            {
-            footerNavigation.legal.map((item) => (
-                <a href={item.href[currentLanguage]}>
-                {item.label[currentLanguage]}
-                </a>
-            ))
-            }
-        </nav>
         </div>
     </div>
 </footer>
 
 <style>
-    .site-footer {
-        position: relative;
-        padding: 1rem;
-    }
-
     .footer-shell {
-        width: min(100% - 1rem, 1240px);
-        margin-inline: auto;
-        border: 1px solid var(--color-border);
-        border-radius: 2.25rem;
-        padding: clamp(1.25rem, 3vw, 2rem);
         background:
-        radial-gradient(
-            circle at top left,
-            color-mix(in srgb, var(--color-secondary) 14%, transparent),
-            transparent 22rem
-        ),
-        radial-gradient(
-            circle at bottom right,
-            color-mix(in srgb, var(--color-accent) 12%, transparent),
-            transparent 20rem
-        ),
-        color-mix(in srgb, var(--color-surface) 86%, transparent);
-        box-shadow: var(--shadow-soft);
-        backdrop-filter: blur(22px);
-    }
-
-    .footer-main {
-        display: grid;
-        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr);
-        gap: clamp(2rem, 5vw, 4rem);
-    }
-
-    .footer-brand {
-        display: grid;
-        align-content: start;
-        gap: 1.25rem;
-    }
-
-    .footer-logo-link {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.85rem;
-        width: fit-content;
-    }
-
-    .footer-logo-wrap {
-        position: relative;
-        display: inline-grid;
-        place-items: center;
-        width: 4rem;
-        height: 4rem;
-        flex: 0 0 auto;
+            radial-gradient(
+                circle at top left,
+                color-mix(in srgb, var(--color-secondary) 14%, transparent),
+                transparent 22rem
+            ),
+            radial-gradient(
+                circle at bottom right,
+                color-mix(in srgb, var(--color-accent) 12%, transparent),
+                transparent 20rem
+            ),
+            color-mix(in srgb, var(--color-surface) 86%, transparent);
     }
 
     .footer-logo {
-        grid-area: 1 / 1;
-        width: 4rem;
-        height: 4rem;
-        object-fit: contain;
         transition:
-        opacity 180ms ease,
-        transform 220ms var(--motion-smooth);
+            opacity 180ms ease,
+            transform 220ms var(--motion-smooth);
     }
 
     .footer-logo-light {
@@ -269,230 +293,6 @@ const logoDark = siteConfig.assets.logo.dark;
     :global(.dark) .footer-logo-dark {
         opacity: 1;
         transform: scale(1);
-    }
-
-    .footer-brand-text {
-        display: grid;
-        gap: 0.15rem;
-        line-height: 1;
-    }
-
-    .footer-brand-text strong {
-        color: var(--color-heading);
-        font-family: var(--font-heading);
-        font-size: clamp(1.35rem, 2vw, 1.85rem);
-        letter-spacing: -0.04em;
-    }
-
-    .footer-brand-text small {
-        color: var(--color-secondary);
-        font-size: 0.78rem;
-        font-weight: 900;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-    }
-
-    .footer-description {
-        max-width: 34rem;
-        color: var(--color-text-soft);
-        font-size: 1rem;
-        line-height: 1.75;
-    }
-
-    .footer-cta-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.75rem;
-    }
-
-    .footer-btn {
-        min-height: 3rem;
-        font-size: 0.9rem;
-    }
-
-    .footer-columns {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: clamp(1rem, 3vw, 2rem);
-    }
-
-    .footer-column {
-        display: grid;
-        align-content: start;
-        gap: 1rem;
-    }
-
-    .footer-column h2 {
-        color: var(--color-heading);
-        font-family: var(--font-body);
-        font-size: 0.84rem;
-        font-weight: 900;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-    }
-
-    .footer-column nav {
-        display: grid;
-        gap: 0.65rem;
-    }
-
-    .footer-column a {
-        width: fit-content;
-        color: var(--color-text-soft);
-        font-size: 0.94rem;
-        font-weight: 700;
-        line-height: 1.35;
-        transition:
-        color var(--theme-transition),
-        transform 220ms var(--motion-smooth);
-    }
-
-    .footer-column a:hover {
-        color: var(--color-secondary);
-        transform: translateX(3px);
-    }
-
-    .footer-contact address {
-        display: grid;
-        gap: 0.3rem;
-        color: var(--color-text-soft);
-        font-size: 0.94rem;
-        font-style: normal;
-        line-height: 1.55;
-    }
-
-    .footer-contact-links {
-        display: grid;
-        gap: 0.55rem;
-    }
-
-    .footer-service-area {
-        display: grid;
-        gap: 0.85rem;
-        margin-top: clamp(2rem, 5vw, 3.5rem);
-        border: 1px solid var(--color-border);
-        border-radius: 1.5rem;
-        padding: clamp(1rem, 2vw, 1.25rem);
-        background: color-mix(in srgb, var(--color-surface-soft) 52%, transparent);
-    }
-
-    .footer-kicker {
-        color: var(--color-secondary);
-        font-size: 0.75rem;
-        font-weight: 900;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-    }
-
-    .footer-service-area p {
-        max-width: 56rem;
-        color: var(--color-text-soft);
-        line-height: 1.7;
-    }
-
-    .footer-area-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.55rem;
-    }
-
-    .footer-area-list span {
-        border: 1px solid var(--color-border);
-        border-radius: 999px;
-        padding: 0.45rem 0.7rem;
-        color: var(--color-text);
-        background: color-mix(in srgb, var(--color-surface) 74%, transparent);
-        font-size: 0.83rem;
-        font-weight: 800;
-    }
-
-    .footer-disclaimer {
-        margin-top: 1rem;
-        border-radius: 1.2rem;
-        padding: 1rem;
-    }
-
-    .footer-disclaimer p {
-        color: var(--color-text-soft);
-        font-size: 0.5rem;
-        line-height: 1.65;
-    }
-
-    .footer-bottom {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
-        margin-top: 1.25rem;
-        border-top: 1px solid var(--color-border);
-        padding-top: 1.25rem;
-        color: var(--color-text-soft);
-        font-size: 0.88rem;
-    }
-
-    .footer-bottom nav {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: flex-end;
-        gap: 0.9rem;
-    }
-
-    .footer-bottom a {
-        color: var(--color-text-soft);
-        font-weight: 800;
-    }
-
-    .footer-bottom a:hover {
-        color: var(--color-secondary);
-    }
-
-    @media (max-width: 980px) {
-        .footer-main {
-        grid-template-columns: 1fr;
-        }
-
-        .footer-columns {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-    }
-
-    @media (max-width: 680px) {
-        .site-footer {
-        padding: 0.75rem;
-        padding-bottom: 5.5rem;
-        }
-
-        .footer-shell {
-        width: 100%;
-        border-radius: 1.75rem;
-        }
-
-        .footer-logo-link {
-        align-items: flex-start;
-        }
-
-        .footer-logo-wrap,
-        .footer-logo {
-        width: 3.3rem;
-        height: 3.3rem;
-        }
-
-        .footer-columns {
-        grid-template-columns: 1fr;
-        }
-
-        .footer-cta-row {
-        display: grid;
-        }
-
-        .footer-bottom {
-        display: grid;
-        gap: 0.9rem;
-        }
-
-        .footer-bottom nav {
-        justify-content: flex-start;
-        }
     }
 
     @media (max-width: 680px) {

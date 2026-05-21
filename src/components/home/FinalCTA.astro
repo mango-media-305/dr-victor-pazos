@@ -1,0 +1,253 @@
+---
+// src/components/home/FinalCTA.astro
+
+import { contactInfo } from "../../data/site/contact";
+import { getLanguageFromUrl } from "../../data/i18n/language";
+import type { LanguageCode } from "../../data/site/siteConfig";
+
+interface Props {
+    language?: LanguageCode;
+}
+
+const { language } = Astro.props as Props;
+
+const currentLanguage = language ?? getLanguageFromUrl(Astro.url.pathname);
+
+const content = {
+    en: {
+        kicker: "Take the next step",
+        title: "Start with a call to the office.",
+        highlighted: "Your heart health deserves clarity.",
+        description:
+            "Whether you have symptoms, risk factors, abnormal test results, or ongoing heart concerns, the office can help you take the next step toward cardiology care.",
+        callLabel: contactInfo.appointment.primaryCta.en,
+        emailLabel: contactInfo.appointment.secondaryCta.en,
+        directionsLabel: contactInfo.map.directionsLabel.en,
+        officeLabel: "Hialeah Office",
+        phoneNote: "Appointments are prioritized by phone.",
+        emergencyNote: contactInfo.appointment.disclaimer.en,
+    },
+    es: {
+        kicker: "Dé el próximo paso",
+        title: "Comience con una llamada a la oficina.",
+        highlighted: "Su salud cardíaca merece claridad.",
+        description:
+            "Ya sea que tenga síntomas, factores de riesgo, resultados anormales o preocupaciones cardíacas continuas, la oficina puede ayudarle a dar el próximo paso hacia la atención cardiológica.",
+        callLabel: contactInfo.appointment.primaryCta.es,
+        emailLabel: contactInfo.appointment.secondaryCta.es,
+        directionsLabel: contactInfo.map.directionsLabel.es,
+        officeLabel: "Oficina en Hialeah",
+        phoneNote: "Las citas se priorizan por teléfono.",
+        emergencyNote: contactInfo.appointment.disclaimer.es,
+    },
+};
+
+const t = content[currentLanguage];
+---
+
+<section class="relative isolate overflow-hidden section-padding">
+    <div
+        class="pointer-events-none absolute left-[-5rem] top-[10%] z-[-1] aspect-square w-[22rem] rounded-full bg-[color-mix(in_srgb,var(--color-secondary)_24%,transparent)] opacity-45 blur-[60px]"
+    >
+    </div>
+
+    <div
+        class="pointer-events-none absolute bottom-[10%] right-[-5rem] z-[-1] aspect-square w-96 rounded-full bg-[color-mix(in_srgb,var(--color-heart)_14%,transparent)] opacity-45 blur-[60px]"
+    >
+    </div>
+
+    <div class="site-container">
+        <div
+            class="final-cta-panel glow-panel relative grid grid-cols-[minmax(0,1fr)_minmax(280px,0.38fr)] items-center gap-[clamp(1.5rem,4vw,3rem)] overflow-hidden p-[clamp(1.35rem,4vw,2.5rem)] max-[1060px]:grid-cols-1 max-[720px]:rounded-[1.65rem]"
+        >
+            <div
+                class="final-cta-bg-line pointer-events-none absolute left-1/2 top-1/2 w-[min(92%,760px)] -translate-x-1/2 -translate-y-1/2 text-[var(--color-accent)] opacity-[0.18]"
+                aria-hidden="true"
+            >
+                <svg
+                    viewBox="0 0 760 140"
+                    fill="none"
+                    class="h-auto w-full drop-shadow-[0_0_16px_color-mix(in_srgb,var(--color-accent)_48%,transparent)]"
+                >
+                    <path
+                        d="M0 72H150L176 72L204 72L232 24L274 118L310 72H372L398 72L428 48L462 98L496 72H760"
+                        class="final-heartline-path"
+                    />
+                </svg>
+            </div>
+
+            <div class="relative z-[1] grid content-center">
+                <span class="section-kicker">{t.kicker}</span>
+
+                <h2
+                    class="max-w-[820px] text-[clamp(2.55rem,6vw,5.45rem)] leading-[0.96] tracking-[-0.065em] text-[var(--color-heading)] max-[440px]:text-[clamp(2.35rem,12vw,3.8rem)]"
+                >
+                    {t.title}
+
+                    <span
+                        class="final-cta-highlight block bg-gradient-to-br from-[var(--color-primary-dark)] via-[var(--color-secondary)] to-[var(--color-accent)] bg-clip-text pb-[0.08em] text-transparent"
+                    >
+                        {t.highlighted}
+                    </span>
+                </h2>
+
+                <p
+                    class="mt-[1.15rem] max-w-[700px] text-[clamp(1rem,1.35vw,1.16rem)] leading-[1.85] text-[var(--color-text-soft)]"
+                >
+                    {t.description}
+                </p>
+
+                <div class="mt-7 flex flex-wrap gap-[0.85rem] max-[720px]:grid">
+                    <a href={contactInfo.phone.href} class="btn btn-primary">
+                        <span
+                            class="cta-pulse-dot size-[0.65rem] rounded-full bg-current opacity-90 shadow-[0_0_0_0_currentColor]"
+                            aria-hidden="true"
+                        >
+                        </span>
+
+                        {t.callLabel}
+                    </a>
+
+                    <a href={contactInfo.email.href} class="btn btn-secondary">
+                        {t.emailLabel}
+                    </a>
+
+                    <a
+                        href={contactInfo.map.googleMapsUrl}
+                        class="btn btn-secondary"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        {t.directionsLabel}
+                    </a>
+                </div>
+            </div>
+
+            <div
+                class="medical-card relative z-[1] grid gap-[0.45rem] p-[clamp(1rem,2vw,1.25rem)] max-[1060px]:w-[min(100%,460px)] max-[720px]:w-full"
+            >
+                <span
+                    class="text-xs font-black uppercase tracking-[0.12em] text-[var(--color-secondary)]"
+                >
+                    {t.officeLabel}
+                </span>
+
+                <strong
+                    class="font-heading text-[clamp(1.8rem,3vw,2.45rem)] leading-none tracking-[-0.055em] text-[var(--color-heading)]"
+                >
+                    {contactInfo.phone.label}
+                </strong>
+
+                <p class="text-[0.95rem] leading-[1.55] text-[var(--color-text-soft)]">
+                    {contactInfo.address.display}
+                </p>
+
+                <small
+                    class="mt-[0.35rem] block border-t border-[var(--color-border)] pt-3 text-[0.82rem] font-black leading-[1.45] text-[var(--color-heading)]"
+                >
+                    {t.phoneNote}
+                </small>
+            </div>
+
+            <p
+                class="relative z-[1] col-span-full max-w-[920px] border-t border-[var(--color-border)] pt-4 text-[0.84rem] leading-[1.6] text-[var(--color-text-soft)]"
+            >
+                {t.emergencyNote}
+            </p>
+        </div>
+    </div>
+</section>
+
+<style>
+    .final-cta-panel::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+            radial-gradient(
+                circle at 18% 15%,
+                color-mix(in srgb, var(--color-secondary) 20%, transparent),
+                transparent 18rem
+            ),
+            radial-gradient(
+                circle at 86% 72%,
+                color-mix(in srgb, var(--color-heart) 14%, transparent),
+                transparent 18rem
+            ),
+            radial-gradient(
+                circle at 58% 40%,
+                color-mix(in srgb, var(--color-accent) 14%, transparent),
+                transparent 24rem
+            );
+        pointer-events: none;
+    }
+
+    .final-heartline-path {
+        stroke: currentColor;
+        stroke-width: 5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-dasharray: 980;
+        stroke-dashoffset: 980;
+        animation: final-heartline 4.2s ease-in-out infinite;
+    }
+
+    :global(.dark) .final-cta-highlight {
+        background: linear-gradient(
+            135deg,
+            var(--color-heading),
+            var(--color-secondary),
+            var(--color-accent)
+        );
+        background-clip: text;
+        -webkit-background-clip: text;
+    }
+
+    .cta-pulse-dot {
+        animation: final-dot-pulse 1.55s ease-in-out infinite;
+    }
+
+    @keyframes final-heartline {
+        0% {
+            opacity: 0;
+            stroke-dashoffset: 980;
+        }
+
+        12% {
+            opacity: 1;
+        }
+
+        48% {
+            opacity: 1;
+            stroke-dashoffset: 0;
+        }
+
+        72% {
+            opacity: 0.85;
+            stroke-dashoffset: 0;
+        }
+
+        100% {
+            opacity: 0;
+            stroke-dashoffset: -980;
+        }
+    }
+
+    @keyframes final-dot-pulse {
+        0%,
+        100% {
+            transform: scale(1);
+            opacity: 0.9;
+        }
+
+        18% {
+            transform: scale(1.45);
+            opacity: 0.65;
+        }
+
+        32% {
+            transform: scale(1);
+            opacity: 0.9;
+        }
+    }
+</style>
