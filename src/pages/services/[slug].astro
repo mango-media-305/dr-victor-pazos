@@ -1,0 +1,11 @@
+---
+
+import ServiceDetailPage from "../../components/services/ServiceDetailPage.astro";
+import { getCardiologyServiceStaticPaths } from "../../data/services/cardiologyServices";
+
+export function getStaticPaths() {
+    return getCardiologyServiceStaticPaths("en");
+}
+---
+
+<ServiceDetailPage service={Astro.props.service} language="en" />
