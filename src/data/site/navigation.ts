@@ -41,7 +41,7 @@ export const mainNavigation: NavigationItem[] = [
         },
         href: {
             en: "/services/",
-            es: "/es/servicios/",
+            es: " /es/services/",
         },
         description: {
             en: "Explore cardiology and interventional cardiology services for patients in Hialeah and Miami-Dade.",
@@ -55,7 +55,7 @@ export const mainNavigation: NavigationItem[] = [
                 },
                 href: {
                     en: "/services/cardiology-consultation/",
-                    es: "/es/servicios/consulta-cardiologica/",
+                    es: " /es/services/consulta-cardiologica/",
                 },
             },
             {
@@ -65,7 +65,7 @@ export const mainNavigation: NavigationItem[] = [
                 },
                 href: {
                     en: "/services/interventional-cardiology/",
-                    es: "/es/servicios/cardiologia-intervencionista/",
+                    es: " /es/services/cardiologia-intervencionista/",
                 },
             },
             {
@@ -75,7 +75,7 @@ export const mainNavigation: NavigationItem[] = [
                 },
                 href: {
                     en: "/services/chest-pain-evaluation/",
-                    es: "/es/servicios/evaluacion-dolor-pecho/",
+                    es: " /es/services/evaluacion-dolor-pecho/",
                 },
             },
             {
@@ -85,7 +85,7 @@ export const mainNavigation: NavigationItem[] = [
                 },
                 href: {
                     en: "/services/hypertension/",
-                    es: "/es/servicios/presion-alta/",
+                    es: " /es/services/presion-alta/",
                 },
             },
             {
@@ -95,7 +95,7 @@ export const mainNavigation: NavigationItem[] = [
                 },
                 href: {
                     en: "/services/ekg-ecg-testing/",
-                    es: "/es/servicios/prueba-ekg-ecg/",
+                    es: " /es/services/prueba-ekg-ecg/",
                 },
             },
             {
@@ -105,7 +105,7 @@ export const mainNavigation: NavigationItem[] = [
                 },
                 href: {
                     en: "/services/stress-test/",
-                    es: "/es/servicios/prueba-de-esfuerzo/",
+                    es: " /es/services/prueba-de-esfuerzo/",
                 },
             },
         ],
@@ -117,7 +117,7 @@ export const mainNavigation: NavigationItem[] = [
         },
         href: {
             en: "/locations/",
-            es: "/es/ubicaciones/",
+            es: " /es/locations/",
         },
         description: {
             en: "Find cardiology care for patients across Hialeah, Miami, and Miami-Dade County.",
@@ -169,7 +169,7 @@ export const footerNavigation = {
             },
             href: {
                 en: "/services/",
-                es: "/es/servicios/",
+                es: " /es/services/",
             },
         },
         {
@@ -179,7 +179,7 @@ export const footerNavigation = {
             },
             href: {
                 en: "/locations/",
-                es: "/es/ubicaciones/",
+                es: " /es/locations/",
             },
         },
         {
@@ -212,7 +212,7 @@ export const footerNavigation = {
             },
             href: {
                 en: "/services/cardiology-consultation/",
-                es: "/es/servicios/consulta-cardiologica/",
+                es: " /es/services/consulta-cardiologica/",
             },
         },
         {
@@ -222,7 +222,7 @@ export const footerNavigation = {
             },
             href: {
                 en: "/services/interventional-cardiology/",
-                es: "/es/servicios/cardiologia-intervencionista/",
+                es: " /es/services/cardiologia-intervencionista/",
             },
         },
         {
@@ -232,7 +232,7 @@ export const footerNavigation = {
             },
             href: {
                 en: "/services/chest-pain-evaluation/",
-                es: "/es/servicios/evaluacion-dolor-pecho/",
+                es: " /es/services/evaluacion-dolor-pecho/",
             },
         },
         {
@@ -242,7 +242,7 @@ export const footerNavigation = {
             },
             href: {
                 en: "/services/hypertension/",
-                es: "/es/servicios/presion-alta/",
+                es: " /es/services/presion-alta/",
             },
         },
         {
@@ -252,7 +252,7 @@ export const footerNavigation = {
             },
             href: {
                 en: "/services/ekg-ecg-testing/",
-                es: "/es/servicios/prueba-ekg-ecg/",
+                es: " /es/services/prueba-ekg-ecg/",
             },
         },
         {
@@ -262,7 +262,7 @@ export const footerNavigation = {
             },
             href: {
                 en: "/services/stress-test/",
-                es: "/es/servicios/prueba-de-esfuerzo/",
+                es: " /es/services/prueba-de-esfuerzo/",
             },
         },
     ],

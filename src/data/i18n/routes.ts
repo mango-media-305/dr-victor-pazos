@@ -40,12 +40,12 @@ export const routes: Record<RouteKey, Record<LanguageCode, string>> = {
 
     services: {
         en: "/services/",
-        es: "/es/servicios/",
+        es: " /es/services/",
     },
 
     locations: {
         en: "/locations/",
-        es: "/es/ubicaciones/",
+        es: " /es/locations/",
     },
 
     patientInfo: {
@@ -70,77 +70,77 @@ export const routes: Record<RouteKey, Record<LanguageCode, string>> = {
 
     cardiologyConsultation: {
         en: "/services/cardiology-consultation/",
-        es: "/es/servicios/consulta-cardiologica/",
+        es: " /es/services/consulta-cardiologica/",
     },
 
     interventionalCardiology: {
         en: "/services/interventional-cardiology/",
-        es: "/es/servicios/cardiologia-intervencionista/",
+        es: " /es/services/cardiologia-intervencionista/",
     },
 
     chestPainEvaluation: {
         en: "/services/chest-pain-evaluation/",
-        es: "/es/servicios/evaluacion-dolor-pecho/",
+        es: " /es/services/evaluacion-dolor-pecho/",
     },
 
     anginaTreatment: {
         en: "/services/angina-treatment/",
-        es: "/es/servicios/tratamiento-de-angina/",
+        es: " /es/services/tratamiento-de-angina/",
     },
 
     coronaryArteryDisease: {
         en: "/services/coronary-artery-disease/",
-        es: "/es/servicios/enfermedad-de-las-arterias-coronarias/",
+        es: " /es/services/enfermedad-de-las-arterias-coronarias/",
     },
 
     heartDiseaseManagement: {
         en: "/services/heart-disease-management/",
-        es: "/es/servicios/manejo-de-enfermedades-del-corazon/",
+        es: " /es/services/manejo-de-enfermedades-del-corazon/",
     },
 
     hypertension: {
         en: "/services/hypertension/",
-        es: "/es/servicios/presion-alta/",
+        es: " /es/services/presion-alta/",
     },
 
     heartFailure: {
         en: "/services/heart-failure/",
-        es: "/es/servicios/insuficiencia-cardiaca/",
+        es: " /es/services/insuficiencia-cardiaca/",
     },
 
     arrhythmiaAtrialFibrillation: {
         en: "/services/arrhythmia-atrial-fibrillation/",
-        es: "/es/servicios/arritmia-fibrilacion-auricular/",
+        es: " /es/services/arritmia-fibrilacion-auricular/",
     },
 
     heartMurmur: {
         en: "/services/heart-murmur/",
-        es: "/es/servicios/soplo-cardiaco/",
+        es: " /es/services/soplo-cardiaco/",
     },
 
     ekgEcgTesting: {
         en: "/services/ekg-ecg-testing/",
-        es: "/es/servicios/prueba-ekg-ecg/",
+        es: " /es/services/prueba-ekg-ecg/",
     },
 
     echocardiogram: {
         en: "/services/echocardiogram/",
-        es: "/es/servicios/ecocardiograma/",
+        es: " /es/services/ecocardiograma/",
     },
 
     stressTest: {
         en: "/services/stress-test/",
-        es: "/es/servicios/prueba-de-esfuerzo/",
+        es: " /es/services/prueba-de-esfuerzo/",
     },
 
     cardiacCatheterization: {
         en: "/services/cardiac-catheterization/",
-        es: "/es/servicios/cateterismo-cardiaco/",
+        es: " /es/services/cateterismo-cardiaco/",
     },
 
     preventiveCardiology: {
         en: "/services/preventive-cardiology/",
-        es: "/es/servicios/cardiologia-preventiva/",
+        es: " /es/services/cardiologia-preventiva/",
     },
 };
 

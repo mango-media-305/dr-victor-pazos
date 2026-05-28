@@ -207,7 +207,7 @@ export const cardiologyServices: CardiologyService[] = [
         },
         href: {
             en: "/services/general-cardiology/",
-            es: "/es/servicios/cardiologia-general/",
+            es: " /es/services/cardiologia-general/",
         },
         seo: {
             title: {
@@ -374,7 +374,7 @@ export const cardiologyServices: CardiologyService[] = [
         },
         href: {
             en: "/services/interventional-cardiology/",
-            es: "/es/servicios/cardiologia-intervencionista/",
+            es: " /es/services/cardiologia-intervencionista/",
         },
         seo: {
             title: {
@@ -541,7 +541,7 @@ export const cardiologyServices: CardiologyService[] = [
         },
         href: {
             en: "/services/chest-pain-evaluation/",
-            es: "/es/servicios/evaluacion-dolor-pecho/",
+            es: " /es/services/evaluacion-dolor-pecho/",
         },
         seo: {
             title: {
@@ -708,7 +708,7 @@ export const cardiologyServices: CardiologyService[] = [
         },
         href: {
             en: "/services/hypertension-treatment/",
-            es: "/es/servicios/tratamiento-hipertension/",
+            es: " /es/services/tratamiento-hipertension/",
         },
         seo: {
             title: {
@@ -875,7 +875,7 @@ export const cardiologyServices: CardiologyService[] = [
         },
         href: {
             en: "/services/heart-disease-management/",
-            es: "/es/servicios/manejo-enfermedades-corazon/",
+            es: " /es/services/manejo-enfermedades-corazon/",
         },
         seo: {
             title: {
@@ -1042,7 +1042,7 @@ export const cardiologyServices: CardiologyService[] = [
         },
         href: {
             en: "/services/ekg-cardiac-testing/",
-            es: "/es/servicios/ekg-pruebas-cardiacas/",
+            es: " /es/services/ekg-pruebas-cardiacas/",
         },
         seo: {
             title: {
@@ -1208,7 +1208,7 @@ export const cardiologyServices: CardiologyService[] = [
         },
         href: {
             en: "/services/shortness-of-breath-evaluation/",
-            es: "/es/servicios/evaluacion-falta-de-aire/",
+            es: " /es/services/evaluacion-falta-de-aire/",
         },
         seo: {
             title: {
@@ -1374,7 +1374,7 @@ export const cardiologyServices: CardiologyService[] = [
         },
         href: {
             en: "/services/preventive-cardiology/",
-            es: "/es/servicios/cardiologia-preventiva/",
+            es: " /es/services/cardiologia-preventiva/",
         },
         seo: {
             title: {
@@ -1540,7 +1540,7 @@ export const cardiologyServices: CardiologyService[] = [
         },
         href: {
             en: "/services/arrhythmia-evaluation/",
-            es: "/es/servicios/evaluacion-arritmia/",
+            es: " /es/services/evaluacion-arritmia/",
         },
         seo: {
             title: {

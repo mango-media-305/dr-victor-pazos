@@ -49,7 +49,7 @@ export const servicesIndexMetadata: PageMetadata = {
     },
     canonical: {
         en: "/services/",
-        es: "/es/servicios/",
+        es: " /es/services/",
     },
 };
 
@@ -64,7 +64,7 @@ export const locationsIndexMetadata: PageMetadata = {
     },
     canonical: {
         en: "/locations/",
-        es: "/es/ubicaciones/",
+        es: " /es/locations/",
     },
 };
 
