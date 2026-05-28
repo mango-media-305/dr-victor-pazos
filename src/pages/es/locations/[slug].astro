@@ -1,0 +1,11 @@
+---
+
+import LocationDetailPage from "../../../components/locations/LocationDetailPage.astro";
+import { getMiamiDadeLocationStaticPaths } from "../../../data/locations/miamiDadeLocations";
+
+export function getStaticPaths() {
+    return getMiamiDadeLocationStaticPaths("es");
+}
+---
+
+<LocationDetailPage location={Astro.props.location} language="es" />

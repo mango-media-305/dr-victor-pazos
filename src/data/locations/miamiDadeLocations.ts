@@ -3,6 +3,16 @@
 import type { LanguageCode } from "../site/siteConfig";
 import { contactInfo } from "../site/contact";
 
+export interface LocationContentBlock {
+    title: Record<LanguageCode, string>;
+    description: Record<LanguageCode, string>;
+}
+
+export interface LocationFaq {
+    question: Record<LanguageCode, string>;
+    answer: Record<LanguageCode, string>;
+}
+
 export interface MiamiDadeLocation {
     id: string;
     slug: string;
@@ -11,15 +21,24 @@ export interface MiamiDadeLocation {
     state: string;
     priority: number;
     featured?: boolean;
+
     title: Record<LanguageCode, string>;
     shortTitle: Record<LanguageCode, string>;
     description: Record<LanguageCode, string>;
     shortDescription: Record<LanguageCode, string>;
+
+    intro: Record<LanguageCode, string>;
+    reasonsToChooseOffice: LocationContentBlock[];
+    nearbyServices: string[];
+    faqs: LocationFaq[];
+
     href: Record<LanguageCode, string>;
+
     nearbyOffice: {
         label: Record<LanguageCode, string>;
         display: string;
     };
+
     seo: {
         title: Record<LanguageCode, string>;
         description: Record<LanguageCode, string>;
@@ -28,6 +47,80 @@ export interface MiamiDadeLocation {
 }
 
 const officeDisplay = contactInfo.address.display;
+
+const defaultNearbyServices = [
+    "general-cardiology",
+    "chest-pain-evaluation",
+    "hypertension-treatment",
+    "ekg-cardiac-testing",
+    "arrhythmia-evaluation",
+];
+
+const getDefaultReasons = (city: string): LocationContentBlock[] => [
+    {
+        title: {
+            en: `Cardiology care near ${city}`,
+            es: `Atención cardiológica cerca de ${city}`,
+        },
+        description: {
+            en: `Patients from ${city} can access cardiology and interventional cardiology care through the Hialeah office of Victor Pazos, MD.`,
+            es: `Pacientes de ${city} pueden acceder a atención en cardiología y cardiología intervencionista a través de la oficina en Hialeah de Victor Pazos, MD.`,
+        },
+    },
+    {
+        title: {
+            en: "Bilingual patient communication",
+            es: "Comunicación bilingüe para pacientes",
+        },
+        description: {
+            en: "Care is available in English and Spanish, helping patients and families discuss symptoms, test results, and next steps clearly.",
+            es: "La atención está disponible en inglés y español, ayudando a pacientes y familiares a hablar con claridad sobre síntomas, resultados y próximos pasos.",
+        },
+    },
+    {
+        title: {
+            en: "Heart-health evaluation and follow-up",
+            es: "Evaluación y seguimiento de salud cardíaca",
+        },
+        description: {
+            en: "The office supports patients seeking evaluation for symptoms, risk factors, abnormal testing, and ongoing cardiovascular conditions.",
+            es: "La oficina apoya a pacientes que buscan evaluación por síntomas, factores de riesgo, pruebas anormales y condiciones cardiovasculares continuas.",
+        },
+    },
+];
+
+const getDefaultFaqs = (city: string): LocationFaq[] => [
+    {
+        question: {
+            en: `Does Victor Pazos, MD serve patients from ${city}?`,
+            es: `¿Victor Pazos, MD atiende pacientes de ${city}?`,
+        },
+        answer: {
+            en: `Yes. Victor Pazos, MD serves patients from ${city} and nearby Miami-Dade communities from the Hialeah cardiology office.`,
+            es: `Sí. Victor Pazos, MD atiende pacientes de ${city} y comunidades cercanas de Miami-Dade desde la oficina de cardiología en Hialeah.`,
+        },
+    },
+    {
+        question: {
+            en: "Where is the cardiology office located?",
+            es: "¿Dónde está ubicada la oficina de cardiología?",
+        },
+        answer: {
+            en: `The office is located at ${officeDisplay}. Patients can call the office to request an appointment or get directions.`,
+            es: `La oficina está ubicada en ${officeDisplay}. Los pacientes pueden llamar para solicitar una cita o recibir direcciones.`,
+        },
+    },
+    {
+        question: {
+            en: "What symptoms may require urgent medical attention?",
+            es: "¿Qué síntomas pueden requerir atención médica urgente?",
+        },
+        answer: {
+            en: "Severe chest pain, sudden shortness of breath, fainting, stroke symptoms, severe weakness, or symptoms that feel like a medical emergency should not wait for a routine appointment. Call 911 immediately.",
+            es: "Dolor fuerte en el pecho, falta de aire repentina, desmayo, síntomas de derrame cerebral, debilidad severa o síntomas que parezcan una emergencia médica no deben esperar por una cita rutinaria. Llame al 911 inmediatamente.",
+        },
+    },
+];
 
 export const miamiDadeLocations: MiamiDadeLocation[] = [
     {
@@ -54,6 +147,44 @@ export const miamiDadeLocations: MiamiDadeLocation[] = [
             en: "Local cardiology care from the Hialeah office.",
             es: "Atención cardiológica local desde la oficina en Hialeah.",
         },
+        intro: {
+            en: "The Hialeah office is the main location for patients seeking cardiovascular evaluation, heart-health guidance, and ongoing cardiology care with Victor Pazos, MD. The office serves patients from Hialeah and surrounding Miami-Dade communities.",
+            es: "La oficina en Hialeah es la ubicación principal para pacientes que buscan evaluación cardiovascular, orientación para la salud del corazón y cuidado cardiológico continuo con Victor Pazos, MD. La oficina atiende pacientes de Hialeah y comunidades cercanas de Miami-Dade.",
+        },
+        reasonsToChooseOffice: [
+            {
+                title: {
+                    en: "Local Hialeah cardiology office",
+                    es: "Oficina local de cardiología en Hialeah",
+                },
+                description: {
+                    en: "Patients in Hialeah have direct access to the office location for cardiology evaluation, follow-up, and heart-health concerns.",
+                    es: "Pacientes en Hialeah tienen acceso directo a la oficina para evaluación cardiológica, seguimiento y preocupaciones de salud cardíaca.",
+                },
+            },
+            {
+                title: {
+                    en: "Bilingual care for Miami-Dade families",
+                    es: "Atención bilingüe para familias de Miami-Dade",
+                },
+                description: {
+                    en: "The practice provides care in English and Spanish, helping patients and families communicate clearly during important heart-health visits.",
+                    es: "La práctica ofrece atención en inglés y español, ayudando a pacientes y familias a comunicarse con claridad durante visitas importantes de salud cardíaca.",
+                },
+            },
+            {
+                title: {
+                    en: "Care for symptoms and ongoing conditions",
+                    es: "Atención para síntomas y condiciones continuas",
+                },
+                description: {
+                    en: "Patients may contact the office for chest discomfort, shortness of breath, palpitations, high blood pressure, abnormal EKG results, or known heart disease.",
+                    es: "Los pacientes pueden contactar la oficina por molestia en el pecho, falta de aire, palpitaciones, presión alta, resultados anormales de EKG o enfermedad cardíaca conocida.",
+                },
+            },
+        ],
+        nearbyServices: defaultNearbyServices,
+        faqs: getDefaultFaqs("Hialeah"),
         href: {
             en: "/locations/hialeah/",
             es: "/es/ubicaciones/hialeah/",
@@ -116,6 +247,13 @@ export const miamiDadeLocations: MiamiDadeLocation[] = [
             en: "Cardiology care for patients from Miami.",
             es: "Atención cardiológica para pacientes de Miami.",
         },
+        intro: {
+            en: "Patients from Miami can visit the Hialeah cardiology office for evaluation of heart-related symptoms, cardiovascular risk factors, abnormal cardiac testing, and ongoing heart-health concerns.",
+            es: "Pacientes de Miami pueden visitar la oficina de cardiología en Hialeah para evaluación de síntomas relacionados con el corazón, factores de riesgo cardiovascular, pruebas cardíacas anormales y preocupaciones continuas de salud cardíaca.",
+        },
+        reasonsToChooseOffice: getDefaultReasons("Miami"),
+        nearbyServices: defaultNearbyServices,
+        faqs: getDefaultFaqs("Miami"),
         href: {
             en: "/locations/miami/",
             es: "/es/ubicaciones/miami/",
@@ -129,23 +267,23 @@ export const miamiDadeLocations: MiamiDadeLocation[] = [
         },
         seo: {
             title: {
-                en: "Cardiologist Serving Miami, FL | Victor Pazos, MD",
-                es: "Cardiólogo sirviendo a Miami, FL | Victor Pazos, MD",
+                en: "Cardiologist Near Miami, FL | Hialeah Office Serving Miami-Dade",
+                es: "Cardiólogo cerca de Miami, FL | Oficina en Hialeah sirviendo Miami-Dade",
             },
             description: {
-                en: "Victor Pazos, MD. PA. serves Miami patients looking for cardiology and interventional cardiology care near Miami-Dade.",
-                es: "Victor Pazos, MD. PA. atiende pacientes de Miami que buscan atención en cardiología y cardiología intervencionista cerca de Miami-Dade.",
+                en: "Victor Pazos, MD serves Miami patients from his Hialeah cardiology office, offering cardiovascular evaluation and heart-health guidance across Miami-Dade.",
+                es: "Victor Pazos, MD atiende pacientes de Miami desde su oficina de cardiología en Hialeah, ofreciendo evaluación cardiovascular y orientación cardíaca en Miami-Dade.",
             },
             keywords: {
                 en: [
-                    "cardiologist in Miami",
+                    "cardiologist near Miami",
                     "heart doctor Miami",
                     "Miami cardiology",
                     "interventional cardiologist Miami",
                     "cardiology Miami-Dade",
                 ],
                 es: [
-                    "cardiólogo en Miami",
+                    "cardiólogo cerca de Miami",
                     "doctor del corazón Miami",
                     "cardiología Miami",
                     "cardiólogo intervencionista Miami",
@@ -178,6 +316,13 @@ export const miamiDadeLocations: MiamiDadeLocation[] = [
             en: "Heart care near Miami Lakes.",
             es: "Cuidado del corazón cerca de Miami Lakes.",
         },
+        intro: {
+            en: "Miami Lakes patients looking for nearby cardiology care can access the Hialeah office for heart-health evaluation, symptoms, risk management, and follow-up care.",
+            es: "Pacientes de Miami Lakes que buscan atención cardiológica cercana pueden acceder a la oficina en Hialeah para evaluación de salud cardíaca, síntomas, manejo de riesgos y seguimiento.",
+        },
+        reasonsToChooseOffice: getDefaultReasons("Miami Lakes"),
+        nearbyServices: defaultNearbyServices,
+        faqs: getDefaultFaqs("Miami Lakes"),
         href: {
             en: "/locations/miami-lakes/",
             es: "/es/ubicaciones/miami-lakes/",
@@ -238,6 +383,13 @@ export const miamiDadeLocations: MiamiDadeLocation[] = [
             en: "Cardiology access for patients from Doral.",
             es: "Acceso a cardiología para pacientes de Doral.",
         },
+        intro: {
+            en: "Doral patients can contact the Hialeah office for cardiology evaluation related to chest discomfort, shortness of breath, palpitations, high blood pressure, abnormal EKG results, or ongoing heart disease.",
+            es: "Pacientes de Doral pueden contactar la oficina en Hialeah para evaluación cardiológica relacionada con molestia en el pecho, falta de aire, palpitaciones, presión alta, resultados anormales de EKG o enfermedad cardíaca continua.",
+        },
+        reasonsToChooseOffice: getDefaultReasons("Doral"),
+        nearbyServices: defaultNearbyServices,
+        faqs: getDefaultFaqs("Doral"),
         href: {
             en: "/locations/doral/",
             es: "/es/ubicaciones/doral/",
@@ -298,6 +450,13 @@ export const miamiDadeLocations: MiamiDadeLocation[] = [
             en: "Nearby cardiology care for Hialeah Gardens.",
             es: "Atención cardiológica cercana para Hialeah Gardens.",
         },
+        intro: {
+            en: "Patients from Hialeah Gardens can access nearby cardiology care through the Hialeah office for symptoms, prevention, cardiac testing guidance, and ongoing cardiovascular care.",
+            es: "Pacientes de Hialeah Gardens pueden acceder a atención cardiológica cercana a través de la oficina en Hialeah para síntomas, prevención, orientación sobre pruebas cardíacas y cuidado cardiovascular continuo.",
+        },
+        reasonsToChooseOffice: getDefaultReasons("Hialeah Gardens"),
+        nearbyServices: defaultNearbyServices,
+        faqs: getDefaultFaqs("Hialeah Gardens"),
         href: {
             en: "/locations/hialeah-gardens/",
             es: "/es/ubicaciones/hialeah-gardens/",
@@ -356,6 +515,13 @@ export const miamiDadeLocations: MiamiDadeLocation[] = [
             en: "Cardiology access near Miami Gardens.",
             es: "Acceso a cardiología cerca de Miami Gardens.",
         },
+        intro: {
+            en: "Miami Gardens patients can contact the Hialeah cardiology office for cardiovascular evaluation, heart-related symptoms, risk factor review, and ongoing care planning.",
+            es: "Pacientes de Miami Gardens pueden contactar la oficina de cardiología en Hialeah para evaluación cardiovascular, síntomas relacionados con el corazón, revisión de factores de riesgo y planificación de cuidado continuo.",
+        },
+        reasonsToChooseOffice: getDefaultReasons("Miami Gardens"),
+        nearbyServices: defaultNearbyServices,
+        faqs: getDefaultFaqs("Miami Gardens"),
         href: {
             en: "/locations/miami-gardens/",
             es: "/es/ubicaciones/miami-gardens/",
@@ -414,6 +580,13 @@ export const miamiDadeLocations: MiamiDadeLocation[] = [
             en: "Heart care near Westchester.",
             es: "Cuidado del corazón cerca de Westchester.",
         },
+        intro: {
+            en: "Patients from Westchester can access cardiology care through the Hialeah office for symptoms, heart-risk concerns, abnormal test results, and long-term cardiovascular follow-up.",
+            es: "Pacientes de Westchester pueden acceder a atención cardiológica a través de la oficina en Hialeah para síntomas, preocupaciones de riesgo cardíaco, resultados anormales y seguimiento cardiovascular a largo plazo.",
+        },
+        reasonsToChooseOffice: getDefaultReasons("Westchester"),
+        nearbyServices: defaultNearbyServices,
+        faqs: getDefaultFaqs("Westchester"),
         href: {
             en: "/locations/westchester/",
             es: "/es/ubicaciones/westchester/",
@@ -472,6 +645,13 @@ export const miamiDadeLocations: MiamiDadeLocation[] = [
             en: "Cardiology care near Fontainebleau.",
             es: "Atención cardiológica cerca de Fontainebleau.",
         },
+        intro: {
+            en: "Fontainebleau patients looking for cardiology care can contact the Hialeah office for evaluation of symptoms, cardiovascular risk, abnormal EKG results, and ongoing heart-health concerns.",
+            es: "Pacientes de Fontainebleau que buscan atención cardiológica pueden contactar la oficina en Hialeah para evaluación de síntomas, riesgo cardiovascular, resultados anormales de EKG y preocupaciones continuas de salud cardíaca.",
+        },
+        reasonsToChooseOffice: getDefaultReasons("Fontainebleau"),
+        nearbyServices: defaultNearbyServices,
+        faqs: getDefaultFaqs("Fontainebleau"),
         href: {
             en: "/locations/fontainebleau/",
             es: "/es/ubicaciones/fontainebleau/",
@@ -530,6 +710,13 @@ export const miamiDadeLocations: MiamiDadeLocation[] = [
             en: "Cardiology care for patients from Kendall.",
             es: "Atención cardiológica para pacientes de Kendall.",
         },
+        intro: {
+            en: "Patients from Kendall can contact the Hialeah cardiology office for cardiovascular evaluation, risk-factor review, heart-related symptoms, and ongoing follow-up care.",
+            es: "Pacientes de Kendall pueden contactar la oficina de cardiología en Hialeah para evaluación cardiovascular, revisión de factores de riesgo, síntomas relacionados con el corazón y seguimiento continuo.",
+        },
+        reasonsToChooseOffice: getDefaultReasons("Kendall"),
+        nearbyServices: defaultNearbyServices,
+        faqs: getDefaultFaqs("Kendall"),
         href: {
             en: "/locations/kendall/",
             es: "/es/ubicaciones/kendall/",
@@ -579,4 +766,26 @@ export const getMiamiDadeLocationHref = (
     language: LanguageCode
 ) => {
     return location.href[language];
+};
+
+export const getRelatedMiamiDadeLocations = (
+    currentLocationId: string,
+    limit = 4
+) => {
+    return miamiDadeLocations
+        .filter((location) => location.id !== currentLocationId)
+        .sort((a, b) => a.priority - b.priority)
+        .slice(0, limit);
+};
+
+export const getMiamiDadeLocationStaticPaths = (language: LanguageCode) => {
+    return miamiDadeLocations.map((location) => ({
+        params: {
+            slug: location.slug,
+        },
+        props: {
+            location,
+            language,
+        },
+    }));
 };

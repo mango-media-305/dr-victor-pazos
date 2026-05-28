@@ -1,0 +1,594 @@
+---
+// src/components/about/AboutPage.astro
+
+import MainLayout from "../../layouts/MainLayout.astro";
+import { contactInfo } from "../../data/site/contact";
+import { doctorProfile } from "../../data/doctor/doctorProfile";
+import { aboutMetadata } from "../../data/seo/pageMetadata";
+import {
+    getGlobalSchema,
+    getWebPageSchema,
+} from "../../data/seo/schema";
+import type { LanguageCode } from "../../data/site/siteConfig";
+
+interface Props {
+    language: LanguageCode;
+}
+
+const { language } = Astro.props as Props;
+
+const currentLanguage = language;
+const metadata = aboutMetadata;
+
+const content = {
+    en: {
+        eyebrow: "About the cardiologist",
+        heroTitle: "Meet Victor Pazos, MD.",
+        heroDescription:
+            "Learn more about the cardiology practice serving patients from Hialeah, Miami, and nearby Miami-Dade communities.",
+        callLabel: contactInfo.appointment.primaryCta.en,
+        directionsLabel: contactInfo.map.directionsLabel.en,
+
+        profileKicker: "Doctor profile",
+        profileTitle: "Experienced cardiovascular care with a local Hialeah presence.",
+
+        credentialsKicker: "Professional focus",
+        credentialsTitle: "Cardiology care focused on evaluation, guidance, and long-term heart health.",
+
+        highlightsKicker: "Practice highlights",
+        highlightsTitle: "A patient-centered approach for Miami-Dade families.",
+
+        biographyKicker: "Background",
+        biographyTitle: "About Victor Pazos, MD",
+
+        languagesKicker: "Languages",
+        languagesTitle: "Care available in English and Spanish.",
+
+        serviceAreaKicker: "Service area",
+        serviceAreaTitle: "Serving patients across Miami-Dade County.",
+
+        profilesKicker: "External profiles",
+        profilesTitle: "View additional doctor profile references.",
+        profileLinkLabel: "View profile",
+
+        officeKicker: "Office location",
+        officeTitle: "Hialeah cardiology office",
+        officeDescription:
+            "The office is located in Hialeah, FL and serves patients from Hialeah, Miami, Miami Lakes, Doral, Hialeah Gardens, Miami Gardens, and surrounding Miami-Dade communities.",
+
+        disclaimerKicker: "Medical disclaimer",
+        disclaimerTitle: "Important medical information",
+        disclaimer:
+            "The information on this website is provided for general educational purposes only and should not be used as a substitute for professional medical advice, diagnosis, or treatment. If you are experiencing a medical emergency, call 911 immediately.",
+
+        appointmentKicker: "Request an appointment",
+        appointmentTitle: "Have questions for the cardiology office?",
+        appointmentDescription:
+            "Call the office to request an appointment or ask about cardiology care available from the Hialeah location.",
+    },
+    es: {
+        eyebrow: "Sobre el cardiólogo",
+        heroTitle: "Conozca a Victor Pazos, MD.",
+        heroDescription:
+            "Conozca más sobre la práctica de cardiología que atiende pacientes de Hialeah, Miami y comunidades cercanas de Miami-Dade.",
+        callLabel: contactInfo.appointment.primaryCta.es,
+        directionsLabel: contactInfo.map.directionsLabel.es,
+
+        profileKicker: "Perfil del doctor",
+        profileTitle: "Atención cardiovascular con experiencia y presencia local en Hialeah.",
+
+        credentialsKicker: "Enfoque profesional",
+        credentialsTitle: "Atención cardiológica enfocada en evaluación, orientación y salud cardíaca a largo plazo.",
+
+        highlightsKicker: "Aspectos destacados",
+        highlightsTitle: "Un enfoque centrado en el paciente para familias de Miami-Dade.",
+
+        biographyKicker: "Trayectoria",
+        biographyTitle: "Sobre Victor Pazos, MD",
+
+        languagesKicker: "Idiomas",
+        languagesTitle: "Atención disponible en inglés y español.",
+
+        serviceAreaKicker: "Área de servicio",
+        serviceAreaTitle: "Atendiendo pacientes en Miami-Dade County.",
+
+        profilesKicker: "Perfiles externos",
+        profilesTitle: "Vea referencias adicionales del perfil del doctor.",
+        profileLinkLabel: "Ver perfil",
+
+        officeKicker: "Ubicación de la oficina",
+        officeTitle: "Oficina de cardiología en Hialeah",
+        officeDescription:
+            "La oficina está ubicada en Hialeah, FL y atiende pacientes de Hialeah, Miami, Miami Lakes, Doral, Hialeah Gardens, Miami Gardens y comunidades cercanas de Miami-Dade.",
+
+        disclaimerKicker: "Aviso médico",
+        disclaimerTitle: "Información médica importante",
+        disclaimer:
+            "La información en este sitio web se ofrece solo con fines educativos generales y no debe usarse como sustituto de consejo, diagnóstico o tratamiento médico profesional. Si está experimentando una emergencia médica, llame al 911 inmediatamente.",
+
+        appointmentKicker: "Solicitar una cita",
+        appointmentTitle: "¿Tiene preguntas para la oficina de cardiología?",
+        appointmentDescription:
+            "Llame a la oficina para solicitar una cita o preguntar sobre la atención cardiológica disponible desde la ubicación en Hialeah.",
+    },
+};
+
+const t = content[currentLanguage];
+
+const pageTitle = metadata.title[currentLanguage];
+const pageDescription = metadata.description[currentLanguage];
+const canonicalPath = metadata.canonical[currentLanguage];
+
+const doctorSchema = {
+    "@context": "https://schema.org",
+    "@type": "Physician",
+    name: doctorProfile.displayName,
+    medicalSpecialty: "Cardiovascular",
+    description: doctorProfile.shortBio[currentLanguage],
+    knowsLanguage: doctorProfile.languages.en,
+    address: {
+        "@type": "PostalAddress",
+        streetAddress: `${contactInfo.address.street} ${contactInfo.address.suite}`,
+        addressLocality: contactInfo.address.city,
+        addressRegion: contactInfo.address.state,
+        postalCode: contactInfo.address.zip,
+        addressCountry: contactInfo.address.country,
+    },
+    telephone: contactInfo.phone.raw,
+    url: canonicalPath,
+    sameAs: doctorProfile.externalProfiles.map((profile) => profile.href),
+};
+
+const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+        {
+            "@type": "ListItem",
+            position: 1,
+            name: currentLanguage === "es" ? "Inicio" : "Home",
+            item: currentLanguage === "es" ? "/es/" : "/",
+        },
+        {
+            "@type": "ListItem",
+            position: 2,
+            name: currentLanguage === "es" ? "Sobre nosotros" : "About",
+            item: canonicalPath,
+        },
+    ],
+};
+---
+
+<MainLayout
+    fullTitle
+    language={currentLanguage}
+    title={pageTitle}
+    description={pageDescription}
+    canonical={canonicalPath}
+    alternateUrls={{
+        en: metadata.canonical.en,
+        es: metadata.canonical.es,
+    }}
+    schema={[
+        ...getGlobalSchema(),
+        getWebPageSchema({
+            title: pageTitle,
+            description: pageDescription,
+            path: canonicalPath,
+        }),
+        doctorSchema,
+        breadcrumbSchema,
+    ]}
+>
+    <section class="relative isolate overflow-hidden section-padding-lg medical-grid-bg">
+        <div
+            class="pointer-events-none absolute -left-20 top-[12%] -z-10 aspect-square w-[22rem] rounded-full bg-[color-mix(in_srgb,var(--color-secondary)_24%,transparent)] opacity-45 blur-[58px]"
+            aria-hidden="true"
+        >
+        </div>
+
+        <div
+            class="pointer-events-none absolute -right-20 bottom-[12%] -z-10 aspect-square w-[24rem] rounded-full bg-[color-mix(in_srgb,var(--color-heart)_14%,transparent)] opacity-45 blur-[58px]"
+            aria-hidden="true"
+        >
+        </div>
+
+        <div class="site-container relative z-10 grid items-center gap-[clamp(2rem,6vw,5rem)] lg:grid-cols-[minmax(0,1fr)_minmax(320px,0.48fr)]">
+            <div class="grid content-center">
+                <span class="section-kicker">{t.eyebrow}</span>
+
+                <h1 class="max-w-[980px] text-[clamp(3rem,7vw,6.7rem)] text-[var(--color-heading)] max-[440px]:text-[clamp(2.75rem,15vw,4.25rem)]">
+                    {t.heroTitle}
+                </h1>
+
+                <p class="mt-5 max-w-[760px] text-[clamp(1.05rem,1.5vw,1.22rem)] text-[var(--color-text-soft)]">
+                    {t.heroDescription}
+                </p>
+
+                <div class="mt-8 flex flex-wrap gap-3 max-md:grid max-md:w-full">
+                    <a href={contactInfo.phone.href} class="btn btn-primary">
+                        {t.callLabel}
+                    </a>
+
+                    <a
+                        href={contactInfo.map.googleMapsUrl}
+                        class="btn btn-secondary"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        {t.directionsLabel}
+                    </a>
+                </div>
+            </div>
+
+            <aside class="about-doctor-card relative overflow-hidden rounded-[2rem] border border-[color-mix(in_srgb,var(--color-secondary)_28%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-surface)_78%,transparent)] p-[clamp(1.1rem,2.5vw,1.5rem)] shadow-[var(--shadow-card)] backdrop-blur-xl">
+                <div
+                    class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,color-mix(in_srgb,var(--color-secondary)_20%,transparent),transparent_14rem),radial-gradient(circle_at_bottom_left,color-mix(in_srgb,var(--color-heart)_12%,transparent),transparent_13rem)]"
+                    aria-hidden="true"
+                >
+                </div>
+
+                <div class="relative z-10 grid gap-5">
+                    <div class="grid gap-2">
+                        <span class="text-xs font-black uppercase text-[var(--color-secondary)]">
+                            {doctorProfile.specialty[currentLanguage]}
+                        </span>
+
+                        <strong class="font-heading text-[clamp(1.9rem,3.4vw,3rem)] text-[var(--color-heading)]">
+                            {doctorProfile.displayName}
+                        </strong>
+
+                        <p class="text-sm text-[var(--color-text-soft)]">
+                            {doctorProfile.shortBio[currentLanguage]}
+                        </p>
+                    </div>
+
+                    <div class="grid gap-3 sm:grid-cols-2">
+                        {
+                            doctorProfile.highlights.slice(0, 4).map((item) => (
+                                <div class="rounded-[1.35rem] border border-[color-mix(in_srgb,var(--color-border)_82%,transparent)] bg-[color-mix(in_srgb,var(--color-surface)_76%,transparent)] p-4">
+                                    <span class="font-heading text-3xl font-extrabold text-[var(--color-heading)]">
+                                        {item.value}
+                                    </span>
+
+                                    <p class="mt-2 text-xs font-black uppercase text-[var(--color-secondary)]">
+                                        {item.label[currentLanguage]}
+                                    </p>
+                                </div>
+                            ))
+                        }
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </section>
+
+    <section class="section-padding-sm">
+        <div class="site-container glow-panel grid items-start gap-[clamp(1.25rem,4vw,3rem)] p-[clamp(1.25rem,3vw,2rem)] max-md:rounded-[1.65rem]">
+            <div>
+                <span class="section-kicker">{t.profileKicker}</span>
+
+                <h2 class="text-[clamp(2.1rem,4.8vw,4.4rem)] text-[var(--color-heading)]">
+                    {t.profileTitle}
+                </h2>
+            </div>
+
+            <p class="text-[clamp(1rem,1.35vw,1.12rem)] text-[var(--color-text-soft)]">
+                {doctorProfile.shortBio[currentLanguage]}
+            </p>
+        </div>
+    </section>
+
+    <section class="relative isolate overflow-hidden section-padding">
+        <div
+            class="pointer-events-none absolute -right-20 top-[10%] -z-10 aspect-square w-[22rem] rounded-full bg-[color-mix(in_srgb,var(--color-secondary)_22%,transparent)] opacity-45 blur-[58px]"
+            aria-hidden="true"
+        >
+        </div>
+
+        <div class="site-container">
+            <div class="mb-[clamp(1.75rem,4vw,3rem)] max-w-[820px]">
+                <span class="section-kicker">{t.biographyKicker}</span>
+
+                <h2 class="text-[clamp(2.25rem,5vw,4.8rem)] text-[var(--color-heading)]">
+                    {t.biographyTitle}
+                </h2>
+            </div>
+
+            <div class="grid gap-4 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
+                <div class="medical-card p-[clamp(1.1rem,2vw,1.35rem)]">
+                    <div class="grid gap-4">
+                        {
+                            doctorProfile.biography[currentLanguage].map((paragraph) => (
+                                <p class="text-base text-[var(--color-text-soft)]">
+                                    {paragraph}
+                                </p>
+                            ))
+                        }
+                    </div>
+                </div>
+
+                <div class="grid gap-4 sm:grid-cols-2">
+                    {
+                        doctorProfile.credentials.map((credential, index) => (
+                            <article
+                                class="medical-card group relative overflow-hidden p-[clamp(1rem,2vw,1.25rem)] animate-fade-up"
+                                style={`animation-delay: ${index * 80}ms;`}
+                            >
+                                <div
+                                    class="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                                    style="background: radial-gradient(circle at top right, color-mix(in srgb, var(--color-secondary) 18%, transparent), transparent 12rem);"
+                                    aria-hidden="true"
+                                >
+                                </div>
+
+                                <div class="relative z-10">
+                                    <span class="font-heading text-4xl font-extrabold text-[color-mix(in_srgb,var(--color-accent)_76%,var(--color-text-muted))] opacity-60">
+                                        {String(index + 1).padStart(2, "0")}
+                                    </span>
+
+                                    <h3 class="mt-6 font-heading text-[clamp(1.35rem,2vw,1.85rem)] text-[var(--color-heading)]">
+                                        {credential.label[currentLanguage]}
+                                    </h3>
+
+                                    <p class="mt-3 text-sm text-[var(--color-text-soft)]">
+                                        {credential.description[currentLanguage]}
+                                    </p>
+                                </div>
+                            </article>
+                        ))
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding">
+        <div class="site-container grid gap-[clamp(2rem,6vw,5rem)] lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)]">
+            <div class="lg:sticky lg:top-28 lg:self-start">
+                <span class="section-kicker">{t.highlightsKicker}</span>
+
+                <h2 class="max-w-[720px] text-[clamp(2.25rem,5vw,4.8rem)] text-[var(--color-heading)]">
+                    {t.highlightsTitle}
+                </h2>
+            </div>
+
+            <div class="grid gap-4 sm:grid-cols-2">
+                {
+                    doctorProfile.highlights.map((item, index) => (
+                        <article
+                            class="medical-card group relative overflow-hidden p-[clamp(1rem,2vw,1.25rem)] animate-fade-up"
+                            style={`animation-delay: ${index * 80}ms;`}
+                        >
+                            <div
+                                class="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                                style="background: radial-gradient(circle at top right, color-mix(in srgb, var(--color-heart) 14%, transparent), transparent 12rem), radial-gradient(circle at bottom left, color-mix(in srgb, var(--color-secondary) 14%, transparent), transparent 12rem);"
+                                aria-hidden="true"
+                            >
+                            </div>
+
+                            <div class="relative z-10">
+                                <span class="font-heading text-4xl font-extrabold text-[var(--color-heading)]">
+                                    {item.value}
+                                </span>
+
+                                <h3 class="mt-6 font-heading text-[clamp(1.35rem,2vw,1.85rem)] text-[var(--color-heading)]">
+                                    {item.label[currentLanguage]}
+                                </h3>
+
+                                <p class="mt-3 text-sm text-[var(--color-text-soft)]">
+                                    {item.description[currentLanguage]}
+                                </p>
+                            </div>
+                        </article>
+                    ))
+                }
+            </div>
+        </div>
+    </section>
+
+    <section class="relative isolate overflow-hidden section-padding">
+        <div
+            class="pointer-events-none absolute -left-20 bottom-[8%] -z-10 aspect-square w-[20rem] rounded-full bg-[color-mix(in_srgb,var(--color-heart)_14%,transparent)] opacity-45 blur-[58px]"
+            aria-hidden="true"
+        >
+        </div>
+
+        <div class="site-container grid gap-4 lg:grid-cols-2">
+            <div class="glow-panel p-[clamp(1.25rem,3vw,2rem)] max-md:rounded-[1.65rem]">
+                <span class="section-kicker">{t.languagesKicker}</span>
+
+                <h2 class="mt-2 text-[clamp(2rem,4vw,3.5rem)] text-[var(--color-heading)]">
+                    {t.languagesTitle}
+                </h2>
+
+                <div class="mt-6 flex flex-wrap gap-2">
+                    {
+                        doctorProfile.languages[currentLanguage].map((item) => (
+                            <span class="rounded-full border border-[color-mix(in_srgb,var(--color-secondary)_28%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-secondary-soft)_30%,transparent)] px-4 py-2 text-sm font-black text-[var(--color-heading)]">
+                                {item}
+                            </span>
+                        ))
+                    }
+                </div>
+            </div>
+
+            <div class="glow-panel p-[clamp(1.25rem,3vw,2rem)] max-md:rounded-[1.65rem]">
+                <span class="section-kicker">{t.serviceAreaKicker}</span>
+
+                <h2 class="mt-2 text-[clamp(2rem,4vw,3.5rem)] text-[var(--color-heading)]">
+                    {t.serviceAreaTitle}
+                </h2>
+
+                <div class="mt-6 flex flex-wrap gap-2">
+                    {
+                        doctorProfile.serviceAreas.map((area) => (
+                            <span class="rounded-full border border-[color-mix(in_srgb,var(--color-border)_86%,transparent)] bg-[color-mix(in_srgb,var(--color-surface)_78%,transparent)] px-4 py-2 text-sm font-black text-[var(--color-heading)]">
+                                {area}
+                            </span>
+                        ))
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding">
+        <div class="site-container grid gap-[clamp(2rem,6vw,5rem)] lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)]">
+            <div class="lg:sticky lg:top-28 lg:self-start">
+                <span class="section-kicker">{t.profilesKicker}</span>
+
+                <h2 class="max-w-[720px] text-[clamp(2.25rem,5vw,4.8rem)] text-[var(--color-heading)]">
+                    {t.profilesTitle}
+                </h2>
+            </div>
+
+            <div class="grid gap-4">
+                {
+                    doctorProfile.externalProfiles.map((profile, index) => (
+                        <a
+                            href={profile.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="medical-card group flex items-center justify-between gap-4 p-[clamp(1rem,2vw,1.25rem)] text-inherit animate-fade-up"
+                            style={`animation-delay: ${index * 80}ms;`}
+                        >
+                            <div>
+                                <h3 class="font-heading text-[clamp(1.35rem,2vw,1.85rem)] text-[var(--color-heading)]">
+                                    {profile.label}
+                                </h3>
+
+                                <p class="mt-2 text-sm font-black text-[var(--color-secondary)]">
+                                    {t.profileLinkLabel}
+                                </p>
+                            </div>
+
+                            <span class="grid size-11 shrink-0 place-items-center rounded-full border border-[color-mix(in_srgb,var(--color-secondary)_28%,var(--color-border))] text-[var(--color-secondary)] transition-transform duration-300 group-hover:translate-x-1">
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    width="18"
+                                    height="18"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    aria-hidden="true"
+                                >
+                                    <path d="M7 17 17 7" />
+                                    <path d="M7 7h10v10" />
+                                </svg>
+                            </span>
+                        </a>
+                    ))
+                }
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding">
+        <div class="site-container grid gap-[clamp(2rem,6vw,5rem)] lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)]">
+            <div class="lg:sticky lg:top-28 lg:self-start">
+                <span class="section-kicker">{t.officeKicker}</span>
+
+                <h2 class="max-w-[720px] text-[clamp(2.25rem,5vw,4.8rem)] text-[var(--color-heading)]">
+                    {t.officeTitle}
+                </h2>
+
+                <p class="mt-5 max-w-[620px] text-[clamp(1rem,1.35vw,1.12rem)] text-[var(--color-text-soft)]">
+                    {t.officeDescription}
+                </p>
+
+                <div class="mt-8 flex flex-wrap gap-3 max-md:grid max-md:w-full">
+                    <a
+                        href={contactInfo.map.googleMapsUrl}
+                        class="btn btn-primary"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        {t.directionsLabel}
+                    </a>
+
+                    <a href={contactInfo.phone.href} class="btn btn-secondary">
+                        {t.callLabel}
+                    </a>
+                </div>
+            </div>
+
+            <div class="relative overflow-hidden rounded-[2rem] border border-[color-mix(in_srgb,var(--color-secondary)_24%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-surface)_78%,transparent)] p-2 shadow-[var(--shadow-card)]">
+                <iframe
+                    src={contactInfo.map.embedUrl}
+                    title={t.officeTitle}
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                    class="min-h-[420px] w-full rounded-[1.55rem] border-0 grayscale-[0.15]"
+                >
+                </iframe>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding-sm">
+        <div class="site-container">
+            <div class="rounded-[1.65rem] border border-[color-mix(in_srgb,var(--color-heart)_28%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-heart-soft)_30%,transparent)] p-[clamp(1rem,2vw,1.25rem)]">
+                <span class="text-xs font-black uppercase text-[var(--color-heart)]">
+                    {t.disclaimerKicker}
+                </span>
+
+                <h2 class="mt-2 font-heading text-[clamp(1.45rem,2.5vw,2.15rem)] text-[var(--color-heading)]">
+                    {t.disclaimerTitle}
+                </h2>
+
+                <p class="mt-3 max-w-[980px] text-sm font-bold text-[var(--color-text-soft)]">
+                    {t.disclaimer}
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding-sm">
+        <div class="site-container">
+            <div class="glow-panel grid items-center gap-5 p-[clamp(1.25rem,3vw,2rem)] max-md:rounded-[1.65rem] lg:grid-cols-[1fr_auto]">
+                <div>
+                    <span class="section-kicker">{t.appointmentKicker}</span>
+
+                    <h2 class="text-[clamp(2rem,4vw,3.75rem)] text-[var(--color-heading)]">
+                        {t.appointmentTitle}
+                    </h2>
+
+                    <p class="mt-3 max-w-[720px] text-base text-[var(--color-text-soft)]">
+                        {t.appointmentDescription}
+                    </p>
+                </div>
+
+                <a href={contactInfo.phone.href} class="btn btn-primary max-lg:w-fit max-md:w-full">
+                    {t.callLabel}
+                </a>
+            </div>
+        </div>
+    </section>
+</MainLayout>
+
+<style>
+    .about-doctor-card {
+        animation: about-doctor-float 6.5s ease-in-out infinite;
+        will-change: transform;
+    }
+
+    @keyframes about-doctor-float {
+        0%,
+        100% {
+            transform: translate3d(0, 0, 0) rotate(-1deg);
+        }
+
+        50% {
+            transform: translate3d(0, -12px, 0) rotate(1deg);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .about-doctor-card {
+            animation: none;
+        }
+    }
+</style>

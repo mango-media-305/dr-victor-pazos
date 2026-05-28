@@ -53,22 +53,22 @@ const logoDark = siteConfig.assets.logo.dark;
                         />
                     </span>
 
-                    <span class="grid gap-[0.15rem] leading-none">
+                    <span class="grid gap-[0.15rem]">
                         <strong
-                            class="font-heading text-[clamp(1.35rem,2vw,1.85rem)] tracking-[-0.04em] text-[var(--color-heading)]"
+                            class="font-heading text-[clamp(1.35rem,2vw,1.85rem)] text-[var(--color-heading)]"
                         >
                             {siteConfig.name}
                         </strong>
 
                         <small
-                            class="text-xs font-black uppercase tracking-[0.08em] text-[var(--color-secondary)]"
+                            class="text-xs font-black uppercase text-[var(--color-secondary)]"
                         >
                             {siteConfig.doctor.specialtyExtended[currentLanguage]}
                         </small>
                     </span>
                 </a>
 
-                <p class="max-w-[34rem] text-base leading-[1.75] text-[var(--color-text-soft)]">
+                <p class="max-w-[34rem] text-base text-[var(--color-text-soft)]">
                     {siteConfig.description[currentLanguage]}
                 </p>
 
@@ -91,7 +91,7 @@ const logoDark = siteConfig.assets.logo.dark;
             >
                 <div class="grid content-start gap-4">
                     <h2
-                        class="font-body text-[0.84rem] font-black uppercase tracking-[0.12em] text-[var(--color-heading)]"
+                        class="font-body text-[0.84rem] font-black uppercase text-[var(--color-heading)]"
                     >
                         {currentLanguage === "es" ? "Práctica" : "Practice"}
                     </h2>
@@ -104,7 +104,7 @@ const logoDark = siteConfig.assets.logo.dark;
                             footerNavigation.practice.map((item) => (
                                 <a
                                     href={item.href[currentLanguage]}
-                                    class="w-fit text-[0.94rem] font-bold leading-[1.35] text-[var(--color-text-soft)] transition-[color,transform] duration-200 hover:translate-x-[3px] hover:text-[var(--color-secondary)]"
+                                    class="w-fit text-[0.94rem] font-bold text-[var(--color-text-soft)] transition-[color,transform] duration-200 hover:translate-x-[3px] hover:text-[var(--color-secondary)]"
                                 >
                                     {item.label[currentLanguage]}
                                 </a>
@@ -115,7 +115,7 @@ const logoDark = siteConfig.assets.logo.dark;
 
                 <div class="grid content-start gap-4">
                     <h2
-                        class="font-body text-[0.84rem] font-black uppercase tracking-[0.12em] text-[var(--color-heading)]"
+                        class="font-body text-[0.84rem] font-black uppercase text-[var(--color-heading)]"
                     >
                         {currentLanguage === "es" ? "Servicios" : "Services"}
                     </h2>
@@ -128,7 +128,7 @@ const logoDark = siteConfig.assets.logo.dark;
                             footerNavigation.services.map((item) => (
                                 <a
                                     href={item.href[currentLanguage]}
-                                    class="w-fit text-[0.94rem] font-bold leading-[1.35] text-[var(--color-text-soft)] transition-[color,transform] duration-200 hover:translate-x-[3px] hover:text-[var(--color-secondary)]"
+                                    class="w-fit text-[0.94rem] font-bold text-[var(--color-text-soft)] transition-[color,transform] duration-200 hover:translate-x-[3px] hover:text-[var(--color-secondary)]"
                                 >
                                     {item.label[currentLanguage]}
                                 </a>
@@ -139,13 +139,13 @@ const logoDark = siteConfig.assets.logo.dark;
 
                 <div class="grid content-start gap-4">
                     <h2
-                        class="font-body text-[0.84rem] font-black uppercase tracking-[0.12em] text-[var(--color-heading)]"
+                        class="font-body text-[0.84rem] font-black uppercase text-[var(--color-heading)]"
                     >
                         {currentLanguage === "es" ? "Contacto" : "Contact"}
                     </h2>
 
                     <address
-                        class="grid gap-[0.3rem] text-[0.94rem] not-italic leading-[1.55] text-[var(--color-text-soft)]"
+                        class="grid gap-[0.3rem] text-[0.94rem] not-italic text-[var(--color-text-soft)]"
                     >
                         <span>{contactInfo.address.street}</span>
                         <span>{contactInfo.address.suite}</span>
@@ -158,14 +158,14 @@ const logoDark = siteConfig.assets.logo.dark;
                     <div class="grid gap-[0.55rem]">
                         <a
                             href={contactInfo.phone.href}
-                            class="w-fit text-[0.94rem] font-bold leading-[1.35] text-[var(--color-text-soft)] transition-[color,transform] duration-200 hover:translate-x-[3px] hover:text-[var(--color-secondary)]"
+                            class="w-fit text-[0.94rem] font-bold text-[var(--color-text-soft)] transition-[color,transform] duration-200 hover:translate-x-[3px] hover:text-[var(--color-secondary)]"
                         >
                             {contactInfo.phone.label}
                         </a>
 
                         <a
                             href={contactInfo.email.href}
-                            class="w-fit text-[0.94rem] font-bold leading-[1.35] text-[var(--color-text-soft)] transition-[color,transform] duration-200 hover:translate-x-[3px] hover:text-[var(--color-secondary)]"
+                            class="w-fit text-[0.94rem] font-bold text-[var(--color-text-soft)] transition-[color,transform] duration-200 hover:translate-x-[3px] hover:text-[var(--color-secondary)]"
                         >
                             {contactInfo.email.label}
                         </a>
@@ -174,7 +174,7 @@ const logoDark = siteConfig.assets.logo.dark;
                             href={contactInfo.map.googleMapsUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            class="w-fit text-[0.94rem] font-bold leading-[1.35] text-[var(--color-text-soft)] transition-[color,transform] duration-200 hover:translate-x-[3px] hover:text-[var(--color-secondary)]"
+                            class="w-fit text-[0.94rem] font-bold text-[var(--color-text-soft)] transition-[color,transform] duration-200 hover:translate-x-[3px] hover:text-[var(--color-secondary)]"
                         >
                             {contactInfo.map.directionsLabel[currentLanguage]}
                         </a>
@@ -187,12 +187,12 @@ const logoDark = siteConfig.assets.logo.dark;
             class="mt-[clamp(2rem,5vw,3.5rem)] grid gap-[0.85rem] rounded-3xl border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface-soft)_52%,transparent)] p-[clamp(1rem,2vw,1.25rem)]"
         >
             <span
-                class="text-xs font-black uppercase tracking-[0.14em] text-[var(--color-secondary)]"
+                class="text-xs font-black uppercase text-[var(--color-secondary)]"
             >
                 {currentLanguage === "es" ? "Áreas de servicio" : "Service Areas"}
             </span>
 
-            <p class="max-w-[56rem] leading-[1.7] text-[var(--color-text-soft)]">
+            <p class="max-w-[56rem] text-[var(--color-text-soft)]">
                 {
                     currentLanguage === "es"
                         ? "Atención cardiológica para pacientes en Hialeah, Miami y comunidades cercanas de Miami-Dade County."
@@ -215,7 +215,7 @@ const logoDark = siteConfig.assets.logo.dark;
         </div>
 
         <div class="mt-4 rounded-[1.2rem] p-4">
-            <p class="text-[0.5rem] leading-[1.65] text-[var(--color-text-soft)]">
+            <p class="text-[0.5rem] text-[var(--color-text-soft)]">
                 {
                     currentLanguage === "es"
                         ? "Este sitio web proporciona información general y no reemplaza una consulta médica profesional. Si tiene una emergencia médica, llame al 911 de inmediato."

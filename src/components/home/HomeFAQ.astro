@@ -112,13 +112,13 @@ const faqSchema = {
             <span class="section-kicker">{t.kicker}</span>
 
             <h2
-                class="text-[clamp(2.35rem,5.5vw,5rem)] leading-[0.98] tracking-[-0.06em] text-[var(--color-heading)] max-[440px]:text-[clamp(2.25rem,12vw,3.85rem)]"
+                class="text-[clamp(2.35rem,5.5vw,5rem)] text-[var(--color-heading)] max-[440px]:text-[clamp(2.25rem,12vw,3.85rem)]"
             >
                 {t.title}
             </h2>
 
             <p
-                class="mt-5 text-[clamp(1rem,1.35vw,1.15rem)] leading-[1.85] text-[var(--color-text-soft)]"
+                class="mt-5 text-[clamp(1rem,1.35vw,1.15rem)] text-[var(--color-text-soft)]"
             >
                 {t.description}
             </p>
@@ -133,7 +133,7 @@ const faqSchema = {
                         open={index === 0}
                     >
                         <summary class="relative z-[1] flex cursor-pointer list-none items-center justify-between gap-4 p-[clamp(1rem,2vw,1.2rem)] marker:hidden [&::-webkit-details-marker]:hidden">
-                            <span class="font-heading text-[clamp(1.25rem,2vw,1.65rem)] font-extrabold leading-[1.1] tracking-[-0.045em] text-[var(--color-heading)]">
+                            <span class="font-heading text-[clamp(1.25rem,2vw,1.65rem)] font-extrabold text-[var(--color-heading)]">
                                 {item.question}
                             </span>
 
@@ -145,7 +145,7 @@ const faqSchema = {
                             </span>
                         </summary>
 
-                        <p class="relative z-[1] m-0 max-w-[760px] px-[clamp(1rem,2vw,1.2rem)] pb-[clamp(1rem,2vw,1.2rem)] text-[0.98rem] leading-[1.75] text-[var(--color-text-soft)]">
+                        <p class="relative z-[1] m-0 max-w-[760px] px-[clamp(1rem,2vw,1.2rem)] pb-[clamp(1rem,2vw,1.2rem)] text-[0.98rem] text-[var(--color-text-soft)]">
                             {item.answer}
                         </p>
                     </details>

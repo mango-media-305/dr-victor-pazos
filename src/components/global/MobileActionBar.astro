@@ -60,15 +60,15 @@ const alternateLanguage = currentLanguage === "en" ? "es" : "en";
                 />
             </span>
 
-            <span class="grid gap-[0.1rem] leading-none">
+            <span class="grid gap-[0.1rem]">
                 <strong
-                    class="font-heading text-[1.05rem] tracking-[-0.03em] text-[var(--color-heading)]"
+                    class="font-heading text-[1.05rem] text-[var(--color-heading)]"
                 >
                     Victor Pazos, MD. PA.
                 </strong>
 
                 <small
-                    class="text-[0.72rem] font-extrabold uppercase tracking-[0.08em] text-[var(--color-text-soft)]"
+                    class="text-[0.72rem] font-extrabold uppercasetext-[var(--color-text-soft)]"
                 >
                     Cardiology
                 </small>
@@ -146,7 +146,7 @@ const alternateLanguage = currentLanguage === "en" ? "es" : "en";
 
                 <button
                     type="button"
-                    class="grid size-[2.6rem] place-items-center rounded-full border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface-soft)_74%,transparent)] text-[1.65rem] leading-none text-[var(--color-heading)]"
+                    class="grid size-[2.6rem] place-items-center rounded-full border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface-soft)_74%,transparent)] text-[1.65rem]  text-[var(--color-heading)]"
                     aria-label={mobileNavigationLabels.closeMenu[currentLanguage]}
                     data-menu-close
                 >
@@ -166,7 +166,7 @@ const alternateLanguage = currentLanguage === "en" ? "es" : "en";
                             </span>
 
                             {item.description && (
-                                <small class="text-[0.84rem] leading-normal text-[var(--color-text-soft)]">
+                                <small class="text-[0.84rem]  text-[var(--color-text-soft)]">
                                     {item.description[currentLanguage]}
                                 </small>
                             )}
@@ -189,7 +189,7 @@ const alternateLanguage = currentLanguage === "en" ? "es" : "en";
             </div>
 
             <div
-                class="grid gap-[0.35rem] rounded-[1.25rem] border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-secondary-soft)_34%,transparent)] p-4 text-sm leading-normal text-[var(--color-text-soft)]"
+                class="grid gap-[0.35rem] rounded-[1.25rem] border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-secondary-soft)_34%,transparent)] p-4 text-sm  text-[var(--color-text-soft)]"
             >
                 <strong class="text-[var(--color-heading)]">
                     {contactInfo.practiceName}

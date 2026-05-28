@@ -117,13 +117,13 @@ const t = content[currentLanguage];
             <span class="section-kicker">{t.kicker}</span>
 
             <h2
-                class="max-w-[740px] text-[clamp(2.35rem,5.5vw,5rem)] leading-[0.98] tracking-[-0.06em] text-[var(--color-heading)] max-[440px]:text-[clamp(2.25rem,12vw,3.85rem)]"
+                class="max-w-[740px] text-[clamp(2.35rem,5.5vw,5rem)] text-[var(--color-heading)] max-[440px]:text-[clamp(2.25rem,12vw,3.85rem)]"
             >
                 {t.title}
             </h2>
 
             <p
-                class="mt-5 max-w-[640px] text-[clamp(1rem,1.35vw,1.15rem)] leading-[1.85] text-[var(--color-text-soft)]"
+                class="mt-5 max-w-[640px] text-[clamp(1rem,1.35vw,1.15rem)] text-[var(--color-text-soft)]"
             >
                 {t.description}
             </p>
@@ -132,12 +132,12 @@ const t = content[currentLanguage];
                 class="glow-panel mt-[1.55rem] grid w-[min(100%,620px)] gap-[0.45rem] p-[clamp(1rem,2vw,1.25rem)]"
             >
                 <span
-                    class="text-xs font-black uppercase tracking-[0.12em] text-[var(--color-secondary)]"
+                    class="text-xs font-black uppercase text-[var(--color-secondary)]"
                 >
                     {currentLanguage === "es" ? "Nota para pacientes" : "Patient note"}
                 </span>
 
-                <p class="text-[0.94rem] leading-[1.65] text-[var(--color-text-soft)]">
+                <p class="text-[0.94rem]  text-[var(--color-text-soft)]">
                     {t.note}
                 </p>
             </div>
@@ -162,7 +162,7 @@ const t = content[currentLanguage];
                             aria-hidden="true"
                         >
                             <span
-                                class="font-heading text-xl font-extrabold leading-none tracking-[-0.055em]"
+                                class="font-heading text-xl font-extrabold"
                             >
                                 {String(index + 1).padStart(2, "0")}
                             </span>
@@ -170,12 +170,12 @@ const t = content[currentLanguage];
 
                         <div class="relative z-[1] grid gap-[0.45rem]">
                             <h3
-                                class="font-heading text-[clamp(1.35rem,2vw,1.85rem)] leading-[1.02] tracking-[-0.045em] text-[var(--color-heading)]"
+                                class="font-heading text-[clamp(1.35rem,2vw,1.85rem)] text-[var(--color-heading)]"
                             >
                                 {step.title}
                             </h3>
 
-                            <p class="text-[0.94rem] leading-[1.7] text-[var(--color-text-soft)]">
+                            <p class="text-[0.94rem] text-[var(--color-text-soft)]">
                                 {step.description}
                             </p>
                         </div>

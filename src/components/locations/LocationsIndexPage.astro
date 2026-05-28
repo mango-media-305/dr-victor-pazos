@@ -1,0 +1,469 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+import { contactInfo } from "../../data/site/contact";
+import {
+    featuredMiamiDadeLocations,
+    getMiamiDadeLocationHref,
+    miamiDadeLocations,
+} from "../../data/locations/miamiDadeLocations";
+import { locationsIndexMetadata } from "../../data/seo/pageMetadata";
+import {
+    getGlobalSchema,
+    getWebPageSchema,
+} from "../../data/seo/schema";
+import type { LanguageCode } from "../../data/site/siteConfig";
+
+interface Props {
+    language: LanguageCode;
+}
+
+const { language } = Astro.props as Props;
+
+const currentLanguage = language;
+const metadata = locationsIndexMetadata;
+
+const locations = [...miamiDadeLocations].sort((a, b) => a.priority - b.priority);
+const featuredLocations = [...featuredMiamiDadeLocations].sort(
+    (a, b) => a.priority - b.priority
+);
+
+const content = {
+    en: {
+        kicker: "Locations served",
+        title: "Cardiology care for Hialeah, Miami, and nearby Miami-Dade communities.",
+        description:
+            "Victor Pazos, MD. PA. provides cardiology and interventional cardiology care from a Hialeah office serving patients across Miami-Dade County.",
+        callLabel: contactInfo.appointment.primaryCta.en,
+        directionsLabel: contactInfo.map.directionsLabel.en,
+        officeLabel: "Hialeah cardiology office",
+        officeTitle: "Located in Hialeah, serving Miami-Dade.",
+        officeDescription:
+            "The office is conveniently located for patients from Hialeah, Miami, Miami Lakes, Doral, Hialeah Gardens, Miami Gardens, Westchester, Fontainebleau, Kendall, and nearby communities.",
+        featuredKicker: "Nearby communities",
+        featuredTitle: "Popular service areas near the Hialeah office.",
+        featuredDescription:
+            "These location pages help patients understand whether the Hialeah cardiology office may be a convenient option for their area.",
+        allKicker: "Miami-Dade service area",
+        allTitle: "Explore cardiology care by location.",
+        viewLocation: "View location",
+        mapTitle: "Find the Hialeah office",
+        mapDescription:
+            "Use the map below to view the office location and get directions.",
+        emergencyNote:
+            "If you are experiencing severe chest pain, sudden shortness of breath, fainting, stroke symptoms, or a medical emergency, call 911 immediately.",
+        bottomKicker: "Request an appointment",
+        bottomTitle: "Looking for a cardiologist near your area?",
+        bottomDescription:
+            "Call the office to request an appointment or ask about cardiology care available from the Hialeah location.",
+    },
+    es: {
+        kicker: "Ubicaciones servidas",
+        title: "Atención cardiológica para Hialeah, Miami y comunidades cercanas de Miami-Dade.",
+        description:
+            "Victor Pazos, MD. PA. ofrece atención en cardiología y cardiología intervencionista desde una oficina en Hialeah para pacientes de Miami-Dade County.",
+        callLabel: contactInfo.appointment.primaryCta.es,
+        directionsLabel: contactInfo.map.directionsLabel.es,
+        officeLabel: "Oficina de cardiología en Hialeah",
+        officeTitle: "Ubicada en Hialeah, sirviendo a Miami-Dade.",
+        officeDescription:
+            "La oficina está convenientemente ubicada para pacientes de Hialeah, Miami, Miami Lakes, Doral, Hialeah Gardens, Miami Gardens, Westchester, Fontainebleau, Kendall y comunidades cercanas.",
+        featuredKicker: "Comunidades cercanas",
+        featuredTitle: "Áreas populares cerca de la oficina en Hialeah.",
+        featuredDescription:
+            "Estas páginas de ubicación ayudan a los pacientes a entender si la oficina de cardiología en Hialeah puede ser una opción conveniente para su área.",
+        allKicker: "Área de servicio en Miami-Dade",
+        allTitle: "Explore atención cardiológica por ubicación.",
+        viewLocation: "Ver ubicación",
+        mapTitle: "Encuentre la oficina en Hialeah",
+        mapDescription:
+            "Use el mapa para ver la ubicación de la oficina y obtener direcciones.",
+        emergencyNote:
+            "Si está experimentando dolor fuerte en el pecho, falta de aire repentina, desmayo, síntomas de derrame cerebral o una emergencia médica, llame al 911 inmediatamente.",
+        bottomKicker: "Solicitar una cita",
+        bottomTitle: "¿Busca un cardiólogo cerca de su área?",
+        bottomDescription:
+            "Llame a la oficina para solicitar una cita o preguntar sobre la atención cardiológica disponible desde la ubicación en Hialeah.",
+    },
+};
+
+const t = content[currentLanguage];
+
+const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+        {
+            "@type": "ListItem",
+            position: 1,
+            name: currentLanguage === "es" ? "Inicio" : "Home",
+            item: currentLanguage === "es" ? "/es/" : "/",
+        },
+        {
+            "@type": "ListItem",
+            position: 2,
+            name: currentLanguage === "es" ? "Ubicaciones" : "Locations",
+            item: metadata.canonical[currentLanguage],
+        },
+    ],
+};
+---
+
+<MainLayout
+    fullTitle
+    language={currentLanguage}
+    title={metadata.title[currentLanguage]}
+    description={metadata.description[currentLanguage]}
+    canonical={metadata.canonical[currentLanguage]}
+    alternateUrls={{
+        en: metadata.canonical.en,
+        es: metadata.canonical.es,
+    }}
+    schema={[
+        ...getGlobalSchema(),
+        getWebPageSchema({
+            title: metadata.title[currentLanguage],
+            description: metadata.description[currentLanguage],
+            path: metadata.canonical[currentLanguage],
+        }),
+        breadcrumbSchema,
+    ]}
+>
+    <section class="relative isolate overflow-hidden section-padding-lg medical-grid-bg">
+        <div
+            class="pointer-events-none absolute -left-20 top-[12%] -z-10 aspect-square w-[22rem] rounded-full bg-[color-mix(in_srgb,var(--color-secondary)_24%,transparent)] opacity-45 blur-[58px]"
+            aria-hidden="true"
+        >
+        </div>
+
+        <div
+            class="pointer-events-none absolute -right-20 bottom-[12%] -z-10 aspect-square w-[24rem] rounded-full bg-[color-mix(in_srgb,var(--color-heart)_14%,transparent)] opacity-45 blur-[58px]"
+            aria-hidden="true"
+        >
+        </div>
+
+        <div class="site-container relative z-10 grid items-center gap-[clamp(2rem,6vw,5rem)] lg:grid-cols-[minmax(0,1fr)_minmax(320px,0.48fr)]">
+            <div class="grid content-center">
+                <span class="section-kicker">{t.kicker}</span>
+
+                <h1 class="text-[clamp(3rem,7vw,5rem)] text-[var(--color-heading)] max-[440px]:text-[clamp(2.75rem,15vw,4.25rem)]">
+                    {t.title}
+                </h1>
+
+                <p class="mt-5 max-w-[760px] text-[clamp(1.05rem,1.5vw,1.22rem)] text-[var(--color-text-soft)]">
+                    {t.description}
+                </p>
+
+                <div class="mt-8 flex flex-wrap gap-3 max-md:grid max-md:w-full">
+                    <a href={contactInfo.phone.href} class="btn btn-primary">
+                        {t.callLabel}
+                    </a>
+
+                    <a
+                        href={contactInfo.map.googleMapsUrl}
+                        class="btn btn-secondary"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        {t.directionsLabel}
+                    </a>
+                </div>
+            </div>
+
+            <aside class="location-office-card relative overflow-hidden rounded-[2rem] border border-[color-mix(in_srgb,var(--color-secondary)_28%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-surface)_78%,transparent)] p-[clamp(1.1rem,2.5vw,1.5rem)] shadow-[var(--shadow-card)] backdrop-blur-xl">
+                <div
+                    class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,color-mix(in_srgb,var(--color-secondary)_20%,transparent),transparent_14rem),radial-gradient(circle_at_bottom_left,color-mix(in_srgb,var(--color-heart)_12%,transparent),transparent_13rem)]"
+                    aria-hidden="true"
+                >
+                </div>
+
+                <div class="relative z-10 grid gap-5">
+                    <div>
+                        <span class="text-xs font-black uppercase text-[var(--color-secondary)]">
+                            {t.officeLabel}
+                        </span>
+
+                        <strong class="mt-2 block font-heading text-[clamp(1.7rem,3vw,2.5rem)] text-[var(--color-heading)]">
+                            {t.officeTitle}
+                        </strong>
+
+                        <p class="mt-3 text-sm text-[var(--color-text-soft)]">
+                            {t.officeDescription}
+                        </p>
+                    </div>
+
+                    <div class="grid gap-2 rounded-[1.35rem] border border-[color-mix(in_srgb,var(--color-border)_82%,transparent)] bg-[color-mix(in_srgb,var(--color-surface)_76%,transparent)] p-4">
+                        <span class="text-xs font-black uppercase text-[var(--color-secondary)]">
+                            {currentLanguage === "es" ? "Dirección" : "Address"}
+                        </span>
+
+                        <strong class="text-base font-black text-[var(--color-heading)]">
+                            {contactInfo.address.display}
+                        </strong>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        {
+                            featuredLocations.slice(0, 4).map((location) => (
+                                <a
+                                    href={getMiamiDadeLocationHref(location, currentLanguage)}
+                                    class="rounded-2xl border border-[color-mix(in_srgb,var(--color-border)_82%,transparent)] bg-[color-mix(in_srgb,var(--color-surface)_70%,transparent)] px-3 py-3 text-sm font-black text-[var(--color-heading)] transition-transform duration-300 hover:-translate-y-1 hover:border-[color-mix(in_srgb,var(--color-secondary)_40%,var(--color-border))]"
+                                >
+                                    {location.shortTitle[currentLanguage]}
+                                </a>
+                            ))
+                        }
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </section>
+
+    <section class="section-padding-sm">
+        <div class="site-container glow-panel grid items-end gap-[clamp(1.25rem,4vw,3rem)] p-[clamp(1.25rem,3vw,2rem)] max-md:rounded-[1.65rem]">
+            <div>
+                <span class="section-kicker">{t.featuredKicker}</span>
+
+                <h2 class="text-[clamp(2.1rem,4.8vw,4.4rem)] text-[var(--color-heading)]">
+                    {t.featuredTitle}
+                </h2>
+            </div>
+
+            <p class="text-[clamp(1rem,1.35vw,1.12rem)] text-[var(--color-text-soft)]">
+                {t.featuredDescription}
+            </p>
+        </div>
+    </section>
+
+    <section class="relative isolate overflow-hidden section-padding">
+        <div
+            class="pointer-events-none absolute -right-20 top-[10%] -z-10 aspect-square w-[22rem] rounded-full bg-[color-mix(in_srgb,var(--color-secondary)_22%,transparent)] opacity-45 blur-[58px]"
+            aria-hidden="true"
+        >
+        </div>
+
+        <div class="site-container">
+            <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                {
+                    featuredLocations.map((location, index) => (
+                        <a
+                            href={getMiamiDadeLocationHref(location, currentLanguage)}
+                            class="medical-card group relative grid min-h-72 content-between overflow-hidden p-[clamp(1.1rem,2vw,1.35rem)] text-inherit animate-fade-up max-md:min-h-0"
+                            style={`animation-delay: ${index * 70}ms;`}
+                            aria-label={`${t.viewLocation}: ${location.title[currentLanguage]}`}
+                        >
+                            <div
+                                class="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                                style="background: radial-gradient(circle at top right, color-mix(in srgb, var(--color-secondary) 20%, transparent), transparent 13rem), radial-gradient(circle at bottom left, color-mix(in srgb, var(--color-heart) 12%, transparent), transparent 12rem);"
+                                aria-hidden="true"
+                            >
+                            </div>
+
+                            <div class="relative z-10 flex items-start justify-between gap-4">
+                                <span class="grid size-14 place-items-center rounded-[1.1rem] border border-[color-mix(in_srgb,var(--color-secondary)_32%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-surface)_76%,transparent)] text-[var(--color-secondary)] shadow-[0_14px_34px_rgba(15,23,42,0.07)]">
+                                    <svg
+                                        viewBox="0 0 24 24"
+                                        width="26"
+                                        height="26"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        aria-hidden="true"
+                                    >
+                                        <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z" />
+                                        <circle cx="12" cy="10" r="3" />
+                                    </svg>
+                                </span>
+
+                                <span class="font-heading text-4xl font-extrabold text-[color-mix(in_srgb,var(--color-accent)_76%,var(--color-text-muted))] opacity-55">
+                                    {String(index + 1).padStart(2, "0")}
+                                </span>
+                            </div>
+
+                            <div class="relative z-10 mt-9 grid gap-3">
+                                <h3 class="font-heading text-[clamp(1.55rem,2.4vw,2.25rem)] text-[var(--color-heading)]">
+                                    {location.title[currentLanguage]}
+                                </h3>
+
+                                <p class="text-base text-[var(--color-text-soft)]">
+                                    {location.description[currentLanguage]}
+                                </p>
+                            </div>
+
+                            <span class="relative z-10 mt-6 inline-flex w-fit items-center gap-2 text-sm font-black text-[var(--color-secondary)] transition-transform duration-300 group-hover:translate-x-1 group-hover:text-[var(--color-accent-dark)] dark:group-hover:text-[var(--color-accent)]">
+                                {t.viewLocation}
+
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    width="18"
+                                    height="18"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    aria-hidden="true"
+                                >
+                                    <path d="M5 12h14" />
+                                    <path d="m12 5 7 7-7 7" />
+                                </svg>
+                            </span>
+                        </a>
+                    ))
+                }
+            </div>
+
+            <p class="relative z-10 mt-[clamp(1.25rem,3vw,2rem)] rounded-[1.25rem] border border-[color-mix(in_srgb,var(--color-heart)_28%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-heart-soft)_38%,transparent)] p-4 text-sm font-extrabold text-[var(--color-heart)]">
+                {t.emergencyNote}
+            </p>
+        </div>
+    </section>
+
+    <section class="section-padding">
+        <div class="site-container grid gap-[clamp(2rem,6vw,5rem)] lg:grid-cols-2">
+            <div class="lg:sticky lg:top-28 lg:self-start">
+                <span class="section-kicker">{t.mapTitle}</span>
+
+                <h2 class="max-w-[720px] text-[clamp(2.25rem,5vw,4.8rem)] text-[var(--color-heading)]">
+                    {contactInfo.address.city}, {contactInfo.address.state}
+                </h2>
+
+                <p class="mt-5 max-w-[620px] text-[clamp(1rem,1.35vw,1.12rem)] text-[var(--color-text-soft)]">
+                    {t.mapDescription}
+                </p>
+
+                <div class="mt-8 flex flex-wrap gap-3 max-md:grid max-md:w-full">
+                    <a
+                        href={contactInfo.map.googleMapsUrl}
+                        class="btn btn-primary"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        {t.directionsLabel}
+                    </a>
+
+                    <a href={contactInfo.phone.href} class="btn btn-secondary">
+                        {t.callLabel}
+                    </a>
+                </div>
+            </div>
+
+            <div class="relative overflow-hidden rounded-[2rem] border border-[color-mix(in_srgb,var(--color-secondary)_24%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-surface)_78%,transparent)] p-2 shadow-[var(--shadow-card)]">
+                <iframe
+                    src={contactInfo.map.embedUrl}
+                    title={t.mapTitle}
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                    class="min-h-[420px] w-full rounded-[1.55rem] border-0 grayscale-[0.15]"
+                >
+                </iframe>
+            </div>
+        </div>
+    </section>
+
+    <section class="relative isolate overflow-hidden section-padding">
+        <div
+            class="pointer-events-none absolute -left-20 bottom-[8%] -z-10 aspect-square w-[20rem] rounded-full bg-[color-mix(in_srgb,var(--color-heart)_14%,transparent)] opacity-45 blur-[58px]"
+            aria-hidden="true"
+        >
+        </div>
+
+        <div class="site-container">
+            <div class="mb-[clamp(1.75rem,4vw,3rem)] max-w-[780px]">
+                <span class="section-kicker">{t.allKicker}</span>
+
+                <h2 class="text-[clamp(2.25rem,5vw,4.8rem)] text-[var(--color-heading)]">
+                    {t.allTitle}
+                </h2>
+            </div>
+
+            <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {
+                    locations.map((location, index) => (
+                        <a
+                            href={getMiamiDadeLocationHref(location, currentLanguage)}
+                            class="group rounded-[1.45rem] border border-[color-mix(in_srgb,var(--color-border)_86%,transparent)] bg-[color-mix(in_srgb,var(--color-surface)_78%,transparent)] p-4 text-inherit shadow-[0_14px_40px_rgba(15,23,42,0.06)] transition duration-300 hover:-translate-y-1 hover:border-[color-mix(in_srgb,var(--color-secondary)_38%,var(--color-border))] hover:bg-[color-mix(in_srgb,var(--color-secondary-soft)_28%,transparent)]"
+                            style={`animation-delay: ${index * 45}ms;`}
+                        >
+                            <div class="flex items-center justify-between gap-4">
+                                <div>
+                                    <h3 class="font-heading text-[clamp(1.3rem,2vw,1.75rem)] text-[var(--color-heading)]">
+                                        {location.shortTitle[currentLanguage]}
+                                    </h3>
+
+                                    <p class="mt-2 text-sm text-[var(--color-text-soft)]">
+                                        {location.shortDescription[currentLanguage]}
+                                    </p>
+                                </div>
+
+                                <span class="grid size-10 shrink-0 place-items-center rounded-full border border-[color-mix(in_srgb,var(--color-secondary)_28%,var(--color-border))] text-[var(--color-secondary)] transition-transform duration-300 group-hover:translate-x-1">
+                                    <svg
+                                        viewBox="0 0 24 24"
+                                        width="18"
+                                        height="18"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        aria-hidden="true"
+                                    >
+                                        <path d="M5 12h14" />
+                                        <path d="m12 5 7 7-7 7" />
+                                    </svg>
+                                </span>
+                            </div>
+                        </a>
+                    ))
+                }
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding-sm">
+        <div class="site-container">
+            <div class="glow-panel grid items-center gap-5 p-[clamp(1.25rem,3vw,2rem)] max-md:rounded-[1.65rem] lg:grid-cols-[1fr_auto]">
+                <div>
+                    <span class="section-kicker">{t.bottomKicker}</span>
+
+                    <h2 class="text-[clamp(2rem,4vw,3.75rem)] text-[var(--color-heading)]">
+                        {t.bottomTitle}
+                    </h2>
+
+                    <p class="mt-3 max-w-[720px] text-base text-[var(--color-text-soft)]">
+                        {t.bottomDescription}
+                    </p>
+                </div>
+
+                <a href={contactInfo.phone.href} class="btn btn-primary max-lg:w-fit max-md:w-full">
+                    {t.callLabel}
+                </a>
+            </div>
+        </div>
+    </section>
+</MainLayout>
+
+<style>
+    .location-office-card {
+        animation: location-office-float 6.5s ease-in-out infinite;
+        will-change: transform;
+    }
+
+    @keyframes location-office-float {
+        0%,
+        100% {
+            transform: translate3d(0, 0, 0) rotate(-1deg);
+        }
+
+        50% {
+            transform: translate3d(0, -12px, 0) rotate(1deg);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .location-office-card {
+            animation: none;
+        }
+    }
+</style>

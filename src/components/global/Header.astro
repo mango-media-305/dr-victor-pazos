@@ -1,5 +1,6 @@
 ---
 import ThemeToggle from "./ThemeToggle.astro";
+import { Menu as MenuIcon, X as XIcon } from "lucide-astro";
 
 import { siteConfig, type LanguageCode } from "../../data/site/siteConfig";
 import { contactInfo } from "../../data/site/contact";
@@ -58,15 +59,15 @@ const alternateLanguage = currentLanguage === "en" ? "es" : "en";
                 />
             </span>
 
-            <span class="grid gap-[0.1rem] leading-none">
+            <span class="grid gap-[0.1rem]">
                 <strong
-                    class="font-heading text-[1.05rem] tracking-[-0.03em] text-[var(--color-heading)]"
+                    class="font-heading text-[1.05rem] text-[var(--color-heading)]"
                 >
                     Victor Pazos, MD. PA.
                 </strong>
 
                 <small
-                    class="text-[0.72rem] font-extrabold uppercase tracking-[0.08em] text-[var(--color-text-soft)]"
+                    class="text-[0.72rem] font-extrabold uppercase text-[var(--color-text-soft)]"
                 >
                     Cardiology
                 </small>
@@ -113,15 +114,14 @@ const alternateLanguage = currentLanguage === "en" ? "es" : "en";
 
             <button
                 type="button"
-                class="hidden size-11 place-items-center gap-[0.26rem] rounded-full border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface)_86%,transparent)] text-[var(--color-heading)] max-[1080px]:inline-grid max-[720px]:size-[2.55rem]"
+                class="hidden size-11 place-items-center rounded-full border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface)_86%,transparent)] text-[var(--color-heading)] transition-[transform,border-color,background] duration-200 hover:-translate-y-0.5 hover:border-[color-mix(in_srgb,var(--color-secondary)_42%,var(--color-border))] max-[1080px]:inline-grid max-[720px]:size-[2.55rem]"
                 aria-label={mobileNavigationLabels.openMenu[currentLanguage]}
                 aria-expanded="false"
                 aria-controls="mobile-menu"
                 data-menu-toggle
             >
-                <span class="block h-0.5 w-[1.05rem] rounded-full bg-current"></span>
-                <span class="block h-0.5 w-[1.05rem] rounded-full bg-current"></span>
-                <span class="block h-0.5 w-[1.05rem] rounded-full bg-current"></span>
+                <MenuIcon class="menu-open-icon size-5" aria-hidden="true" />
+                <XIcon class="menu-close-icon hidden size-5" aria-hidden="true" />
             </button>
         </div>
     </div>
@@ -144,11 +144,11 @@ const alternateLanguage = currentLanguage === "en" ? "es" : "en";
 
                 <button
                     type="button"
-                    class="grid size-[2.6rem] place-items-center rounded-full border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface-soft)_74%,transparent)] text-[1.65rem] leading-none text-[var(--color-heading)]"
+                    class="grid size-[2.6rem] place-items-center rounded-full border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface-soft)_74%,transparent)] text-[var(--color-heading)] transition-[transform,border-color,background] duration-200 hover:-translate-y-0.5 hover:border-[color-mix(in_srgb,var(--color-secondary)_42%,var(--color-border))]"
                     aria-label={mobileNavigationLabels.closeMenu[currentLanguage]}
                     data-menu-close
                 >
-                    ×
+                    <XIcon class="size-5" aria-hidden="true" />
                 </button>
             </div>
 
@@ -158,13 +158,14 @@ const alternateLanguage = currentLanguage === "en" ? "es" : "en";
                         <a
                             href={item.href[currentLanguage]}
                             class="mobile-nav-link grid gap-1 rounded-[1.2rem] border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface-soft)_54%,transparent)] p-4"
+                            data-mobile-nav-link
                         >
                             <span class="font-black text-[var(--color-heading)]">
                                 {item.label[currentLanguage]}
                             </span>
 
                             {item.description && (
-                                <small class="text-[0.84rem] leading-normal text-[var(--color-text-soft)]">
+                                <small class="text-[0.84rem] text-[var(--color-text-soft)]">
                                     {item.description[currentLanguage]}
                                 </small>
                             )}
@@ -187,7 +188,7 @@ const alternateLanguage = currentLanguage === "en" ? "es" : "en";
             </div>
 
             <div
-                class="grid gap-[0.35rem] rounded-[1.25rem] border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-secondary-soft)_34%,transparent)] p-4 text-sm leading-normal text-[var(--color-text-soft)]"
+                class="grid gap-[0.35rem] rounded-[1.25rem] border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-secondary-soft)_34%,transparent)] p-4 text-sm text-[var(--color-text-soft)]"
             >
                 <strong class="text-[var(--color-heading)]">
                     {contactInfo.practiceName}
@@ -207,55 +208,95 @@ const alternateLanguage = currentLanguage === "en" ? "es" : "en";
 </header>
 
 <script>
-    const header = document.querySelector("[data-site-header]");
-    const menu = document.querySelector("[data-mobile-menu]");
-    const toggle = document.querySelector("[data-menu-toggle]");
-    const closeButton = document.querySelector("[data-menu-close]");
-    const mobileLinks = document.querySelectorAll(".mobile-nav-link");
+    function initSiteHeader() {
+        const header = document.querySelector("[data-site-header]");
+        const menu = document.querySelector("[data-mobile-menu]");
+        const toggle = document.querySelector("[data-menu-toggle]");
+        const closeButton = document.querySelector("[data-menu-close]");
+        const mobileLinks = document.querySelectorAll("[data-mobile-nav-link]");
 
-    function openMenu() {
-        if (!menu || !toggle) return;
+        if (!header || !menu || !toggle) return;
 
-        menu.removeAttribute("hidden");
-        toggle.setAttribute("aria-expanded", "true");
-        document.documentElement.classList.add("menu-open");
+        if (toggle instanceof HTMLElement && toggle.dataset.menuInitialized === "true") {
+            return;
+        }
+
+        if (toggle instanceof HTMLElement) {
+            toggle.dataset.menuInitialized = "true";
+        }
+
+        const openIcon = toggle.querySelector(".menu-open-icon");
+        const closeIcon = toggle.querySelector(".menu-close-icon");
+
+        function openMenu() {
+            menu.removeAttribute("hidden");
+            toggle.setAttribute("aria-expanded", "true");
+            document.documentElement.classList.add("menu-open");
+
+            openIcon?.classList.add("hidden");
+            closeIcon?.classList.remove("hidden");
+        }
+
+        function closeMenu() {
+            menu.setAttribute("hidden", "");
+            toggle.setAttribute("aria-expanded", "false");
+            document.documentElement.classList.remove("menu-open");
+
+            openIcon?.classList.remove("hidden");
+            closeIcon?.classList.add("hidden");
+        }
+
+        function toggleMenu() {
+            const isExpanded = toggle.getAttribute("aria-expanded") === "true";
+
+            if (isExpanded) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
+        }
+
+        function handleEscape(event) {
+            if (event.key === "Escape") {
+                closeMenu();
+            }
+        }
+
+        function handleOverlayClick(event) {
+            if (event.target === menu) {
+                closeMenu();
+            }
+        }
+
+        function handleScroll() {
+            header.classList.toggle("is-scrolled", window.scrollY > 16);
+        }
+
+        toggle.addEventListener("click", toggleMenu);
+        closeButton?.addEventListener("click", closeMenu);
+        menu.addEventListener("click", handleOverlayClick);
+        window.addEventListener("keydown", handleEscape);
+        window.addEventListener("scroll", handleScroll, { passive: true });
+
+        mobileLinks.forEach((link) => {
+            link.addEventListener("click", closeMenu);
+        });
+
+        handleScroll();
+
+        document.addEventListener(
+            "astro:before-swap",
+            () => {
+                closeMenu();
+                window.removeEventListener("keydown", handleEscape);
+                window.removeEventListener("scroll", handleScroll);
+            },
+            { once: true },
+        );
     }
 
-    function closeMenu() {
-        if (!menu || !toggle) return;
-
-        menu.setAttribute("hidden", "");
-        toggle.setAttribute("aria-expanded", "false");
-        document.documentElement.classList.remove("menu-open");
-    }
-
-    toggle?.addEventListener("click", () => {
-        const isExpanded = toggle.getAttribute("aria-expanded") === "true";
-
-        if (isExpanded) {
-            closeMenu();
-        } else {
-            openMenu();
-        }
-    });
-
-    closeButton?.addEventListener("click", closeMenu);
-
-    mobileLinks.forEach((link) => {
-        link.addEventListener("click", closeMenu);
-    });
-
-    window.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") {
-            closeMenu();
-        }
-    });
-
-    window.addEventListener("scroll", () => {
-        if (!header) return;
-
-        header.classList.toggle("is-scrolled", window.scrollY > 16);
-    });
+    initSiteHeader();
+    document.addEventListener("astro:page-load", initSiteHeader);
 </script>
 
 <style>

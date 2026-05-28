@@ -71,13 +71,13 @@ const locations = featuredMiamiDadeLocations
             <span class="section-kicker">{t.kicker}</span>
 
             <h2
-                class="max-w-[760px] text-[clamp(2.35rem,5.5vw,5rem)] leading-[0.98] tracking-[-0.06em] text-[var(--color-heading)] max-[440px]:text-[clamp(2.25rem,12vw,3.85rem)]"
+                class="max-w-[760px] text-[clamp(2.35rem,5.5vw,5rem)] text-[var(--color-heading)] max-[440px]:text-[clamp(2.25rem,12vw,3.85rem)]"
             >
                 {t.title}
             </h2>
 
             <p
-                class="mt-5 max-w-[640px] text-[clamp(1rem,1.35vw,1.15rem)] leading-[1.85] text-[var(--color-text-soft)]"
+                class="mt-5 max-w-[640px] text-[clamp(1rem,1.35vw,1.15rem)] text-[var(--color-text-soft)]"
             >
                 {t.description}
             </p>
@@ -86,18 +86,18 @@ const locations = featuredMiamiDadeLocations
                 class="glow-panel mt-[1.65rem] grid w-[min(100%,560px)] gap-[0.45rem] p-[clamp(1rem,2vw,1.35rem)]"
             >
                 <span
-                    class="text-xs font-black uppercase tracking-[0.12em] text-[var(--color-secondary)]"
+                    class="text-xs font-black uppercase text-[var(--color-secondary)]"
                 >
                     {t.officeLabel}
                 </span>
 
                 <strong
-                    class="font-heading text-[clamp(1.6rem,2.6vw,2.35rem)] leading-none tracking-[-0.045em] text-[var(--color-heading)]"
+                    class="font-heading text-[clamp(1.6rem,2.6vw,2.35rem)] text-[var(--color-heading)]"
                 >
                     {t.officeName}
                 </strong>
 
-                <p class="text-[0.96rem] leading-[1.6] text-[var(--color-text-soft)]">
+                <p class="text-[0.96rem] text-[var(--color-text-soft)]">
                     {contactInfo.address.display}
                 </p>
 
@@ -137,13 +137,13 @@ const locations = featuredMiamiDadeLocations
                     class="absolute bottom-4 left-4 z-[2] grid w-[min(calc(100%-2rem),280px)] gap-1 rounded-[1.25rem] border border-[color-mix(in_srgb,var(--color-secondary)_34%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-surface)_86%,transparent)] px-4 py-[0.95rem] shadow-[var(--shadow-card)] backdrop-blur-[18px] max-[720px]:bottom-3 max-[720px]:left-3 max-[720px]:w-[min(calc(100%-1.5rem),260px)]"
                 >
                     <span
-                        class="text-[0.72rem] font-black uppercase tracking-[0.1em] text-[var(--color-text-soft)]"
+                        class="text-[0.72rem] font-black uppercase text-[var(--color-text-soft)]"
                     >
                         {t.officeName}
                     </span>
 
                     <strong
-                        class="font-heading text-[1.75rem] leading-none tracking-[-0.045em] text-[var(--color-heading)] max-[720px]:text-2xl max-[440px]:text-[1.4rem]"
+                        class="font-heading text-[1.75rem] text-[var(--color-heading)] max-[720px]:text-2xl max-[440px]:text-[1.4rem]"
                     >
                         Hialeah, FL
                     </strong>
@@ -160,11 +160,11 @@ const locations = featuredMiamiDadeLocations
                             aria-label={`${t.viewLocation}: ${location.title[currentLanguage]}`}
                         >
                             <div class="relative z-[1]">
-                                <h3 class="font-heading text-[1.45rem] leading-none tracking-[-0.045em] text-[var(--color-heading)]">
+                                <h3 class="font-heading text-[1.45rem] text-[var(--color-heading)]">
                                     {location.shortTitle[currentLanguage]}
                                 </h3>
 
-                                <p class="mt-[0.45rem] text-sm leading-[1.55] text-[var(--color-text-soft)]">
+                                <p class="mt-[0.45rem] text-sm text-[var(--color-text-soft)]">
                                     {location.shortDescription[currentLanguage]}
                                 </p>
                             </div>

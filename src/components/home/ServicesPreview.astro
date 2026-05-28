@@ -66,14 +66,14 @@ const services = cardiologyServices.map((service) => ({
 
             <div class="grid grid-cols-1 gap-8">
                 <h2
-                    class="text-[clamp(2.3rem,5.5vw,5.15rem)] leading-[0.98] tracking-[-0.06em] text-[var(--color-heading)]"
+                    class="text-[clamp(2.3rem,5.5vw,5.15rem)] text-[var(--color-heading)]"
                 >
                     {t.title}
                 </h2>
 
                 <div class="grid justify-items-start gap-5 max-[680px]:justify-items-stretch">
                     <p
-                        class="text-[clamp(1rem,1.35vw,1.15rem)] leading-[1.85] text-[var(--color-text-soft)]"
+                        class="text-[clamp(1rem,1.35vw,1.15rem)] text-[var(--color-text-soft)]"
                     >
                         {t.description}
                     </p>
@@ -111,7 +111,7 @@ const services = cardiologyServices.map((service) => ({
                                 </span>
 
                                 <span
-                                    class="font-heading text-[2.4rem] font-extrabold leading-none tracking-[-0.06em] text-[color-mix(in_srgb,var(--color-accent)_76%,var(--color-text-muted))] opacity-55"
+                                    class="font-heading text-[2.4rem] font-extrabold text-[color-mix(in_srgb,var(--color-accent)_76%,var(--color-text-muted))] opacity-55"
                                 >
                                     {String(index + 1).padStart(2, "0")}
                                 </span>
@@ -119,18 +119,18 @@ const services = cardiologyServices.map((service) => ({
 
                             <div class="relative z-[1] mt-[2.4rem] grid gap-3 max-[680px]:mt-7">
                                 <h3
-                                    class="font-heading text-[clamp(1.55rem,2.4vw,2.25rem)] leading-[1.02] tracking-[-0.045em] text-[var(--color-heading)]"
+                                    class="font-heading text-[clamp(1.55rem,2.4vw,2.25rem)] text-[var(--color-heading)]"
                                 >
                                     {service.shortTitle[currentLanguage]}
                                 </h3>
 
-                                <p class="text-[0.96rem] leading-[1.7] text-[var(--color-text-soft)]">
+                                <p class="text-[0.96rem] text-[var(--color-text-soft)]">
                                     {service.shortDescription[currentLanguage]}
                                 </p>
                             </div>
 
                             <span
-                                class="relative z-[1] mt-[1.35rem] inline-flex w-fit items-center gap-[0.45rem] text-[0.88rem] font-black tracking-[-0.01em] text-[var(--color-secondary)] transition-[color,transform] duration-200 group-hover:translate-x-1 group-hover:text-[var(--color-accent-dark)] dark:group-hover:text-[var(--color-accent)]"
+                                class="relative z-[1] mt-[1.35rem] inline-flex w-fit items-center gap-[0.45rem] text-[0.88rem] font-black uppercase text-[var(--color-secondary)] transition-[color,transform] duration-200 group-hover:translate-x-1 group-hover:text-[var(--color-accent-dark)] dark:group-hover:text-[var(--color-accent)]"
                             >
                                 {t.viewService}
 
@@ -149,7 +149,7 @@ const services = cardiologyServices.map((service) => ({
                 <CircleAlert size={18} strokeWidth={2} />
             </span>
 
-            <p class="text-sm leading-[1.55] text-current">{t.note}</p>
+            <p class="text-sm text-current">{t.note}</p>
         </div>
     </div>
 </section>
