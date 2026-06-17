@@ -10,22 +10,7 @@ export type RouteKey =
     | "patientInfo"
     | "contact"
     | "privacyPolicy"
-    | "medicalDisclaimer"
-    | "cardiologyConsultation"
-    | "interventionalCardiology"
-    | "chestPainEvaluation"
-    | "anginaTreatment"
-    | "coronaryArteryDisease"
-    | "heartDiseaseManagement"
-    | "hypertension"
-    | "heartFailure"
-    | "arrhythmiaAtrialFibrillation"
-    | "heartMurmur"
-    | "ekgEcgTesting"
-    | "echocardiogram"
-    | "stressTest"
-    | "cardiacCatheterization"
-    | "preventiveCardiology";
+    | "medicalDisclaimer";
 
 export const routes: Record<RouteKey, Record<LanguageCode, string>> = {
     home: {
@@ -35,112 +20,37 @@ export const routes: Record<RouteKey, Record<LanguageCode, string>> = {
 
     about: {
         en: "/about/",
-        es: "/es/sobre-el-doctor/",
+        es: "/es/about/",
     },
 
     services: {
         en: "/services/",
-        es: " /es/services/",
+        es: "/es/services/",
     },
 
     locations: {
         en: "/locations/",
-        es: " /es/locations/",
+        es: "/es/locations/",
     },
 
     patientInfo: {
         en: "/patient-info/",
-        es: "/es/informacion-para-pacientes/",
+        es: "/es/patient-info/",
     },
 
     contact: {
         en: "/contact/",
-        es: "/es/contacto/",
+        es: "/es/contact/",
     },
 
     privacyPolicy: {
         en: "/privacy-policy/",
-        es: "/es/politica-de-privacidad/",
+        es: "/es/privacy-policy/",
     },
 
     medicalDisclaimer: {
         en: "/medical-disclaimer/",
-        es: "/es/aviso-medico/",
-    },
-
-    cardiologyConsultation: {
-        en: "/services/cardiology-consultation/",
-        es: " /es/services/consulta-cardiologica/",
-    },
-
-    interventionalCardiology: {
-        en: "/services/interventional-cardiology/",
-        es: " /es/services/cardiologia-intervencionista/",
-    },
-
-    chestPainEvaluation: {
-        en: "/services/chest-pain-evaluation/",
-        es: " /es/services/evaluacion-dolor-pecho/",
-    },
-
-    anginaTreatment: {
-        en: "/services/angina-treatment/",
-        es: " /es/services/tratamiento-de-angina/",
-    },
-
-    coronaryArteryDisease: {
-        en: "/services/coronary-artery-disease/",
-        es: " /es/services/enfermedad-de-las-arterias-coronarias/",
-    },
-
-    heartDiseaseManagement: {
-        en: "/services/heart-disease-management/",
-        es: " /es/services/manejo-de-enfermedades-del-corazon/",
-    },
-
-    hypertension: {
-        en: "/services/hypertension/",
-        es: " /es/services/presion-alta/",
-    },
-
-    heartFailure: {
-        en: "/services/heart-failure/",
-        es: " /es/services/insuficiencia-cardiaca/",
-    },
-
-    arrhythmiaAtrialFibrillation: {
-        en: "/services/arrhythmia-atrial-fibrillation/",
-        es: " /es/services/arritmia-fibrilacion-auricular/",
-    },
-
-    heartMurmur: {
-        en: "/services/heart-murmur/",
-        es: " /es/services/soplo-cardiaco/",
-    },
-
-    ekgEcgTesting: {
-        en: "/services/ekg-ecg-testing/",
-        es: " /es/services/prueba-ekg-ecg/",
-    },
-
-    echocardiogram: {
-        en: "/services/echocardiogram/",
-        es: " /es/services/ecocardiograma/",
-    },
-
-    stressTest: {
-        en: "/services/stress-test/",
-        es: " /es/services/prueba-de-esfuerzo/",
-    },
-
-    cardiacCatheterization: {
-        en: "/services/cardiac-catheterization/",
-        es: " /es/services/cateterismo-cardiaco/",
-    },
-
-    preventiveCardiology: {
-        en: "/services/preventive-cardiology/",
-        es: " /es/services/cardiologia-preventiva/",
+        es: "/es/medical-disclaimer/",
     },
 };
 

@@ -1,0 +1,21 @@
+/services/general-cardiology/ /services/comprehensive-cardiology-consultations/ 301
+/services/interventional-cardiology/ /services/cardiac-catheterization/ 301
+/services/chest-pain-evaluation/ /services/comprehensive-cardiology-consultations/ 301
+/services/hypertension-treatment/ /services/hypertension-management/ 301
+/services/heart-disease-management/ /services/heart-disease-evaluation-treatment/ 301
+/services/ekg-cardiac-testing/ /services/echocardiograms/ 301
+/services/shortness-of-breath-evaluation/ /services/comprehensive-cardiology-consultations/ 301
+/services/arrhythmia-evaluation/ /services/event-monitor/ 301
+
+/services/cardiology-consultation/ /services/comprehensive-cardiology-consultations/ 301
+/services/hypertension/ /services/hypertension-management/ 301
+/services/ekg-ecg-testing/ /services/echocardiograms/ 301
+/services/stress-test/ /services/nuclear-stress-testing/ 301
+
+/es/services/cardiology-consultation/ /es/services/consultas-cardiologia-integral/ 301
+/es/services/cardiac-catheterization/ /es/services/cateterismo-cardiaco/ 301
+/es/services/comprehensive-cardiology-consultations/ /es/services/consultas-cardiologia-integral/ 301
+/es/services/hypertension/ /es/services/manejo-hipertension/ 301
+/es/services/ekg-ecg-testing/ /es/services/ecocardiogramas/ 301
+/es/services/stress-test/ /es/services/prueba-esfuerzo-nuclear/ 301
+/es/services/preventive-cardiology/ /es/services/cardiologia-preventiva/ 301

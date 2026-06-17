@@ -1,18 +1,16 @@
 // src/data/services/cardiologyServices.ts
 
-import type { LucideIcon } from "lucide-astro";
-
 import Arrythmia from "../../components/icons/Arrythmia.astro";
 import CardiacTesting from "../../components/icons/CardiacTesting.astro";
 import Cardiology from "../../components/icons/Cardiology.astro";
-import ChestPain from "../../components/icons/ChestPain.astro";
 import HeartDisease from "../../components/icons/HeartDisease.astro";
 import Hypertension from "../../components/icons/Hypertension.astro";
 import InterventionalCardiology from "../../components/icons/InterventionalCardiology.astro";
 import PreventiveCardiology from "../../components/icons/PreventiveCardiology.astro";
-import ShortnessOfBreath from "../../components/icons/ShortnessOfBreath.astro";
 
 import type { LanguageCode } from "../site/siteConfig";
+
+type ServiceIcon = typeof Cardiology;
 
 export interface ServiceFaq {
     question: Record<LanguageCode, string>;
@@ -32,7 +30,7 @@ export interface ServiceDetailImage {
 export interface CardiologyService {
     id: string;
     slug: Record<LanguageCode, string>;
-    icon: LucideIcon;
+    icon: ServiceIcon;
     title: Record<LanguageCode, string>;
     shortTitle: Record<LanguageCode, string>;
     description: Record<LanguageCode, string>;
@@ -52,57 +50,472 @@ export interface CardiologyService {
     priority: number;
 }
 
+const imageSets = {
+    consultation: [
+        {
+            src: "/images/services/general-cardiology/general-cardiology-visit.webp",
+            alt: {
+                en: "Cardiology consultation with a heart specialist",
+                es: "Consulta de cardiología con especialista del corazón",
+            },
+        },
+        {
+            src: "/images/services/general-cardiology/cardiology-evaluation.webp",
+            alt: {
+                en: "Comprehensive cardiology evaluation",
+                es: "Evaluación cardiológica integral",
+            },
+        },
+        {
+            src: "/images/services/general-cardiology/heart-care-planning.webp",
+            alt: {
+                en: "Heart care planning and cardiovascular review",
+                es: "Planificación de cuidado cardíaco y revisión cardiovascular",
+            },
+        },
+    ],
+    testing: [
+        {
+            src: "/images/services/echocardiograms/ekg-testing.webp",
+            alt: {
+                en: "Cardiac diagnostic testing",
+                es: "Pruebas diagnósticas cardíacas",
+            },
+        },
+        {
+            src: "/images/services/echocardiograms/cardiac-test-review.webp",
+            alt: {
+                en: "Review of cardiac test results",
+                es: "Revisión de resultados de pruebas cardíacas",
+            },
+        },
+        {
+            src: "/images/services/echocardiograms/heart-rhythm-evaluation.webp",
+            alt: {
+                en: "Heart rhythm and cardiac testing evaluation",
+                es: "Evaluación del ritmo cardíaco y pruebas cardíacas",
+            },
+        },
+    ],
+    vascular: [
+        {
+            src: "/images/services/cardiac-catheterization/advanced-heart-evaluation.webp",
+            alt: {
+                en: "Advanced cardiovascular and vascular evaluation",
+                es: "Evaluación cardiovascular y vascular avanzada",
+            },
+        },
+        {
+            src: "/images/services/heart-disease-evaluation-treatment/cardiovascular-monitoring.webp",
+            alt: {
+                en: "Cardiovascular and vascular monitoring",
+                es: "Monitoreo cardiovascular y vascular",
+            },
+        },
+        {
+            src: "/images/services/general-cardiology/cardiology-evaluation.webp",
+            alt: {
+                en: "Vascular health assessment",
+                es: "Evaluación de salud vascular",
+            },
+        },
+    ],
+    prevention: [
+        {
+            src: "/images/services/preventive-cardiology/preventive-heart-care.webp",
+            alt: {
+                en: "Preventive heart care visit",
+                es: "Visita de cuidado preventivo del corazón",
+            },
+        },
+        {
+            src: "/images/services/preventive-cardiology/heart-risk-assessment.webp",
+            alt: {
+                en: "Cardiovascular risk assessment",
+                es: "Evaluación de riesgo cardiovascular",
+            },
+        },
+        {
+            src: "/images/services/preventive-cardiology/cardiology-prevention-plan.webp",
+            alt: {
+                en: "Heart disease prevention plan",
+                es: "Plan de prevención de enfermedad cardíaca",
+            },
+        },
+    ],
+    hypertension: [
+        {
+            src: "/images/services/hypertension-management/blood-pressure-review.webp",
+            alt: {
+                en: "Blood pressure review during cardiology visit",
+                es: "Revisión de presión arterial durante visita cardiológica",
+            },
+        },
+        {
+            src: "/images/services/hypertension-management/hypertension-care-plan.webp",
+            alt: {
+                en: "Hypertension care plan",
+                es: "Plan de cuidado para hipertensión",
+            },
+        },
+        {
+            src: "/images/services/hypertension-management/heart-risk-management.webp",
+            alt: {
+                en: "Heart risk management for high blood pressure",
+                es: "Manejo de riesgo cardíaco por presión alta",
+            },
+        },
+    ],
+    heartDisease: [
+        {
+            src: "/images/services/heart-disease-evaluation-treatment/heart-disease-follow-up.webp",
+            alt: {
+                en: "Heart disease follow-up visit",
+                es: "Visita de seguimiento para enfermedad cardíaca",
+            },
+        },
+        {
+            src: "/images/services/heart-disease-evaluation-treatment/treatment-planning.webp",
+            alt: {
+                en: "Cardiology treatment planning",
+                es: "Planificación de tratamiento cardiológico",
+            },
+        },
+        {
+            src: "/images/services/heart-disease-evaluation-treatment/cardiovascular-monitoring.webp",
+            alt: {
+                en: "Ongoing cardiovascular monitoring",
+                es: "Monitoreo cardiovascular continuo",
+            },
+        },
+    ],
+    rhythm: [
+        {
+            src: "/images/services/event-monitor/heart-rhythm-monitoring.webp",
+            alt: {
+                en: "Heart rhythm monitoring",
+                es: "Monitoreo del ritmo cardíaco",
+            },
+        },
+        {
+            src: "/images/services/event-monitor/palpitations-evaluation.webp",
+            alt: {
+                en: "Palpitations and rhythm evaluation",
+                es: "Evaluación de palpitaciones y ritmo cardíaco",
+            },
+        },
+        {
+            src: "/images/services/event-monitor/irregular-heartbeat-review.webp",
+            alt: {
+                en: "Irregular heartbeat review",
+                es: "Revisión de latidos irregulares",
+            },
+        },
+    ],
+    interventional: [
+        {
+            src: "/images/services/cardiac-catheterization/interventional-cardiology-consultation.webp",
+            alt: {
+                en: "Interventional cardiology consultation",
+                es: "Consulta de cardiología intervencionista",
+            },
+        },
+        {
+            src: "/images/services/cardiac-catheterization/advanced-heart-evaluation.webp",
+            alt: {
+                en: "Advanced heart evaluation",
+                es: "Evaluación cardíaca avanzada",
+            },
+        },
+        {
+            src: "/images/services/cardiac-catheterization/cardiovascular-specialist.webp",
+            alt: {
+                en: "Cardiovascular specialist reviewing care plan",
+                es: "Especialista cardiovascular revisando plan de cuidado",
+            },
+        },
+    ],
+        echocardiograms: [
+        {
+            src: "/images/services/echocardiograms/echocardiogram-testing.webp",
+            alt: {
+                en: "Echocardiogram ultrasound testing",
+                es: "Prueba de ecocardiograma por ultrasonido",
+            },
+        },
+        {
+            src: "/images/services/echocardiograms/heart-ultrasound-review.webp",
+            alt: {
+                en: "Heart ultrasound review",
+                es: "Revisión de ultrasonido del corazón",
+            },
+        },
+        {
+            src: "/images/services/echocardiograms/cardiac-valve-evaluation.webp",
+            alt: {
+                en: "Cardiac valve and heart function evaluation",
+                es: "Evaluación de válvulas cardíacas y función del corazón",
+            },
+        },
+    ],
+
+    nuclearStressTesting: [
+        {
+            src: "/images/services/nuclear-stress-testing/nuclear-stress-test.webp",
+            alt: {
+                en: "Nuclear stress testing for heart blood flow evaluation",
+                es: "Prueba de esfuerzo nuclear para evaluar flujo sanguíneo al corazón",
+            },
+        },
+        {
+            src: "/images/services/nuclear-stress-testing/cardiac-stress-imaging.webp",
+            alt: {
+                en: "Cardiac stress imaging",
+                es: "Imágenes cardíacas de esfuerzo",
+            },
+        },
+        {
+            src: "/images/services/nuclear-stress-testing/stress-test-results-review.webp",
+            alt: {
+                en: "Nuclear stress test results review",
+                es: "Revisión de resultados de prueba de esfuerzo nuclear",
+            },
+        },
+    ],
+
+    carotidUltrasound: [
+        {
+            src: "/images/services/carotid-ultrasound-studies/carotid-ultrasound.webp",
+            alt: {
+                en: "Carotid ultrasound study",
+                es: "Estudio de ultrasonido de carótidas",
+            },
+        },
+        {
+            src: "/images/services/carotid-ultrasound-studies/neck-artery-ultrasound.webp",
+            alt: {
+                en: "Neck artery ultrasound evaluation",
+                es: "Evaluación de arterias del cuello por ultrasonido",
+            },
+        },
+        {
+            src: "/images/services/carotid-ultrasound-studies/carotid-blood-flow-review.webp",
+            alt: {
+                en: "Carotid blood flow review",
+                es: "Revisión del flujo sanguíneo carotídeo",
+            },
+        },
+    ],
+
+    abdominalAorticUltrasound: [
+        {
+            src: "/images/services/abdominal-aortic-ultrasound-screening/abdominal-aortic-ultrasound.webp",
+            alt: {
+                en: "Abdominal aortic ultrasound screening",
+                es: "Ultrasonido de aorta abdominal",
+            },
+        },
+        {
+            src: "/images/services/abdominal-aortic-ultrasound-screening/aorta-screening.webp",
+            alt: {
+                en: "Aorta screening ultrasound",
+                es: "Evaluación de aorta por ultrasonido",
+            },
+        },
+        {
+            src: "/images/services/abdominal-aortic-ultrasound-screening/vascular-screening-review.webp",
+            alt: {
+                en: "Vascular screening review",
+                es: "Revisión de evaluación vascular",
+            },
+        },
+    ],
+
+    lowerExtremityArterial: [
+        {
+            src: "/images/services/lower-extremity-arterial-studies/lower-extremity-arterial-study.webp",
+            alt: {
+                en: "Lower extremity arterial study",
+                es: "Estudio arterial de extremidades inferiores",
+            },
+        },
+        {
+            src: "/images/services/lower-extremity-arterial-studies/leg-artery-circulation-test.webp",
+            alt: {
+                en: "Leg artery circulation testing",
+                es: "Prueba de circulación arterial en las piernas",
+            },
+        },
+        {
+            src: "/images/services/lower-extremity-arterial-studies/peripheral-vascular-assessment.webp",
+            alt: {
+                en: "Peripheral vascular assessment",
+                es: "Evaluación vascular periférica",
+            },
+        },
+    ],
+
+    lowerExtremityVenous: [
+        {
+            src: "/images/services/lower-extremity-venous-studies/lower-extremity-venous-study.webp",
+            alt: {
+                en: "Lower extremity venous study",
+                es: "Estudio venoso de extremidades inferiores",
+            },
+        },
+        {
+            src: "/images/services/lower-extremity-venous-studies/leg-vein-ultrasound.webp",
+            alt: {
+                en: "Leg vein ultrasound",
+                es: "Ultrasonido de venas de las piernas",
+            },
+        },
+        {
+            src: "/images/services/lower-extremity-venous-studies/leg-swelling-vascular-evaluation.webp",
+            alt: {
+                en: "Leg swelling vascular evaluation",
+                es: "Evaluación vascular por hinchazón en las piernas",
+            },
+        },
+    ],
+
+    cardiovascularRiskAssessment: [
+        {
+            src: "/images/services/cardiovascular-risk-assessment/heart-risk-assessment.webp",
+            alt: {
+                en: "Cardiovascular risk assessment",
+                es: "Evaluación de riesgo cardiovascular",
+            },
+        },
+        {
+            src: "/images/services/cardiovascular-risk-assessment/prevention-consultation.webp",
+            alt: {
+                en: "Heart disease prevention consultation",
+                es: "Consulta de prevención de enfermedad cardíaca",
+            },
+        },
+        {
+            src: "/images/services/cardiovascular-risk-assessment/risk-factor-review.webp",
+            alt: {
+                en: "Cardiovascular risk factor review",
+                es: "Revisión de factores de riesgo cardiovascular",
+            },
+        },
+    ],
+
+    pacemakerAicd: [
+        {
+            src: "/images/services/pacemaker-aicd-interrogation/pacemaker-check.webp",
+            alt: {
+                en: "Pacemaker device check",
+                es: "Chequeo de marcapasos",
+            },
+        },
+        {
+            src: "/images/services/pacemaker-aicd-interrogation/aicd-interrogation.webp",
+            alt: {
+                en: "AICD interrogation",
+                es: "Interrogación de AICD",
+            },
+        },
+        {
+            src: "/images/services/pacemaker-aicd-interrogation/cardiac-device-review.webp",
+            alt: {
+                en: "Cardiac device data review",
+                es: "Revisión de datos de dispositivo cardíaco",
+            },
+        },
+    ],
+
+    cardiacCatheterization: [
+        {
+            src: "/images/services/cardiac-catheterization/cardiac-catheterization-consultation.webp",
+            alt: {
+                en: "Cardiac catheterization consultation",
+                es: "Consulta para cateterismo cardíaco",
+            },
+        },
+        {
+            src: "/images/services/cardiac-catheterization/advanced-heart-evaluation.webp",
+            alt: {
+                en: "Advanced heart evaluation",
+                es: "Evaluación cardíaca avanzada",
+            },
+        },
+        {
+            src: "/images/services/cardiac-catheterization/cardiovascular-specialist.webp",
+            alt: {
+                en: "Cardiovascular specialist reviewing care plan",
+                es: "Especialista cardiovascular revisando plan de cuidado",
+            },
+        },
+    ],
+
+    transesophagealEchocardiogram: [
+        {
+            src: "/images/services/transesophageal-echocardiogram/transesophageal-echocardiogram.webp",
+            alt: {
+                en: "Transesophageal echocardiogram procedure coordination",
+                es: "Coordinación de ecocardiograma transesofágico",
+            },
+        },
+        {
+            src: "/images/services/transesophageal-echocardiogram/advanced-echocardiogram-review.webp",
+            alt: {
+                en: "Advanced echocardiogram review",
+                es: "Revisión de ecocardiograma avanzado",
+            },
+        },
+        {
+            src: "/images/services/transesophageal-echocardiogram/tee-cardiac-imaging.webp",
+            alt: {
+                en: "TEE cardiac imaging",
+                es: "Imágenes cardíacas TEE",
+            },
+        },
+    ],
+};
+
+const appointmentFaq = {
+    question: {
+        en: "How do I know if this service is right for me?",
+        es: "¿Cómo sé si este servicio es adecuado para mí?",
+    },
+    answer: {
+        en: "The best next step is to call the office and schedule a cardiology evaluation. The care team can help determine whether this service may be appropriate based on your symptoms, history, and prior test results.",
+        es: "El mejor próximo paso es llamar a la oficina y programar una evaluación cardiológica. El equipo puede ayudar a determinar si este servicio puede ser apropiado según sus síntomas, historial y resultados previos.",
+    },
+};
+
 export const cardiologyServices: CardiologyService[] = [
     {
-        id: "general-cardiology",
+        id: "comprehensive-cardiology-consultations",
         slug: {
-            en: "general-cardiology",
-            es: "cardiologia-general",
+            en: "comprehensive-cardiology-consultations",
+            es: "consultas-cardiologia-integral",
         },
         icon: Cardiology,
         title: {
-            en: "General Cardiology",
-            es: "Cardiología General",
+            en: "Comprehensive Cardiology Consultations",
+            es: "Consultas de Cardiología Integral",
         },
         shortTitle: {
-            en: "General Cardiology",
-            es: "Cardiología General",
+            en: "Cardiology Consultations",
+            es: "Consultas de Cardiología",
         },
         description: {
-            en: "Comprehensive cardiology evaluations for patients with heart-related symptoms, risk factors, or ongoing cardiovascular conditions.",
-            es: "Evaluaciones cardiológicas integrales para pacientes con síntomas relacionados al corazón, factores de riesgo o condiciones cardiovasculares existentes.",
+            en: "Comprehensive cardiology evaluations for symptoms, risk factors, abnormal results, prevention, and ongoing heart or vascular conditions.",
+            es: "Evaluaciones cardiológicas integrales para síntomas, factores de riesgo, resultados anormales, prevención y condiciones cardíacas o vasculares existentes.",
         },
         shortDescription: {
-            en: "Comprehensive heart evaluations and cardiovascular care.",
-            es: "Evaluaciones del corazón y cuidado cardiovascular integral.",
+            en: "Personalized heart and vascular evaluations.",
+            es: "Evaluaciones personalizadas del corazón y sistema vascular.",
         },
         overview: {
-            en: "General cardiology care helps patients evaluate symptoms, understand cardiovascular risk, review abnormal findings, and plan next steps for heart health. Victor Pazos, MD provides cardiology care from the Hialeah office for patients across Miami-Dade.",
-            es: "La cardiología general ayuda a los pacientes a evaluar síntomas, entender riesgos cardiovasculares, revisar resultados anormales y planificar próximos pasos para la salud del corazón. Victor Pazos, MD ofrece atención cardiológica desde la oficina en Hialeah para pacientes de Miami-Dade.",
+            en: "A comprehensive cardiology consultation helps patients understand symptoms, review risk factors, evaluate prior test results, and plan appropriate next steps for heart and vascular health.",
+            es: "Una consulta de cardiología integral ayuda a los pacientes a entender síntomas, revisar factores de riesgo, evaluar resultados previos y planificar próximos pasos para la salud cardíaca y vascular.",
         },
-        detailImages: [
-            {
-                src: "/images/services/general-cardiology/general-cardiology-visit.webp",
-                alt: {
-                    en: "General cardiology visit and heart health consultation",
-                    es: "Consulta de cardiología general y salud del corazón",
-                },
-            },
-            {
-                src: "/images/services/general-cardiology/cardiology-evaluation.webp",
-                alt: {
-                    en: "Cardiology evaluation for heart-related symptoms",
-                    es: "Evaluación cardiológica para síntomas relacionados con el corazón",
-                },
-            },
-            {
-                src: "/images/services/general-cardiology/heart-care-planning.webp",
-                alt: {
-                    en: "Heart care planning with a cardiology specialist",
-                    es: "Planificación de cuidado cardíaco con especialista en cardiología",
-                },
-            },
-        ],
+        detailImages: imageSets.consultation,
         reasonsToSeekCare: [
             {
                 title: {
@@ -110,8 +523,8 @@ export const cardiologyServices: CardiologyService[] = [
                     es: "Síntomas relacionados con el corazón",
                 },
                 description: {
-                    en: "Chest discomfort, shortness of breath, palpitations, dizziness, or fatigue with activity may need a cardiology evaluation.",
-                    es: "Molestia en el pecho, falta de aire, palpitaciones, mareos o fatiga con actividad pueden necesitar una evaluación cardiológica.",
+                    en: "Chest discomfort, shortness of breath, palpitations, dizziness, fatigue with activity, or abnormal cardiac results may require evaluation.",
+                    es: "Molestia en el pecho, falta de aire, palpitaciones, mareos, fatiga con actividad o resultados cardíacos anormales pueden requerir evaluación.",
                 },
             },
             {
@@ -126,12 +539,12 @@ export const cardiologyServices: CardiologyService[] = [
             },
             {
                 title: {
-                    en: "Ongoing heart care",
-                    es: "Cuidado cardíaco continuo",
+                    en: "Known heart or vascular disease",
+                    es: "Enfermedad cardíaca o vascular conocida",
                 },
                 description: {
-                    en: "Patients with known heart disease may need follow-up care, monitoring, medication review, or additional testing.",
-                    es: "Pacientes con enfermedad cardíaca conocida pueden necesitar seguimiento, monitoreo, revisión de medicamentos o pruebas adicionales.",
+                    en: "Patients with existing cardiovascular conditions may need monitoring, medication review, diagnostic testing, or follow-up care.",
+                    es: "Pacientes con condiciones cardiovasculares existentes pueden necesitar monitoreo, revisión de medicamentos, pruebas diagnósticas o seguimiento.",
                 },
             },
         ],
@@ -142,18 +555,18 @@ export const cardiologyServices: CardiologyService[] = [
                     es: "Revisión del historial médico",
                 },
                 description: {
-                    en: "The visit may include a review of symptoms, medications, medical history, family history, and prior test results.",
+                    en: "The visit may include a review of symptoms, medications, medical history, family history, and previous test results.",
                     es: "La visita puede incluir revisión de síntomas, medicamentos, historial médico, antecedentes familiares y resultados previos.",
                 },
             },
             {
                 title: {
-                    en: "Heart-health discussion",
-                    es: "Conversación sobre salud cardíaca",
+                    en: "Cardiovascular assessment",
+                    es: "Evaluación cardiovascular",
                 },
                 description: {
-                    en: "The doctor may discuss possible causes, cardiovascular risks, and whether testing or follow-up care is recommended.",
-                    es: "El doctor puede hablar sobre posibles causas, riesgos cardiovasculares y si se recomienda hacer pruebas o seguimiento.",
+                    en: "The care team may discuss possible causes, risk factors, and whether diagnostic testing or follow-up care is recommended.",
+                    es: "El equipo puede hablar sobre posibles causas, factores de riesgo y si se recomiendan pruebas diagnósticas o seguimiento.",
                 },
             },
             {
@@ -162,135 +575,236 @@ export const cardiologyServices: CardiologyService[] = [
                     es: "Próximos pasos claros",
                 },
                 description: {
-                    en: "The goal is to help patients understand what may be happening and what steps may be appropriate next.",
-                    es: "El objetivo es ayudar al paciente a entender qué puede estar ocurriendo y qué pasos pueden ser apropiados después.",
+                    en: "Patients receive guidance on testing, treatment planning, prevention, or ongoing management when appropriate.",
+                    es: "Los pacientes reciben orientación sobre pruebas, planificación de tratamiento, prevención o manejo continuo cuando corresponde.",
                 },
             },
         ],
         faqs: [
             {
                 question: {
-                    en: "What does a general cardiologist evaluate?",
-                    es: "¿Qué evalúa un cardiólogo general?",
+                    en: "What does a cardiology consultation include?",
+                    es: "¿Qué incluye una consulta de cardiología?",
                 },
                 answer: {
-                    en: "A general cardiologist evaluates heart-related symptoms, cardiovascular risk factors, abnormal test results, and ongoing heart conditions.",
-                    es: "Un cardiólogo general evalúa síntomas relacionados con el corazón, factores de riesgo cardiovascular, resultados anormales y condiciones cardíacas continuas.",
+                    en: "A consultation may include a review of symptoms, medical history, medications, risk factors, prior results, and recommendations for testing or treatment.",
+                    es: "Una consulta puede incluir revisión de síntomas, historial médico, medicamentos, factores de riesgo, resultados previos y recomendaciones para pruebas o tratamiento.",
                 },
             },
-            {
-                question: {
-                    en: "Do I need symptoms to see a cardiologist?",
-                    es: "¿Necesito tener síntomas para ver a un cardiólogo?",
-                },
-                answer: {
-                    en: "Not always. Some patients see a cardiologist because of risk factors, family history, abnormal test results, or prevention concerns.",
-                    es: "No siempre. Algunos pacientes visitan a un cardiólogo por factores de riesgo, antecedentes familiares, resultados anormales o prevención.",
-                },
-            },
+            appointmentFaq,
         ],
         keywords: {
             en: [
                 "cardiologist in Hialeah",
-                "cardiologist in Miami",
-                "general cardiology Miami",
-                "heart doctor Hialeah",
-                "heart specialist Miami-Dade",
+                "cardiology consultation Hialeah",
+                "heart doctor Miami-Dade",
+                "cardiovascular evaluation Miami",
             ],
             es: [
                 "cardiólogo en Hialeah",
-                "cardiólogo en Miami",
-                "cardiología general Miami",
-                "doctor del corazón Hialeah",
-                "especialista del corazón Miami-Dade",
+                "consulta de cardiología Hialeah",
+                "doctor del corazón Miami-Dade",
+                "evaluación cardiovascular Miami",
             ],
         },
         href: {
-            en: "/services/general-cardiology/",
-            es: " /es/services/cardiologia-general/",
+            en: "/services/comprehensive-cardiology-consultations/",
+            es: "/es/services/consultas-cardiologia-integral/",
         },
         seo: {
             title: {
-                en: "General Cardiology in Hialeah, FL | Victor Pazos, MD",
-                es: "Cardiología General en Hialeah, FL | Victor Pazos, MD",
+                en: "Cardiology Consultation in Hialeah, FL | Victor Pazos, MD",
+                es: "Consulta de Cardiología en Hialeah, FL | Victor Pazos, MD",
             },
             description: {
-                en: "General cardiology care in Hialeah for symptoms, risk factors, abnormal results, and ongoing heart conditions with Victor Pazos, MD.",
-                es: "Atención de cardiología general en Hialeah para síntomas, factores de riesgo, resultados anormales y condiciones cardíacas con Victor Pazos, MD.",
+                en: "Comprehensive cardiology consultations in Hialeah for heart symptoms, risk factors, abnormal results, prevention, and ongoing cardiovascular care.",
+                es: "Consultas de cardiología integral en Hialeah para síntomas cardíacos, factores de riesgo, resultados anormales, prevención y cuidado cardiovascular continuo.",
             },
         },
         featured: true,
         priority: 1,
     },
     {
-        id: "interventional-cardiology",
+        id: "echocardiograms",
         slug: {
-            en: "interventional-cardiology",
-            es: "cardiologia-intervencionista",
+            en: "echocardiograms",
+            es: "ecocardiogramas",
         },
-        icon: InterventionalCardiology,
+        icon: CardiacTesting,
         title: {
-            en: "Interventional Cardiology",
-            es: "Cardiología Intervencionista",
+            en: "Echocardiograms",
+            es: "Ecocardiogramas",
         },
         shortTitle: {
-            en: "Interventional Cardiology",
-            es: "Cardiología Intervencionista",
+            en: "Echocardiograms",
+            es: "Ecocardiogramas",
         },
         description: {
-            en: "Specialized cardiovascular care focused on diagnosing and treating heart and blood vessel conditions using minimally invasive approaches when appropriate.",
-            es: "Atención cardiovascular especializada enfocada en diagnosticar y tratar condiciones del corazón y los vasos sanguíneos mediante enfoques mínimamente invasivos cuando sea apropiado.",
+            en: "Non-invasive ultrasound testing used to evaluate heart structure, pumping function, valves, and other important cardiac findings.",
+            es: "Prueba de ultrasonido no invasiva utilizada para evaluar la estructura del corazón, función de bombeo, válvulas y otros hallazgos cardíacos importantes.",
         },
         shortDescription: {
-            en: "Specialized care for advanced cardiovascular conditions.",
-            es: "Atención especializada para condiciones cardiovasculares avanzadas.",
+            en: "Heart ultrasound testing for structure and function.",
+            es: "Ultrasonido cardíaco para estructura y función.",
         },
         overview: {
-            en: "Interventional cardiology focuses on advanced evaluation and treatment planning for heart and vascular conditions. Patients may be referred for interventional cardiology when symptoms, testing, or known cardiovascular disease suggest the need for more specialized care.",
-            es: "La cardiología intervencionista se enfoca en evaluación avanzada y planificación de tratamiento para condiciones del corazón y los vasos sanguíneos. Los pacientes pueden ser referidos cuando síntomas, pruebas o enfermedad cardiovascular conocida requieren atención más especializada.",
+            en: "An echocardiogram uses ultrasound imaging to help evaluate how the heart is working. It may be recommended for symptoms, abnormal findings, heart murmurs, valve concerns, or ongoing cardiovascular monitoring.",
+            es: "Un ecocardiograma utiliza imágenes por ultrasonido para ayudar a evaluar cómo funciona el corazón. Puede recomendarse por síntomas, hallazgos anormales, soplos cardíacos, problemas de válvulas o monitoreo cardiovascular.",
         },
-        detailImages: [
-            {
-                src: "/images/services/interventional-cardiology/interventional-cardiology-consultation.webp",
-                alt: {
-                    en: "Interventional cardiology consultation for advanced heart care",
-                    es: "Consulta de cardiología intervencionista para cuidado cardíaco avanzado",
-                },
-            },
-            {
-                src: "/images/services/interventional-cardiology/cardiovascular-specialist.webp",
-                alt: {
-                    en: "Cardiovascular specialist reviewing heart and vascular concerns",
-                    es: "Especialista cardiovascular revisando condiciones del corazón y vasos sanguíneos",
-                },
-            },
-            {
-                src: "/images/services/interventional-cardiology/advanced-heart-evaluation.webp",
-                alt: {
-                    en: "Advanced heart evaluation and treatment planning",
-                    es: "Evaluación cardíaca avanzada y planificación de tratamiento",
-                },
-            },
-        ],
+        detailImages: imageSets.echocardiograms,
         reasonsToSeekCare: [
             {
                 title: {
-                    en: "Advanced heart concerns",
-                    es: "Preocupaciones cardíacas avanzadas",
+                    en: "Symptoms or abnormal findings",
+                    es: "Síntomas o hallazgos anormales",
                 },
                 description: {
-                    en: "Patients with significant symptoms, abnormal testing, or known cardiovascular disease may need specialized evaluation.",
-                    es: "Pacientes con síntomas importantes, pruebas anormales o enfermedad cardiovascular conocida pueden necesitar evaluación especializada.",
+                    en: "Shortness of breath, chest discomfort, swelling, fatigue, heart murmurs, or abnormal test results may lead to an echocardiogram recommendation.",
+                    es: "Falta de aire, molestia en el pecho, hinchazón, fatiga, soplos cardíacos o resultados anormales pueden llevar a recomendar un ecocardiograma.",
                 },
             },
             {
                 title: {
-                    en: "Vascular and coronary conditions",
-                    es: "Condiciones vasculares y coronarias",
+                    en: "Valve and heart function review",
+                    es: "Revisión de válvulas y función cardíaca",
                 },
                 description: {
-                    en: "Interventional cardiology may be involved when heart arteries or blood vessels need closer evaluation.",
-                    es: "La cardiología intervencionista puede estar involucrada cuando las arterias del corazón o vasos sanguíneos requieren evaluación más detallada.",
+                    en: "The test can help assess heart valves, chamber size, pumping function, and other structural concerns.",
+                    es: "La prueba puede ayudar a evaluar válvulas cardíacas, tamaño de cavidades, función de bombeo y otros aspectos estructurales.",
+                },
+            },
+            {
+                title: {
+                    en: "Ongoing monitoring",
+                    es: "Monitoreo continuo",
+                },
+                description: {
+                    en: "Patients with known heart conditions may need echocardiograms to monitor changes over time.",
+                    es: "Pacientes con condiciones cardíacas conocidas pueden necesitar ecocardiogramas para monitorear cambios con el tiempo.",
+                },
+            },
+        ],
+        whatToExpect: [
+            {
+                title: {
+                    en: "Ultrasound-based imaging",
+                    es: "Imágenes por ultrasonido",
+                },
+                description: {
+                    en: "A technologist uses ultrasound to capture images of the heart from the chest area.",
+                    es: "Un tecnólogo utiliza ultrasonido para capturar imágenes del corazón desde el área del pecho.",
+                },
+            },
+            {
+                title: {
+                    en: "Non-invasive test",
+                    es: "Prueba no invasiva",
+                },
+                description: {
+                    en: "The test does not involve surgery and is commonly performed in an outpatient setting.",
+                    es: "La prueba no involucra cirugía y comúnmente se realiza en un entorno ambulatorio.",
+                },
+            },
+            {
+                title: {
+                    en: "Provider review",
+                    es: "Revisión por el proveedor",
+                },
+                description: {
+                    en: "Results are reviewed to help guide diagnosis, monitoring, or treatment planning.",
+                    es: "Los resultados se revisan para ayudar a guiar el diagnóstico, monitoreo o planificación de tratamiento.",
+                },
+            },
+        ],
+        faqs: [
+            {
+                question: {
+                    en: "Is an echocardiogram the same as an EKG?",
+                    es: "¿Un ecocardiograma es lo mismo que un EKG?",
+                },
+                answer: {
+                    en: "No. An EKG records the heart’s electrical activity, while an echocardiogram uses ultrasound images to evaluate heart structure and function.",
+                    es: "No. Un EKG registra la actividad eléctrica del corazón, mientras que un ecocardiograma usa imágenes de ultrasonido para evaluar estructura y función cardíaca.",
+                },
+            },
+            appointmentFaq,
+        ],
+        keywords: {
+            en: [
+                "echocardiogram Hialeah",
+                "heart ultrasound Miami",
+                "echocardiogram Miami-Dade",
+            ],
+            es: [
+                "ecocardiograma Hialeah",
+                "ultrasonido del corazón Miami",
+                "ecocardiograma Miami-Dade",
+            ],
+        },
+        href: {
+            en: "/services/echocardiograms/",
+            es: "/es/services/ecocardiogramas/",
+        },
+        seo: {
+            title: {
+                en: "Echocardiogram in Hialeah, FL | Heart Ultrasound",
+                es: "Ecocardiograma en Hialeah, FL | Ultrasonido del Corazón",
+            },
+            description: {
+                en: "Echocardiogram testing in Hialeah to evaluate heart structure, valves, pumping function, and cardiovascular health.",
+                es: "Prueba de ecocardiograma en Hialeah para evaluar estructura del corazón, válvulas, función de bombeo y salud cardiovascular.",
+            },
+        },
+        featured: true,
+        priority: 2,
+    },
+    {
+        id: "nuclear-stress-testing",
+        slug: {
+            en: "nuclear-stress-testing",
+            es: "prueba-esfuerzo-nuclear",
+        },
+        icon: CardiacTesting,
+        title: {
+            en: "Nuclear Stress Testing",
+            es: "Prueba de Esfuerzo Nuclear",
+        },
+        shortTitle: {
+            en: "Nuclear Stress Testing",
+            es: "Prueba Nuclear",
+        },
+        description: {
+            en: "Advanced cardiac testing that helps evaluate blood flow to the heart muscle during stress and rest.",
+            es: "Prueba cardíaca avanzada que ayuda a evaluar el flujo de sangre al músculo cardíaco durante esfuerzo y reposo.",
+        },
+        shortDescription: {
+            en: "Testing to assess blood flow to the heart.",
+            es: "Prueba para evaluar flujo sanguíneo al corazón.",
+        },
+        overview: {
+            en: "Nuclear stress testing may be used to evaluate how well blood flows to the heart muscle. It can help assess symptoms, possible coronary artery disease, and treatment planning when clinically appropriate.",
+            es: "La prueba de esfuerzo nuclear puede utilizarse para evaluar qué tan bien fluye la sangre al músculo cardíaco. Puede ayudar a evaluar síntomas, posible enfermedad coronaria y planificación de tratamiento cuando corresponde.",
+        },
+        detailImages: imageSets.nuclearStressTesting,
+        reasonsToSeekCare: [
+            {
+                title: {
+                    en: "Chest discomfort or shortness of breath",
+                    es: "Molestia en el pecho o falta de aire",
+                },
+                description: {
+                    en: "Symptoms with activity may lead a cardiologist to recommend stress testing.",
+                    es: "Síntomas con actividad pueden llevar al cardiólogo a recomendar una prueba de esfuerzo.",
+                },
+            },
+            {
+                title: {
+                    en: "Coronary artery disease evaluation",
+                    es: "Evaluación de enfermedad coronaria",
+                },
+                description: {
+                    en: "The test may help evaluate blood flow concerns related to the coronary arteries.",
+                    es: "La prueba puede ayudar a evaluar problemas de flujo sanguíneo relacionados con las arterias coronarias.",
                 },
             },
             {
@@ -299,864 +813,688 @@ export const cardiologyServices: CardiologyService[] = [
                     es: "Planificación de tratamiento",
                 },
                 description: {
-                    en: "Specialized care can help patients understand available options and appropriate next steps.",
-                    es: "La atención especializada puede ayudar a los pacientes a entender opciones disponibles y próximos pasos apropiados.",
+                    en: "Results may help guide follow-up care, medication management, or additional testing.",
+                    es: "Los resultados pueden ayudar a guiar seguimiento, manejo de medicamentos o pruebas adicionales.",
                 },
             },
         ],
         whatToExpect: [
             {
                 title: {
-                    en: "Review of symptoms and testing",
-                    es: "Revisión de síntomas y pruebas",
+                    en: "Stress and rest comparison",
+                    es: "Comparación entre esfuerzo y reposo",
                 },
                 description: {
-                    en: "The doctor may review symptoms, prior EKGs, imaging, lab results, or other cardiovascular testing.",
-                    es: "El doctor puede revisar síntomas, EKG previos, imágenes, laboratorios u otras pruebas cardiovasculares.",
+                    en: "The test compares heart blood flow during stress and rest.",
+                    es: "La prueba compara el flujo de sangre al corazón durante esfuerzo y reposo.",
                 },
             },
             {
                 title: {
-                    en: "Risk and condition discussion",
-                    es: "Discusión de riesgos y condición",
+                    en: "Detailed cardiac imaging",
+                    es: "Imágenes cardíacas detalladas",
                 },
                 description: {
-                    en: "The visit may include discussion of cardiovascular risk, current diagnosis, and possible treatment pathways.",
-                    es: "La visita puede incluir conversación sobre riesgo cardiovascular, diagnóstico actual y posibles opciones de tratamiento.",
+                    en: "Specialized imaging helps the care team evaluate blood flow patterns.",
+                    es: "Imágenes especializadas ayudan al equipo a evaluar patrones de flujo sanguíneo.",
                 },
             },
             {
                 title: {
-                    en: "Next-step recommendations",
-                    es: "Recomendaciones de próximos pasos",
+                    en: "Follow-up guidance",
+                    es: "Orientación de seguimiento",
                 },
                 description: {
-                    en: "Recommendations may include further testing, monitoring, medication review, or referral pathways depending on the case.",
-                    es: "Las recomendaciones pueden incluir pruebas adicionales, monitoreo, revisión de medicamentos o referidos según el caso.",
+                    en: "The provider reviews results and discusses recommended next steps.",
+                    es: "El proveedor revisa los resultados y conversa sobre próximos pasos recomendados.",
                 },
             },
         ],
         faqs: [
             {
                 question: {
-                    en: "What is interventional cardiology?",
-                    es: "¿Qué es la cardiología intervencionista?",
+                    en: "Why would a cardiologist order a nuclear stress test?",
+                    es: "¿Por qué un cardiólogo ordenaría una prueba nuclear?",
                 },
                 answer: {
-                    en: "Interventional cardiology is a specialized area of cardiology focused on evaluating and treating certain heart and blood vessel conditions, often using minimally invasive approaches when appropriate.",
-                    es: "La cardiología intervencionista es un área especializada enfocada en evaluar y tratar ciertas condiciones del corazón y vasos sanguíneos, frecuentemente con enfoques mínimamente invasivos cuando es apropiado.",
+                    en: "It may be ordered to evaluate symptoms, assess blood flow to the heart, or help determine whether additional testing or treatment is needed.",
+                    es: "Puede ordenarse para evaluar síntomas, analizar el flujo sanguíneo al corazón o ayudar a determinar si se necesitan pruebas o tratamientos adicionales.",
                 },
             },
-            {
-                question: {
-                    en: "Do all cardiology patients need interventional care?",
-                    es: "¿Todos los pacientes de cardiología necesitan atención intervencionista?",
-                },
-                answer: {
-                    en: "No. Many patients need evaluation, monitoring, medication management, or preventive care. Interventional care depends on symptoms, testing, and clinical findings.",
-                    es: "No. Muchos pacientes necesitan evaluación, monitoreo, manejo de medicamentos o prevención. La atención intervencionista depende de síntomas, pruebas y hallazgos clínicos.",
-                },
-            },
+            appointmentFaq,
         ],
         keywords: {
             en: [
-                "interventional cardiologist Miami",
-                "interventional cardiology Hialeah",
-                "heart specialist Miami",
-                "cardiac specialist Miami-Dade",
+                "nuclear stress test Hialeah",
+                "cardiac stress test Miami",
+                "heart stress testing Miami-Dade",
             ],
             es: [
-                "cardiólogo intervencionista Miami",
-                "cardiología intervencionista Hialeah",
-                "especialista cardíaco Miami",
-                "especialista del corazón Miami-Dade",
+                "prueba de esfuerzo nuclear Hialeah",
+                "prueba cardíaca de esfuerzo Miami",
+                "prueba de esfuerzo del corazón Miami-Dade",
             ],
         },
         href: {
-            en: "/services/interventional-cardiology/",
-            es: " /es/services/cardiologia-intervencionista/",
+            en: "/services/nuclear-stress-testing/",
+            es: "/es/services/prueba-esfuerzo-nuclear/",
         },
         seo: {
             title: {
-                en: "Interventional Cardiologist in Hialeah, FL | Victor Pazos, MD",
-                es: "Cardiólogo Intervencionista en Hialeah, FL | Victor Pazos, MD",
+                en: "Nuclear Stress Testing in Hialeah, FL",
+                es: "Prueba de Esfuerzo Nuclear en Hialeah, FL",
             },
             description: {
-                en: "Interventional cardiology care in Hialeah for advanced cardiovascular concerns, abnormal testing, and heart or vascular conditions.",
-                es: "Atención de cardiología intervencionista en Hialeah para preocupaciones cardiovasculares avanzadas, pruebas anormales y condiciones del corazón o vasos sanguíneos.",
-            },
-        },
-        featured: true,
-        priority: 2,
-    },
-    {
-        id: "chest-pain-evaluation",
-        slug: {
-            en: "chest-pain-evaluation",
-            es: "evaluacion-dolor-pecho",
-        },
-        icon: ChestPain,
-        title: {
-            en: "Chest Pain Evaluation",
-            es: "Evaluación de Dolor en el Pecho",
-        },
-        shortTitle: {
-            en: "Chest Pain",
-            es: "Dolor en el Pecho",
-        },
-        description: {
-            en: "Cardiology evaluation for chest discomfort, pressure, tightness, or symptoms that may be related to the heart.",
-            es: "Evaluación cardiológica para molestias, presión, opresión o síntomas en el pecho que pueden estar relacionados con el corazón.",
-        },
-        shortDescription: {
-            en: "Evaluation for chest pressure, discomfort, or heart-related symptoms.",
-            es: "Evaluación de presión, molestia o síntomas relacionados al corazón.",
-        },
-        overview: {
-            en: "Chest discomfort can have many causes, but some symptoms may involve the heart. A cardiology evaluation can help review the pattern of symptoms, risk factors, and whether additional testing or urgent care is needed.",
-            es: "La molestia en el pecho puede tener muchas causas, pero algunos síntomas pueden involucrar el corazón. Una evaluación cardiológica puede ayudar a revisar el patrón de síntomas, factores de riesgo y si se necesitan pruebas adicionales o atención urgente.",
-        },
-        detailImages: [
-            {
-                src: "/images/services/chest-pain-evaluation/chest-pain-consultation.webp",
-                alt: {
-                    en: "Chest pain evaluation with a cardiologist",
-                    es: "Evaluación de dolor en el pecho con un cardiólogo",
-                },
-            },
-            {
-                src: "/images/services/chest-pain-evaluation/heart-symptom-review.webp",
-                alt: {
-                    en: "Heart symptom review for chest discomfort and pressure",
-                    es: "Revisión de síntomas cardíacos por molestia y presión en el pecho",
-                },
-            },
-            {
-                src: "/images/services/chest-pain-evaluation/cardiology-testing-guidance.webp",
-                alt: {
-                    en: "Cardiology testing guidance for chest discomfort",
-                    es: "Orientación sobre pruebas cardiológicas por molestia en el pecho",
-                },
-            },
-        ],
-        reasonsToSeekCare: [
-            {
-                title: {
-                    en: "Pressure or tightness",
-                    es: "Presión u opresión",
-                },
-                description: {
-                    en: "Chest pressure, tightness, heaviness, burning, or discomfort may need a heart-focused evaluation.",
-                    es: "Presión, opresión, pesadez, ardor o molestia en el pecho pueden necesitar una evaluación enfocada en el corazón.",
-                },
-            },
-            {
-                title: {
-                    en: "Symptoms with activity",
-                    es: "Síntomas con actividad",
-                },
-                description: {
-                    en: "Symptoms that appear during walking, stairs, exercise, or stress should be discussed with a medical professional.",
-                    es: "Síntomas que aparecen al caminar, subir escaleras, hacer ejercicio o con estrés deben hablarse con un profesional médico.",
-                },
-            },
-            {
-                title: {
-                    en: "Risk factors",
-                    es: "Factores de riesgo",
-                },
-                description: {
-                    en: "High blood pressure, diabetes, cholesterol, smoking history, or family history may increase cardiovascular risk.",
-                    es: "Presión alta, diabetes, colesterol, historial de fumar o antecedentes familiares pueden aumentar el riesgo cardiovascular.",
-                },
-            },
-        ],
-        whatToExpect: [
-            {
-                title: {
-                    en: "Symptom review",
-                    es: "Revisión de síntomas",
-                },
-                description: {
-                    en: "The doctor may ask when symptoms started, what they feel like, how long they last, and what triggers or relieves them.",
-                    es: "El doctor puede preguntar cuándo comenzaron los síntomas, cómo se sienten, cuánto duran y qué los provoca o alivia.",
-                },
-            },
-            {
-                title: {
-                    en: "Risk assessment",
-                    es: "Evaluación de riesgo",
-                },
-                description: {
-                    en: "Your personal and family history, blood pressure, medications, and prior results may be reviewed.",
-                    es: "Se puede revisar su historial personal y familiar, presión arterial, medicamentos y resultados previos.",
-                },
-            },
-            {
-                title: {
-                    en: "Testing guidance",
-                    es: "Orientación sobre pruebas",
-                },
-                description: {
-                    en: "Depending on the case, EKG or other cardiac testing may be recommended.",
-                    es: "Dependiendo del caso, se puede recomendar un EKG u otras pruebas cardíacas.",
-                },
-            },
-        ],
-        faqs: [
-            {
-                question: {
-                    en: "Should chest pain be treated as an emergency?",
-                    es: "¿El dolor en el pecho debe tratarse como una emergencia?",
-                },
-                answer: {
-                    en: "Severe chest pain, chest pain with shortness of breath, fainting, sweating, weakness, or symptoms that feel urgent should be treated as a medical emergency. Call 911 immediately.",
-                    es: "Dolor fuerte en el pecho, dolor con falta de aire, desmayo, sudoración, debilidad o síntomas que parezcan urgentes deben tratarse como una emergencia médica. Llame al 911 inmediatamente.",
-                },
-            },
-            {
-                question: {
-                    en: "Can a cardiologist help evaluate chest discomfort?",
-                    es: "¿Un cardiólogo puede ayudar a evaluar molestias en el pecho?",
-                },
-                answer: {
-                    en: "Yes. A cardiologist can evaluate symptoms, review risk factors, and recommend next steps such as testing, monitoring, or follow-up care.",
-                    es: "Sí. Un cardiólogo puede evaluar síntomas, revisar factores de riesgo y recomendar próximos pasos como pruebas, monitoreo o seguimiento.",
-                },
-            },
-        ],
-        keywords: {
-            en: [
-                "chest pain cardiologist Miami",
-                "chest pain evaluation Hialeah",
-                "heart chest pain doctor Miami",
-                "cardiologist for chest pain",
-            ],
-            es: [
-                "cardiólogo para dolor de pecho Miami",
-                "evaluación de dolor en el pecho Hialeah",
-                "doctor para dolor de pecho Miami",
-                "cardiólogo dolor en el pecho",
-            ],
-        },
-        href: {
-            en: "/services/chest-pain-evaluation/",
-            es: " /es/services/evaluacion-dolor-pecho/",
-        },
-        seo: {
-            title: {
-                en: "Chest Pain Evaluation in Hialeah, FL | Victor Pazos, MD",
-                es: "Evaluación de Dolor en el Pecho en Hialeah, FL | Victor Pazos, MD",
-            },
-            description: {
-                en: "Chest discomfort, pressure, tightness, or burning may need a heart-focused evaluation. Victor Pazos, MD provides cardiology care in Hialeah.",
-                es: "La molestia, presión, opresión o ardor en el pecho puede necesitar evaluación cardiológica. Victor Pazos, MD ofrece atención en Hialeah.",
+                en: "Nuclear stress testing in Hialeah to help evaluate blood flow to the heart and possible coronary artery disease.",
+                es: "Prueba de esfuerzo nuclear en Hialeah para ayudar a evaluar flujo sanguíneo al corazón y posible enfermedad coronaria.",
             },
         },
         featured: true,
         priority: 3,
     },
     {
-        id: "hypertension-treatment",
+        id: "carotid-ultrasound-studies",
         slug: {
-            en: "hypertension-treatment",
-            es: "tratamiento-hipertension",
+            en: "carotid-ultrasound-studies",
+            es: "ultrasonido-carotidas",
         },
-        icon: Hypertension,
+        icon: CardiacTesting,
         title: {
-            en: "Hypertension Treatment",
-            es: "Tratamiento de Hipertensión",
+            en: "Carotid Ultrasound Studies",
+            es: "Ultrasonido de Carótidas",
         },
         shortTitle: {
-            en: "Hypertension",
-            es: "Hipertensión",
+            en: "Carotid Ultrasound",
+            es: "Ultrasonido Carotídeo",
         },
         description: {
-            en: "Cardiology care for high blood pressure, cardiovascular risk reduction, medication management, and long-term monitoring.",
-            es: "Atención cardiológica para presión alta, reducción de riesgos cardiovasculares, manejo de medicamentos y monitoreo a largo plazo.",
+            en: "Ultrasound testing used to evaluate the carotid arteries in the neck and assess circulation-related concerns.",
+            es: "Prueba de ultrasonido utilizada para evaluar las arterias carótidas del cuello y revisar preocupaciones relacionadas con la circulación.",
         },
         shortDescription: {
-            en: "High blood pressure care and cardiovascular risk management.",
-            es: "Cuidado de presión alta y manejo de riesgo cardiovascular.",
+            en: "Neck artery ultrasound for circulation assessment.",
+            es: "Ultrasonido de arterias del cuello para evaluar circulación.",
         },
         overview: {
-            en: "High blood pressure is one of the most common cardiovascular risk factors. Cardiology care can help patients review readings, understand risk, discuss medications, and monitor long-term heart health.",
-            es: "La presión alta es uno de los factores de riesgo cardiovascular más comunes. La atención cardiológica puede ayudar a revisar lecturas, entender riesgos, hablar sobre medicamentos y monitorear la salud del corazón a largo plazo.",
+            en: "Carotid ultrasound studies use imaging to assess blood flow through the carotid arteries. This can help evaluate vascular risk and guide prevention or treatment planning.",
+            es: "Los estudios de ultrasonido carotídeo utilizan imágenes para evaluar el flujo de sangre en las arterias carótidas. Esto puede ayudar a evaluar riesgo vascular y guiar prevención o tratamiento.",
         },
-        detailImages: [
-            {
-                src: "/images/services/hypertension-treatment/blood-pressure-review.webp",
-                alt: {
-                    en: "Blood pressure review during cardiology visit",
-                    es: "Revisión de presión arterial durante una visita cardiológica",
-                },
-            },
-            {
-                src: "/images/services/hypertension-treatment/hypertension-care-plan.webp",
-                alt: {
-                    en: "Hypertension care plan and cardiovascular risk discussion",
-                    es: "Plan de cuidado para hipertensión y conversación sobre riesgo cardiovascular",
-                },
-            },
-            {
-                src: "/images/services/hypertension-treatment/heart-risk-management.webp",
-                alt: {
-                    en: "Heart risk management for high blood pressure",
-                    es: "Manejo de riesgo cardíaco para presión alta",
-                },
-            },
-        ],
+        detailImages: imageSets.carotidUltrasound,
         reasonsToSeekCare: [
             {
                 title: {
-                    en: "Repeated high readings",
-                    es: "Lecturas altas repetidas",
+                    en: "Vascular risk assessment",
+                    es: "Evaluación de riesgo vascular",
                 },
                 description: {
-                    en: "Consistently elevated blood pressure may need medical evaluation and monitoring.",
-                    es: "La presión arterial elevada de forma constante puede necesitar evaluación médica y monitoreo.",
+                    en: "Patients with cardiovascular risk factors may need carotid evaluation as part of vascular care.",
+                    es: "Pacientes con factores de riesgo cardiovascular pueden necesitar evaluación carotídea como parte del cuidado vascular.",
                 },
             },
             {
                 title: {
-                    en: "Medication review",
-                    es: "Revisión de medicamentos",
+                    en: "Circulation concerns",
+                    es: "Preocupaciones de circulación",
                 },
                 description: {
-                    en: "Patients may need help reviewing current medications, side effects, or treatment goals.",
-                    es: "Los pacientes pueden necesitar ayuda revisando medicamentos actuales, efectos secundarios u objetivos de tratamiento.",
+                    en: "The test helps assess blood flow in the neck arteries that supply the brain.",
+                    es: "La prueba ayuda a evaluar el flujo de sangre en las arterias del cuello que suministran sangre al cerebro.",
                 },
             },
             {
                 title: {
-                    en: "Cardiovascular risk",
-                    es: "Riesgo cardiovascular",
+                    en: "Preventive planning",
+                    es: "Planificación preventiva",
                 },
                 description: {
-                    en: "Hypertension can increase the risk of heart disease, stroke, kidney disease, and other complications.",
-                    es: "La hipertensión puede aumentar el riesgo de enfermedad cardíaca, derrame cerebral, enfermedad renal y otras complicaciones.",
+                    en: "Results may help guide preventive care and cardiovascular risk management.",
+                    es: "Los resultados pueden ayudar a guiar cuidado preventivo y manejo del riesgo cardiovascular.",
                 },
             },
         ],
         whatToExpect: [
             {
                 title: {
-                    en: "Blood pressure review",
-                    es: "Revisión de presión arterial",
+                    en: "Non-invasive ultrasound",
+                    es: "Ultrasonido no invasivo",
                 },
                 description: {
-                    en: "The visit may include review of office readings, home readings, symptoms, medications, and risk factors.",
-                    es: "La visita puede incluir revisión de lecturas en oficina, lecturas en casa, síntomas, medicamentos y factores de riesgo.",
+                    en: "A technologist uses ultrasound imaging to evaluate the carotid arteries.",
+                    es: "Un tecnólogo usa imágenes por ultrasonido para evaluar las arterias carótidas.",
                 },
             },
             {
                 title: {
-                    en: "Risk reduction discussion",
-                    es: "Discusión de reducción de riesgo",
+                    en: "Blood flow assessment",
+                    es: "Evaluación del flujo sanguíneo",
                 },
                 description: {
-                    en: "The doctor may discuss lifestyle, medication options, monitoring, and long-term cardiovascular prevention.",
-                    es: "El doctor puede hablar sobre estilo de vida, opciones de medicamentos, monitoreo y prevención cardiovascular a largo plazo.",
+                    en: "The study helps assess circulation and possible narrowing in the arteries.",
+                    es: "El estudio ayuda a evaluar circulación y posible estrechamiento en las arterias.",
                 },
             },
             {
                 title: {
-                    en: "Follow-up planning",
-                    es: "Plan de seguimiento",
+                    en: "Result-based recommendations",
+                    es: "Recomendaciones basadas en resultados",
                 },
                 description: {
-                    en: "High blood pressure often requires ongoing monitoring and follow-up adjustments over time.",
-                    es: "La presión alta muchas veces requiere monitoreo continuo y ajustes de seguimiento con el tiempo.",
+                    en: "The provider reviews results and recommends appropriate follow-up when needed.",
+                    es: "El proveedor revisa resultados y recomienda seguimiento apropiado cuando sea necesario.",
                 },
             },
         ],
         faqs: [
             {
                 question: {
-                    en: "Can a cardiologist treat high blood pressure?",
-                    es: "¿Un cardiólogo puede tratar la presión alta?",
+                    en: "What does a carotid ultrasound evaluate?",
+                    es: "¿Qué evalúa un ultrasonido carotídeo?",
                 },
                 answer: {
-                    en: "Yes. Cardiologists often help evaluate and manage high blood pressure, especially when cardiovascular risk factors or heart concerns are present.",
-                    es: "Sí. Los cardiólogos suelen ayudar a evaluar y manejar la presión alta, especialmente cuando existen factores de riesgo cardiovascular o preocupaciones del corazón.",
+                    en: "It evaluates the carotid arteries in the neck and helps assess blood flow or possible narrowing.",
+                    es: "Evalúa las arterias carótidas del cuello y ayuda a revisar flujo sanguíneo o posible estrechamiento.",
                 },
             },
-            {
-                question: {
-                    en: "Why is hypertension important for heart health?",
-                    es: "¿Por qué la hipertensión es importante para la salud del corazón?",
-                },
-                answer: {
-                    en: "Over time, uncontrolled high blood pressure can increase strain on the heart and blood vessels and may raise the risk of cardiovascular complications.",
-                    es: "Con el tiempo, la presión alta no controlada puede aumentar la carga sobre el corazón y los vasos sanguíneos, elevando el riesgo de complicaciones cardiovasculares.",
-                },
-            },
+            appointmentFaq,
         ],
         keywords: {
             en: [
-                "hypertension doctor Miami",
-                "high blood pressure cardiologist Hialeah",
-                "blood pressure specialist Miami",
-                "cardiologist for hypertension",
+                "carotid ultrasound Hialeah",
+                "carotid artery test Miami",
+                "vascular ultrasound Miami-Dade",
             ],
             es: [
-                "doctor para hipertensión Miami",
-                "cardiólogo presión alta Hialeah",
-                "especialista presión arterial Miami",
-                "cardiólogo para hipertensión",
+                "ultrasonido carotídeo Hialeah",
+                "prueba de carótidas Miami",
+                "ultrasonido vascular Miami-Dade",
             ],
         },
         href: {
-            en: "/services/hypertension-treatment/",
-            es: " /es/services/tratamiento-hipertension/",
+            en: "/services/carotid-ultrasound-studies/",
+            es: "/es/services/ultrasonido-carotidas/",
         },
         seo: {
             title: {
-                en: "High Blood Pressure & Hypertension Care in Hialeah, FL",
-                es: "Cuidado de Presión Alta e Hipertensión en Hialeah, FL",
+                en: "Carotid Ultrasound in Hialeah, FL",
+                es: "Ultrasonido de Carótidas en Hialeah, FL",
             },
             description: {
-                en: "Cardiology care for high blood pressure, cardiovascular risk, medication review, and long-term monitoring with Victor Pazos, MD in Hialeah.",
-                es: "Atención cardiológica para presión alta, riesgo cardiovascular, revisión de medicamentos y monitoreo continuo con Victor Pazos, MD en Hialeah.",
+                en: "Carotid ultrasound studies in Hialeah to help evaluate neck artery blood flow and vascular risk.",
+                es: "Ultrasonido de carótidas en Hialeah para ayudar a evaluar flujo sanguíneo en arterias del cuello y riesgo vascular.",
             },
         },
         featured: true,
         priority: 4,
     },
     {
-        id: "heart-disease-management",
+        id: "abdominal-aortic-ultrasound-screening",
         slug: {
-            en: "heart-disease-management",
-            es: "manejo-enfermedades-corazon",
-        },
-        icon: HeartDisease,
-        title: {
-            en: "Heart Disease Management",
-            es: "Manejo de Enfermedades del Corazón",
-        },
-        shortTitle: {
-            en: "Heart Disease",
-            es: "Enfermedad Cardíaca",
-        },
-        description: {
-            en: "Ongoing care for patients with known or suspected cardiovascular disease, including monitoring, treatment planning, and risk management.",
-            es: "Atención continua para pacientes con enfermedad cardiovascular conocida o sospechada, incluyendo monitoreo, planificación de tratamiento y manejo de riesgos.",
-        },
-        shortDescription: {
-            en: "Ongoing support for cardiovascular conditions.",
-            es: "Apoyo continuo para condiciones cardiovasculares.",
-        },
-        overview: {
-            en: "Patients with known or suspected heart disease may need ongoing care, regular monitoring, medication review, risk reduction, and testing guidance. Cardiology follow-up can help patients understand their condition and next steps.",
-            es: "Pacientes con enfermedad cardíaca conocida o sospechada pueden necesitar cuidado continuo, monitoreo regular, revisión de medicamentos, reducción de riesgo y orientación sobre pruebas. El seguimiento cardiológico puede ayudar a entender la condición y próximos pasos.",
-        },
-        detailImages: [
-            {
-                src: "/images/services/heart-disease-management/heart-disease-follow-up.webp",
-                alt: {
-                    en: "Heart disease follow-up visit with cardiology specialist",
-                    es: "Visita de seguimiento para enfermedad cardíaca con especialista en cardiología",
-                },
-            },
-            {
-                src: "/images/services/heart-disease-management/cardiovascular-monitoring.webp",
-                alt: {
-                    en: "Cardiovascular monitoring and long-term heart care",
-                    es: "Monitoreo cardiovascular y cuidado cardíaco a largo plazo",
-                },
-            },
-            {
-                src: "/images/services/heart-disease-management/treatment-planning.webp",
-                alt: {
-                    en: "Treatment planning for ongoing heart disease management",
-                    es: "Planificación de tratamiento para manejo continuo de enfermedad cardíaca",
-                },
-            },
-        ],
-        reasonsToSeekCare: [
-            {
-                title: {
-                    en: "Known heart condition",
-                    es: "Condición cardíaca conocida",
-                },
-                description: {
-                    en: "Patients with prior diagnosis may need monitoring, medication review, or follow-up care.",
-                    es: "Pacientes con diagnóstico previo pueden necesitar monitoreo, revisión de medicamentos o seguimiento.",
-                },
-            },
-            {
-                title: {
-                    en: "Changing symptoms",
-                    es: "Síntomas que cambian",
-                },
-                description: {
-                    en: "New or worsening symptoms should be discussed with a medical professional.",
-                    es: "Síntomas nuevos o que empeoran deben hablarse con un profesional médico.",
-                },
-            },
-            {
-                title: {
-                    en: "Long-term risk management",
-                    es: "Manejo de riesgo a largo plazo",
-                },
-                description: {
-                    en: "Heart disease care often includes blood pressure, cholesterol, diabetes, lifestyle, and medication management.",
-                    es: "El cuidado de enfermedad cardíaca suele incluir manejo de presión, colesterol, diabetes, estilo de vida y medicamentos.",
-                },
-            },
-        ],
-        whatToExpect: [
-            {
-                title: {
-                    en: "Condition review",
-                    es: "Revisión de la condición",
-                },
-                description: {
-                    en: "The doctor may review your diagnosis, current symptoms, medications, prior procedures, and recent testing.",
-                    es: "El doctor puede revisar su diagnóstico, síntomas actuales, medicamentos, procedimientos previos y pruebas recientes.",
-                },
-            },
-            {
-                title: {
-                    en: "Monitoring plan",
-                    es: "Plan de monitoreo",
-                },
-                description: {
-                    en: "Follow-up may include testing, symptom tracking, medication review, or periodic evaluation.",
-                    es: "El seguimiento puede incluir pruebas, monitoreo de síntomas, revisión de medicamentos o evaluación periódica.",
-                },
-            },
-            {
-                title: {
-                    en: "Risk reduction",
-                    es: "Reducción de riesgo",
-                },
-                description: {
-                    en: "The goal is to help reduce future cardiovascular risk and support long-term heart health.",
-                    es: "El objetivo es ayudar a reducir riesgo cardiovascular futuro y apoyar la salud cardíaca a largo plazo.",
-                },
-            },
-        ],
-        faqs: [
-            {
-                question: {
-                    en: "Why is follow-up important for heart disease?",
-                    es: "¿Por qué es importante el seguimiento para enfermedad cardíaca?",
-                },
-                answer: {
-                    en: "Follow-up helps monitor symptoms, treatment response, risk factors, and whether additional testing or care adjustments may be needed.",
-                    es: "El seguimiento ayuda a monitorear síntomas, respuesta al tratamiento, factores de riesgo y si se necesitan pruebas o ajustes adicionales.",
-                },
-            },
-            {
-                question: {
-                    en: "Can heart disease care include prevention?",
-                    es: "¿El cuidado de enfermedad cardíaca puede incluir prevención?",
-                },
-                answer: {
-                    en: "Yes. Managing risk factors such as blood pressure, cholesterol, diabetes, and lifestyle is often part of long-term heart disease care.",
-                    es: "Sí. Manejar factores de riesgo como presión, colesterol, diabetes y estilo de vida suele ser parte del cuidado cardíaco a largo plazo.",
-                },
-            },
-        ],
-        keywords: {
-            en: [
-                "heart disease doctor Miami",
-                "cardiovascular disease management Hialeah",
-                "heart disease cardiologist Miami-Dade",
-                "cardiology care Miami",
-            ],
-            es: [
-                "doctor enfermedad del corazón Miami",
-                "manejo enfermedad cardiovascular Hialeah",
-                "cardiólogo enfermedad cardíaca Miami-Dade",
-                "atención cardiológica Miami",
-            ],
-        },
-        href: {
-            en: "/services/heart-disease-management/",
-            es: " /es/services/manejo-enfermedades-corazon/",
-        },
-        seo: {
-            title: {
-                en: "Heart Disease Management in Hialeah, FL | Cardiology Care",
-                es: "Manejo de Enfermedades del Corazón en Hialeah, FL",
-            },
-            description: {
-                en: "Ongoing cardiology care in Hialeah for known or suspected heart disease, cardiovascular risk, monitoring, and treatment planning.",
-                es: "Atención cardiológica continua en Hialeah para enfermedad cardíaca conocida o sospechada, riesgo cardiovascular, monitoreo y planificación de tratamiento.",
-            },
-        },
-        featured: true,
-        priority: 5,
-    },
-    {
-        id: "ekg-cardiac-testing",
-        slug: {
-            en: "ekg-cardiac-testing",
-            es: "ekg-pruebas-cardiacas",
+            en: "abdominal-aortic-ultrasound-screening",
+            es: "ultrasonido-aorta-abdominal",
         },
         icon: CardiacTesting,
         title: {
-            en: "EKG & Cardiac Testing",
-            es: "EKG y Pruebas Cardíacas",
+            en: "Abdominal Aortic Ultrasound Screening",
+            es: "Ultrasonido de Aorta Abdominal",
         },
         shortTitle: {
-            en: "Cardiac Testing",
-            es: "Pruebas Cardíacas",
+            en: "Abdominal Aortic Ultrasound",
+            es: "Ultrasonido de Aorta",
         },
         description: {
-            en: "Diagnostic cardiac testing support for evaluating heart rhythm, symptoms, risk factors, and cardiovascular health.",
-            es: "Apoyo con pruebas cardíacas diagnósticas para evaluar ritmo cardíaco, síntomas, factores de riesgo y salud cardiovascular.",
+            en: "Ultrasound screening used to evaluate the abdominal aorta and support vascular risk assessment.",
+            es: "Estudio de ultrasonido utilizado para evaluar la aorta abdominal y apoyar la evaluación de riesgo vascular.",
         },
         shortDescription: {
-            en: "Testing support for heart rhythm and cardiovascular evaluation.",
-            es: "Pruebas para evaluar ritmo cardíaco y salud cardiovascular.",
+            en: "Aortic ultrasound screening for vascular health.",
+            es: "Ultrasonido de aorta para salud vascular.",
         },
         overview: {
-            en: "EKG and cardiac testing may help evaluate heart rhythm, symptoms, risk factors, or abnormal findings. A cardiology visit can help determine which testing may be appropriate based on your concerns.",
-            es: "El EKG y las pruebas cardíacas pueden ayudar a evaluar el ritmo del corazón, síntomas, factores de riesgo o hallazgos anormales. Una visita cardiológica puede ayudar a determinar qué pruebas pueden ser apropiadas según sus preocupaciones.",
+            en: "Abdominal aortic ultrasound screening helps evaluate the abdominal aorta using non-invasive imaging. It may be recommended based on risk factors, history, or provider evaluation.",
+            es: "El ultrasonido de aorta abdominal ayuda a evaluar la aorta abdominal usando imágenes no invasivas. Puede recomendarse según factores de riesgo, historial o evaluación médica.",
         },
-        detailImages: [
-            {
-                src: "/images/services/ekg-cardiac-testing/ekg-testing.webp",
-                alt: {
-                    en: "EKG testing for heart rhythm evaluation",
-                    es: "Prueba EKG para evaluación del ritmo cardíaco",
-                },
-            },
-            {
-                src: "/images/services/ekg-cardiac-testing/cardiac-test-review.webp",
-                alt: {
-                    en: "Cardiac test review with a cardiology specialist",
-                    es: "Revisión de pruebas cardíacas con especialista en cardiología",
-                },
-            },
-            {
-                src: "/images/services/ekg-cardiac-testing/heart-rhythm-evaluation.webp",
-                alt: {
-                    en: "Heart rhythm evaluation and cardiac testing guidance",
-                    es: "Evaluación del ritmo cardíaco y orientación sobre pruebas cardíacas",
-                },
-            },
-        ],
+        detailImages: imageSets.abdominalAorticUltrasound,
         reasonsToSeekCare: [
             {
                 title: {
-                    en: "Abnormal EKG",
-                    es: "EKG anormal",
+                    en: "Vascular screening",
+                    es: "Evaluación vascular",
                 },
                 description: {
-                    en: "An abnormal EKG may need cardiology follow-up to understand what the finding may mean.",
-                    es: "Un EKG anormal puede necesitar seguimiento cardiológico para entender qué puede significar el resultado.",
+                    en: "The test may be used as part of vascular screening for patients with certain risk factors.",
+                    es: "La prueba puede utilizarse como parte de la evaluación vascular en pacientes con ciertos factores de riesgo.",
                 },
             },
             {
                 title: {
-                    en: "Rhythm concerns",
-                    es: "Preocupaciones del ritmo cardíaco",
+                    en: "Aortic assessment",
+                    es: "Evaluación de la aorta",
                 },
                 description: {
-                    en: "Palpitations, skipped beats, or irregular rhythms may require additional evaluation.",
-                    es: "Palpitaciones, latidos saltados o ritmos irregulares pueden requerir evaluación adicional.",
+                    en: "Ultrasound imaging helps assess the size and appearance of the abdominal aorta.",
+                    es: "Las imágenes por ultrasonido ayudan a evaluar el tamaño y apariencia de la aorta abdominal.",
                 },
             },
             {
                 title: {
-                    en: "Symptom evaluation",
-                    es: "Evaluación de síntomas",
+                    en: "Preventive care planning",
+                    es: "Planificación de cuidado preventivo",
                 },
                 description: {
-                    en: "Testing may be recommended for chest discomfort, shortness of breath, dizziness, or fatigue with activity.",
-                    es: "Se pueden recomendar pruebas para molestia en el pecho, falta de aire, mareos o fatiga con actividad.",
+                    en: "Results can help guide prevention and follow-up recommendations.",
+                    es: "Los resultados pueden ayudar a guiar recomendaciones de prevención y seguimiento.",
                 },
             },
         ],
         whatToExpect: [
             {
                 title: {
-                    en: "Clinical review",
-                    es: "Revisión clínica",
+                    en: "Non-invasive imaging",
+                    es: "Imágenes no invasivas",
                 },
                 description: {
-                    en: "Symptoms, history, medications, and previous results may be reviewed before recommending testing.",
-                    es: "Se pueden revisar síntomas, historial, medicamentos y resultados previos antes de recomendar pruebas.",
+                    en: "A technologist uses ultrasound imaging over the abdomen.",
+                    es: "Un tecnólogo utiliza imágenes por ultrasonido sobre el abdomen.",
                 },
             },
             {
                 title: {
-                    en: "Testing recommendation",
-                    es: "Recomendación de pruebas",
+                    en: "Focused vascular review",
+                    es: "Revisión vascular enfocada",
                 },
                 description: {
-                    en: "Depending on the concern, EKG or other cardiac testing may be recommended.",
-                    es: "Dependiendo de la preocupación, se puede recomendar EKG u otras pruebas cardíacas.",
+                    en: "The study focuses on evaluating the abdominal aorta.",
+                    es: "El estudio se enfoca en evaluar la aorta abdominal.",
                 },
             },
             {
                 title: {
-                    en: "Results discussion",
-                    es: "Discusión de resultados",
+                    en: "Provider follow-up",
+                    es: "Seguimiento con el proveedor",
                 },
                 description: {
-                    en: "The goal is to explain what the results may mean and what next steps may be needed.",
-                    es: "El objetivo es explicar qué pueden significar los resultados y qué próximos pasos pueden ser necesarios.",
+                    en: "The provider reviews results and recommends next steps if needed.",
+                    es: "El proveedor revisa resultados y recomienda próximos pasos si es necesario.",
                 },
             },
         ],
         faqs: [
             {
                 question: {
-                    en: "What does an EKG show?",
-                    es: "¿Qué muestra un EKG?",
+                    en: "Is abdominal aortic ultrasound invasive?",
+                    es: "¿El ultrasonido de aorta abdominal es invasivo?",
                 },
                 answer: {
-                    en: "An EKG records the electrical activity of the heart and may help identify rhythm concerns or other findings that need medical interpretation.",
-                    es: "Un EKG registra la actividad eléctrica del corazón y puede ayudar a identificar preocupaciones del ritmo u otros hallazgos que necesitan interpretación médica.",
+                    en: "No. It is a non-invasive ultrasound study used to evaluate the abdominal aorta.",
+                    es: "No. Es un estudio de ultrasonido no invasivo utilizado para evaluar la aorta abdominal.",
                 },
             },
-            {
-                question: {
-                    en: "Do abnormal EKG results always mean heart disease?",
-                    es: "¿Un EKG anormal siempre significa enfermedad cardíaca?",
-                },
-                answer: {
-                    en: "Not always. Abnormal findings need to be interpreted in context with symptoms, history, risk factors, and sometimes additional testing.",
-                    es: "No siempre. Los hallazgos anormales deben interpretarse junto con síntomas, historial, factores de riesgo y a veces pruebas adicionales.",
-                },
-            },
+            appointmentFaq,
         ],
         keywords: {
             en: [
-                "EKG Miami",
-                "cardiac testing Hialeah",
-                "heart test Miami",
-                "cardiologist EKG Miami-Dade",
+                "abdominal aortic ultrasound Hialeah",
+                "aorta screening Miami",
+                "vascular screening Hialeah",
             ],
             es: [
-                "EKG Miami",
-                "pruebas cardíacas Hialeah",
-                "examen del corazón Miami",
-                "cardiólogo EKG Miami-Dade",
+                "ultrasonido de aorta abdominal Hialeah",
+                "evaluación de aorta Miami",
+                "screening vascular Hialeah",
             ],
         },
         href: {
-            en: "/services/ekg-cardiac-testing/",
-            es: " /es/services/ekg-pruebas-cardiacas/",
+            en: "/services/abdominal-aortic-ultrasound-screening/",
+            es: "/es/services/ultrasonido-aorta-abdominal/",
         },
         seo: {
             title: {
-                en: "EKG / ECG Testing in Hialeah, FL | Cardiology Evaluation",
-                es: "Prueba EKG / ECG en Hialeah, FL | Evaluación Cardiológica",
+                en: "Abdominal Aortic Ultrasound Screening in Hialeah, FL",
+                es: "Ultrasonido de Aorta Abdominal en Hialeah, FL",
             },
             description: {
-                en: "Need follow-up for an abnormal EKG or heart rhythm concern? Victor Pazos, MD provides cardiology evaluation and cardiac testing guidance in Hialeah.",
-                es: "¿Necesita seguimiento por un EKG anormal o preocupación del ritmo cardíaco? Victor Pazos, MD ofrece evaluación cardiológica en Hialeah.",
+                en: "Abdominal aortic ultrasound screening in Hialeah for vascular assessment and preventive cardiovascular care.",
+                es: "Ultrasonido de aorta abdominal en Hialeah para evaluación vascular y cuidado cardiovascular preventivo.",
             },
         },
-        priority: 6,
+        priority: 5,
     },
     {
-        id: "shortness-of-breath-evaluation",
+        id: "lower-extremity-arterial-studies",
         slug: {
-            en: "shortness-of-breath-evaluation",
-            es: "evaluacion-falta-de-aire",
+            en: "lower-extremity-arterial-studies",
+            es: "estudios-arteriales-extremidades-inferiores",
         },
-        icon: ShortnessOfBreath,
+        icon: HeartDisease,
         title: {
-            en: "Shortness of Breath Evaluation",
-            es: "Evaluación de Falta de Aire",
+            en: "Lower Extremity Arterial Studies",
+            es: "Estudios Arteriales de Extremidades Inferiores",
         },
         shortTitle: {
-            en: "Shortness of Breath",
-            es: "Falta de Aire",
+            en: "Lower Extremity Arterial Studies",
+            es: "Estudios Arteriales",
         },
         description: {
-            en: "Cardiology evaluation for shortness of breath, fatigue, reduced exercise tolerance, or symptoms that may involve the heart.",
-            es: "Evaluación cardiológica para falta de aire, fatiga, menor tolerancia al ejercicio o síntomas que pueden involucrar el corazón.",
+            en: "Vascular studies used to evaluate arterial circulation in the legs and support assessment of peripheral vascular disease.",
+            es: "Estudios vasculares utilizados para evaluar la circulación arterial en las piernas y apoyar la evaluación de enfermedad vascular periférica.",
         },
         shortDescription: {
-            en: "Evaluation for breathing symptoms that may be heart-related.",
-            es: "Evaluación de síntomas respiratorios que pueden estar relacionados al corazón.",
+            en: "Leg artery studies for circulation concerns.",
+            es: "Estudios de arterias de las piernas para problemas de circulación.",
         },
         overview: {
-            en: "Shortness of breath can have many causes, including heart-related concerns. A cardiology evaluation can help review symptoms, risk factors, and whether additional cardiac testing may be appropriate.",
-            es: "La falta de aire puede tener muchas causas, incluyendo preocupaciones relacionadas con el corazón. Una evaluación cardiológica puede ayudar a revisar síntomas, factores de riesgo y si se necesitan pruebas cardíacas adicionales.",
+            en: "Lower extremity arterial studies help evaluate blood flow in the leg arteries. They may be used when patients have leg pain with walking, circulation concerns, or risk factors for peripheral vascular disease.",
+            es: "Los estudios arteriales de extremidades inferiores ayudan a evaluar el flujo de sangre en las arterias de las piernas. Pueden usarse cuando hay dolor en las piernas al caminar, problemas de circulación o factores de riesgo de enfermedad vascular periférica.",
         },
-        detailImages: [
-            {
-                src: "/images/services/shortness-of-breath-evaluation/breathing-symptom-evaluation.webp",
-                alt: {
-                    en: "Cardiology evaluation for shortness of breath",
-                    es: "Evaluación cardiológica por falta de aire",
-                },
-            },
-            {
-                src: "/images/services/shortness-of-breath-evaluation/fatigue-with-activity.webp",
-                alt: {
-                    en: "Evaluation for fatigue and shortness of breath with activity",
-                    es: "Evaluación de fatiga y falta de aire con actividad",
-                },
-            },
-            {
-                src: "/images/services/shortness-of-breath-evaluation/heart-related-breathing-concerns.webp",
-                alt: {
-                    en: "Heart-related breathing concerns and cardiovascular evaluation",
-                    es: "Preocupaciones respiratorias relacionadas con el corazón y evaluación cardiovascular",
-                },
-            },
-        ],
+        detailImages: imageSets.lowerExtremityArterial,
         reasonsToSeekCare: [
             {
                 title: {
-                    en: "Breathing symptoms with activity",
-                    es: "Falta de aire con actividad",
+                    en: "Leg pain with walking",
+                    es: "Dolor en las piernas al caminar",
                 },
                 description: {
-                    en: "Shortness of breath during walking, stairs, or exercise may need evaluation.",
-                    es: "La falta de aire al caminar, subir escaleras o hacer ejercicio puede necesitar evaluación.",
+                    en: "Pain, cramping, or fatigue in the legs during walking may be related to circulation problems.",
+                    es: "Dolor, calambres o fatiga en las piernas al caminar pueden estar relacionados con problemas de circulación.",
                 },
             },
             {
                 title: {
-                    en: "Fatigue or reduced stamina",
-                    es: "Fatiga o menor resistencia",
+                    en: "Peripheral vascular disease risk",
+                    es: "Riesgo de enfermedad vascular periférica",
                 },
                 description: {
-                    en: "Unusual fatigue or reduced exercise tolerance may sometimes involve cardiovascular health.",
-                    es: "Fatiga inusual o menor tolerancia al ejercicio puede a veces involucrar la salud cardiovascular.",
+                    en: "Diabetes, smoking history, high blood pressure, and cholesterol can increase vascular risk.",
+                    es: "Diabetes, historial de fumar, presión alta y colesterol pueden aumentar el riesgo vascular.",
                 },
             },
             {
                 title: {
-                    en: "Associated heart symptoms",
-                    es: "Síntomas cardíacos asociados",
+                    en: "Circulation assessment",
+                    es: "Evaluación de circulación",
                 },
                 description: {
-                    en: "Shortness of breath with chest discomfort, palpitations, dizziness, or swelling should be discussed with a clinician.",
-                    es: "Falta de aire con molestia en el pecho, palpitaciones, mareos o hinchazón debe hablarse con un clínico.",
+                    en: "The study helps assess blood flow to the lower extremities.",
+                    es: "El estudio ayuda a evaluar el flujo de sangre hacia las extremidades inferiores.",
                 },
             },
         ],
         whatToExpect: [
             {
                 title: {
-                    en: "Symptom pattern review",
-                    es: "Revisión del patrón de síntomas",
+                    en: "Vascular testing",
+                    es: "Prueba vascular",
                 },
                 description: {
-                    en: "The doctor may ask when symptoms happen, how severe they are, and what makes them better or worse.",
-                    es: "El doctor puede preguntar cuándo ocurren los síntomas, qué tan severos son y qué los mejora o empeora.",
+                    en: "Testing focuses on blood flow through the arteries in the legs.",
+                    es: "La prueba se enfoca en el flujo de sangre por las arterias de las piernas.",
                 },
             },
             {
                 title: {
-                    en: "Heart and risk evaluation",
-                    es: "Evaluación del corazón y riesgos",
+                    en: "Non-surgical evaluation",
+                    es: "Evaluación no quirúrgica",
                 },
                 description: {
-                    en: "Risk factors, prior results, blood pressure, and known conditions may be reviewed.",
-                    es: "Se pueden revisar factores de riesgo, resultados previos, presión arterial y condiciones conocidas.",
+                    en: "This is a diagnostic study used to support care planning.",
+                    es: "Es un estudio diagnóstico utilizado para apoyar la planificación del cuidado.",
+                },
+            },
+            {
+                title: {
+                    en: "Care recommendations",
+                    es: "Recomendaciones de cuidado",
+                },
+                description: {
+                    en: "Results may guide treatment, prevention, or additional evaluation.",
+                    es: "Los resultados pueden guiar tratamiento, prevención o evaluación adicional.",
+                },
+            },
+        ],
+        faqs: [
+            {
+                question: {
+                    en: "Why would I need a leg arterial study?",
+                    es: "¿Por qué necesitaría un estudio arterial de las piernas?",
+                },
+                answer: {
+                    en: "It may be recommended to evaluate blood flow in the leg arteries, especially when there is leg pain with walking or vascular risk factors.",
+                    es: "Puede recomendarse para evaluar el flujo de sangre en las arterias de las piernas, especialmente si hay dolor al caminar o factores de riesgo vascular.",
+                },
+            },
+            appointmentFaq,
+        ],
+        keywords: {
+            en: [
+                "lower extremity arterial study Hialeah",
+                "leg circulation test Miami",
+                "peripheral vascular disease testing Hialeah",
+            ],
+            es: [
+                "estudio arterial de piernas Hialeah",
+                "prueba de circulación en piernas Miami",
+                "prueba enfermedad vascular periférica Hialeah",
+            ],
+        },
+        href: {
+            en: "/services/lower-extremity-arterial-studies/",
+            es: "/es/services/estudios-arteriales-extremidades-inferiores/",
+        },
+        seo: {
+            title: {
+                en: "Lower Extremity Arterial Studies in Hialeah, FL",
+                es: "Estudios Arteriales de Piernas en Hialeah, FL",
+            },
+            description: {
+                en: "Lower extremity arterial studies in Hialeah to evaluate leg circulation and possible peripheral vascular disease.",
+                es: "Estudios arteriales de extremidades inferiores en Hialeah para evaluar circulación en las piernas y posible enfermedad vascular periférica.",
+            },
+        },
+        featured: true,
+        priority: 6,
+    },
+    {
+        id: "lower-extremity-venous-studies",
+        slug: {
+            en: "lower-extremity-venous-studies",
+            es: "estudios-venosos-extremidades-inferiores",
+        },
+        icon: HeartDisease,
+        title: {
+            en: "Lower Extremity Venous Studies",
+            es: "Estudios Venosos de Extremidades Inferiores",
+        },
+        shortTitle: {
+            en: "Lower Extremity Venous Studies",
+            es: "Estudios Venosos",
+        },
+        description: {
+            en: "Vascular studies used to evaluate venous circulation in the legs, including concerns related to swelling or vein function.",
+            es: "Estudios vasculares utilizados para evaluar la circulación venosa en las piernas, incluyendo preocupaciones relacionadas con hinchazón o función venosa.",
+        },
+        shortDescription: {
+            en: "Leg vein studies for swelling and circulation concerns.",
+            es: "Estudios de venas de las piernas para hinchazón y circulación.",
+        },
+        overview: {
+            en: "Lower extremity venous studies help evaluate blood flow through the leg veins. They may be used when patients have swelling, discomfort, or other circulation-related concerns.",
+            es: "Los estudios venosos de extremidades inferiores ayudan a evaluar el flujo de sangre por las venas de las piernas. Pueden usarse cuando hay hinchazón, molestia u otras preocupaciones de circulación.",
+        },
+        detailImages: imageSets.lowerExtremityVenous,
+        reasonsToSeekCare: [
+            {
+                title: {
+                    en: "Leg swelling",
+                    es: "Hinchazón en las piernas",
+                },
+                description: {
+                    en: "Swelling in the legs or ankles may require vascular evaluation.",
+                    es: "La hinchazón en piernas o tobillos puede requerir evaluación vascular.",
+                },
+            },
+            {
+                title: {
+                    en: "Vein circulation concerns",
+                    es: "Preocupaciones de circulación venosa",
+                },
+                description: {
+                    en: "Venous studies help evaluate how blood moves through the veins of the legs.",
+                    es: "Los estudios venosos ayudan a evaluar cómo se mueve la sangre por las venas de las piernas.",
+                },
+            },
+            {
+                title: {
+                    en: "Follow-up care",
+                    es: "Cuidado de seguimiento",
+                },
+                description: {
+                    en: "Results may help guide treatment planning or additional evaluation.",
+                    es: "Los resultados pueden ayudar a guiar planificación de tratamiento o evaluación adicional.",
+                },
+            },
+        ],
+        whatToExpect: [
+            {
+                title: {
+                    en: "Ultrasound-based vascular study",
+                    es: "Estudio vascular por ultrasonido",
+                },
+                description: {
+                    en: "A technologist uses ultrasound imaging to evaluate the veins in the legs.",
+                    es: "Un tecnólogo utiliza imágenes por ultrasonido para evaluar las venas de las piernas.",
+                },
+            },
+            {
+                title: {
+                    en: "Focused leg vein assessment",
+                    es: "Evaluación enfocada de venas",
+                },
+                description: {
+                    en: "The study focuses on venous blood flow and related findings.",
+                    es: "El estudio se enfoca en el flujo sanguíneo venoso y hallazgos relacionados.",
+                },
+            },
+            {
+                title: {
+                    en: "Provider review",
+                    es: "Revisión médica",
+                },
+                description: {
+                    en: "The provider reviews results and discusses appropriate next steps.",
+                    es: "El proveedor revisa los resultados y conversa sobre próximos pasos apropiados.",
+                },
+            },
+        ],
+        faqs: [
+            {
+                question: {
+                    en: "What symptoms may lead to a venous study?",
+                    es: "¿Qué síntomas pueden llevar a un estudio venoso?",
+                },
+                answer: {
+                    en: "Leg swelling, discomfort, heaviness, or circulation concerns may lead a provider to recommend a venous study.",
+                    es: "Hinchazón, molestia, pesadez o preocupaciones de circulación en las piernas pueden llevar al proveedor a recomendar un estudio venoso.",
+                },
+            },
+            appointmentFaq,
+        ],
+        keywords: {
+            en: [
+                "lower extremity venous study Hialeah",
+                "leg vein ultrasound Miami",
+                "leg swelling vascular test Hialeah",
+            ],
+            es: [
+                "estudio venoso de piernas Hialeah",
+                "ultrasonido de venas Miami",
+                "prueba vascular para hinchazón de piernas Hialeah",
+            ],
+        },
+        href: {
+            en: "/services/lower-extremity-venous-studies/",
+            es: "/es/services/estudios-venosos-extremidades-inferiores/",
+        },
+        seo: {
+            title: {
+                en: "Lower Extremity Venous Studies in Hialeah, FL",
+                es: "Estudios Venosos de Piernas en Hialeah, FL",
+            },
+            description: {
+                en: "Lower extremity venous studies in Hialeah to evaluate leg vein circulation, swelling, and vascular concerns.",
+                es: "Estudios venosos de extremidades inferiores en Hialeah para evaluar circulación venosa, hinchazón y preocupaciones vasculares.",
+            },
+        },
+        priority: 7,
+    },
+    {
+        id: "cardiovascular-risk-assessment",
+        slug: {
+            en: "cardiovascular-risk-assessment",
+            es: "evaluacion-riesgo-cardiovascular",
+        },
+        icon: PreventiveCardiology,
+        title: {
+            en: "Cardiovascular Risk Assessment",
+            es: "Evaluación de Riesgo Cardiovascular",
+        },
+        shortTitle: {
+            en: "Risk Assessment",
+            es: "Evaluación de Riesgo",
+        },
+        description: {
+            en: "Cardiology evaluation focused on identifying risk factors and planning steps to reduce the chance of future cardiovascular problems.",
+            es: "Evaluación cardiológica enfocada en identificar factores de riesgo y planificar pasos para reducir la posibilidad de problemas cardiovasculares futuros.",
+        },
+        shortDescription: {
+            en: "Review cardiovascular risk factors and prevention needs.",
+            es: "Revisión de factores de riesgo y prevención cardiovascular.",
+        },
+        overview: {
+            en: "Cardiovascular risk assessment helps patients understand factors that may affect long-term heart and vascular health, including blood pressure, cholesterol, diabetes, family history, and lifestyle factors.",
+            es: "La evaluación de riesgo cardiovascular ayuda a los pacientes a entender factores que pueden afectar la salud cardíaca y vascular a largo plazo, incluyendo presión arterial, colesterol, diabetes, antecedentes familiares y estilo de vida.",
+        },
+        detailImages: imageSets.cardiovascularRiskAssessment,
+        reasonsToSeekCare: [
+            {
+                title: {
+                    en: "Family history or risk factors",
+                    es: "Antecedentes familiares o factores de riesgo",
+                },
+                description: {
+                    en: "Family history, diabetes, high blood pressure, cholesterol, and smoking history can increase risk.",
+                    es: "Antecedentes familiares, diabetes, presión alta, colesterol e historial de fumar pueden aumentar el riesgo.",
+                },
+            },
+            {
+                title: {
+                    en: "Prevention planning",
+                    es: "Planificación preventiva",
+                },
+                description: {
+                    en: "Risk assessment helps guide preventive strategies and follow-up care.",
+                    es: "La evaluación de riesgo ayuda a guiar estrategias preventivas y seguimiento.",
+                },
+            },
+            {
+                title: {
+                    en: "Ongoing monitoring",
+                    es: "Monitoreo continuo",
+                },
+                description: {
+                    en: "Patients may need periodic review to monitor changes in cardiovascular risk.",
+                    es: "Los pacientes pueden necesitar revisión periódica para monitorear cambios en el riesgo cardiovascular.",
+                },
+            },
+        ],
+        whatToExpect: [
+            {
+                title: {
+                    en: "Risk factor review",
+                    es: "Revisión de factores de riesgo",
+                },
+                description: {
+                    en: "The visit may include review of medical history, lifestyle factors, medications, and previous test results.",
+                    es: "La visita puede incluir revisión del historial médico, estilo de vida, medicamentos y resultados previos.",
                 },
             },
             {
@@ -1165,62 +1503,61 @@ export const cardiologyServices: CardiologyService[] = [
                     es: "Discusión de pruebas",
                 },
                 description: {
-                    en: "Depending on symptoms, cardiac testing or follow-up evaluation may be recommended.",
-                    es: "Dependiendo de los síntomas, se pueden recomendar pruebas cardíacas o evaluación de seguimiento.",
+                    en: "The provider may discuss whether diagnostic testing or follow-up is appropriate.",
+                    es: "El proveedor puede conversar si pruebas diagnósticas o seguimiento son apropiados.",
+                },
+            },
+            {
+                title: {
+                    en: "Prevention guidance",
+                    es: "Orientación preventiva",
+                },
+                description: {
+                    en: "Patients receive recommendations to help manage risk and support heart health.",
+                    es: "Los pacientes reciben recomendaciones para ayudar a manejar el riesgo y apoyar la salud del corazón.",
                 },
             },
         ],
         faqs: [
             {
                 question: {
-                    en: "Can shortness of breath be related to the heart?",
-                    es: "¿La falta de aire puede estar relacionada con el corazón?",
+                    en: "Who should consider cardiovascular risk assessment?",
+                    es: "¿Quién debe considerar una evaluación de riesgo cardiovascular?",
                 },
                 answer: {
-                    en: "Yes, shortness of breath can sometimes be related to cardiovascular conditions, especially when it occurs with activity or other heart-related symptoms.",
-                    es: "Sí, la falta de aire a veces puede relacionarse con condiciones cardiovasculares, especialmente cuando ocurre con actividad u otros síntomas cardíacos.",
+                    en: "Patients with high blood pressure, cholesterol, diabetes, smoking history, family history, or prevention concerns may benefit from a risk assessment.",
+                    es: "Pacientes con presión alta, colesterol, diabetes, historial de fumar, antecedentes familiares o preocupaciones de prevención pueden beneficiarse de una evaluación de riesgo.",
                 },
             },
-            {
-                question: {
-                    en: "When is shortness of breath an emergency?",
-                    es: "¿Cuándo la falta de aire es una emergencia?",
-                },
-                answer: {
-                    en: "Sudden or severe shortness of breath, especially with chest pain, fainting, blue lips, confusion, or severe weakness, should be treated as an emergency. Call 911.",
-                    es: "Falta de aire repentina o severa, especialmente con dolor en el pecho, desmayo, labios azules, confusión o debilidad severa, debe tratarse como emergencia. Llame al 911.",
-                },
-            },
+            appointmentFaq,
         ],
         keywords: {
             en: [
-                "shortness of breath cardiologist Miami",
-                "cardiologist for fatigue Hialeah",
-                "heart related breathing problems Miami",
-                "dyspnea cardiology Miami-Dade",
+                "cardiovascular risk assessment Hialeah",
+                "heart disease prevention Miami",
+                "preventive cardiologist Hialeah",
             ],
             es: [
-                "cardiólogo falta de aire Miami",
-                "cardiólogo para fatiga Hialeah",
-                "problemas respiratorios del corazón Miami",
-                "disnea cardiología Miami-Dade",
+                "evaluación de riesgo cardiovascular Hialeah",
+                "prevención enfermedad cardíaca Miami",
+                "cardiólogo preventivo Hialeah",
             ],
         },
         href: {
-            en: "/services/shortness-of-breath-evaluation/",
-            es: " /es/services/evaluacion-falta-de-aire/",
+            en: "/services/cardiovascular-risk-assessment/",
+            es: "/es/services/evaluacion-riesgo-cardiovascular/",
         },
         seo: {
             title: {
-                en: "Shortness of Breath Evaluation in Hialeah, FL",
-                es: "Evaluación de Falta de Aire en Hialeah, FL",
+                en: "Cardiovascular Risk Assessment in Hialeah, FL",
+                es: "Evaluación de Riesgo Cardiovascular en Hialeah, FL",
             },
             description: {
-                en: "Cardiology evaluation in Hialeah for shortness of breath, fatigue with activity, reduced stamina, and symptoms that may involve the heart.",
-                es: "Evaluación cardiológica en Hialeah para falta de aire, fatiga con actividad, menor resistencia y síntomas que pueden involucrar el corazón.",
+                en: "Cardiovascular risk assessment in Hialeah for prevention, risk factor review, and heart health planning.",
+                es: "Evaluación de riesgo cardiovascular en Hialeah para prevención, revisión de factores de riesgo y planificación de salud cardíaca.",
             },
         },
-        priority: 7,
+        priority: 8,
     },
     {
         id: "preventive-cardiology",
@@ -1238,49 +1575,59 @@ export const cardiologyServices: CardiologyService[] = [
             es: "Cardiología Preventiva",
         },
         description: {
-            en: "Preventive heart care focused on identifying risk factors early and supporting long-term cardiovascular wellness.",
-            es: "Cuidado preventivo del corazón enfocado en identificar factores de riesgo temprano y apoyar la salud cardiovascular a largo plazo.",
+            en: "Preventive heart care focused on reducing risk, supporting early detection, and helping patients protect long-term cardiovascular health.",
+            es: "Cuidado preventivo del corazón enfocado en reducir riesgos, apoyar la detección temprana y ayudar a los pacientes a proteger su salud cardiovascular a largo plazo.",
         },
         shortDescription: {
-            en: "Heart prevention, risk reduction, and long-term wellness.",
-            es: "Prevención cardíaca, reducción de riesgo y bienestar a largo plazo.",
+            en: "Prevention-focused care for long-term heart health.",
+            es: "Cuidado preventivo para la salud cardíaca a largo plazo.",
         },
         overview: {
-            en: "Preventive cardiology focuses on identifying cardiovascular risk early and helping patients reduce the chance of future heart problems. This may include blood pressure, cholesterol, diabetes risk, family history, lifestyle, and ongoing monitoring.",
-            es: "La cardiología preventiva se enfoca en identificar el riesgo cardiovascular temprano y ayudar a los pacientes a reducir la posibilidad de problemas cardíacos futuros. Puede incluir presión arterial, colesterol, riesgo de diabetes, antecedentes familiares, estilo de vida y monitoreo continuo.",
+            en: "Preventive cardiology helps patients understand risk factors, make informed health decisions, and monitor cardiovascular health before serious problems develop.",
+            es: "La cardiología preventiva ayuda a los pacientes a entender factores de riesgo, tomar decisiones informadas y monitorear la salud cardiovascular antes de que se desarrollen problemas serios.",
         },
-        detailImages: [
-            {
-                src: "/images/services/preventive-cardiology/preventive-heart-care.webp",
-                alt: {
-                    en: "Preventive heart care and cardiovascular risk evaluation",
-                    es: "Cuidado preventivo del corazón y evaluación de riesgo cardiovascular",
-                },
-            },
-            {
-                src: "/images/services/preventive-cardiology/heart-risk-assessment.webp",
-                alt: {
-                    en: "Heart risk assessment for long-term cardiovascular health",
-                    es: "Evaluación de riesgo cardíaco para salud cardiovascular a largo plazo",
-                },
-            },
-            {
-                src: "/images/services/preventive-cardiology/cardiology-prevention-plan.webp",
-                alt: {
-                    en: "Preventive cardiology plan for heart health",
-                    es: "Plan de cardiología preventiva para la salud del corazón",
-                },
-            },
-        ],
+        detailImages: imageSets.prevention,
         reasonsToSeekCare: [
             {
                 title: {
-                    en: "Family history of heart disease",
-                    es: "Antecedentes familiares de enfermedad cardíaca",
+                    en: "Prevent future heart problems",
+                    es: "Prevenir problemas cardíacos futuros",
                 },
                 description: {
-                    en: "Family history may increase cardiovascular risk and may justify earlier evaluation.",
-                    es: "Los antecedentes familiares pueden aumentar el riesgo cardiovascular y justificar evaluación temprana.",
+                    en: "Prevention can help patients address risk factors before they become more serious.",
+                    es: "La prevención puede ayudar a los pacientes a atender factores de riesgo antes de que se vuelvan más serios.",
+                },
+            },
+            {
+                title: {
+                    en: "Lifestyle and medication review",
+                    es: "Revisión de estilo de vida y medicamentos",
+                },
+                description: {
+                    en: "The provider may discuss lifestyle, medications, and monitoring needs.",
+                    es: "El proveedor puede conversar sobre estilo de vida, medicamentos y necesidades de monitoreo.",
+                },
+            },
+            {
+                title: {
+                    en: "Early detection",
+                    es: "Detección temprana",
+                },
+                description: {
+                    en: "Testing and follow-up may help identify concerns earlier.",
+                    es: "Las pruebas y el seguimiento pueden ayudar a identificar preocupaciones más temprano.",
+                },
+            },
+        ],
+        whatToExpect: [
+            {
+                title: {
+                    en: "Personalized prevention plan",
+                    es: "Plan preventivo personalizado",
+                },
+                description: {
+                    en: "The visit may include recommendations based on your health history and risk factors.",
+                    es: "La visita puede incluir recomendaciones basadas en su historial de salud y factores de riesgo.",
                 },
             },
             {
@@ -1289,270 +1636,862 @@ export const cardiologyServices: CardiologyService[] = [
                     es: "Manejo de factores de riesgo",
                 },
                 description: {
-                    en: "Blood pressure, cholesterol, diabetes, smoking history, and lifestyle can affect long-term heart health.",
-                    es: "Presión arterial, colesterol, diabetes, historial de fumar y estilo de vida pueden afectar la salud cardíaca a largo plazo.",
+                    en: "Blood pressure, cholesterol, diabetes, weight, and lifestyle may be reviewed.",
+                    es: "Pueden revisarse presión arterial, colesterol, diabetes, peso y estilo de vida.",
                 },
             },
             {
                 title: {
-                    en: "Prevention planning",
-                    es: "Planificación preventiva",
+                    en: "Ongoing support",
+                    es: "Apoyo continuo",
                 },
                 description: {
-                    en: "A cardiology visit can help patients understand what steps may reduce future cardiovascular risk.",
-                    es: "Una visita cardiológica puede ayudar a entender qué pasos pueden reducir el riesgo cardiovascular futuro.",
-                },
-            },
-        ],
-        whatToExpect: [
-            {
-                title: {
-                    en: "Risk review",
-                    es: "Revisión de riesgo",
-                },
-                description: {
-                    en: "The doctor may review blood pressure, cholesterol, family history, medical conditions, and lifestyle factors.",
-                    es: "El doctor puede revisar presión arterial, colesterol, antecedentes familiares, condiciones médicas y estilo de vida.",
-                },
-            },
-            {
-                title: {
-                    en: "Prevention goals",
-                    es: "Objetivos de prevención",
-                },
-                description: {
-                    en: "Care may include discussion of monitoring, testing, medication options, and lifestyle changes when appropriate.",
-                    es: "La atención puede incluir monitoreo, pruebas, opciones de medicamentos y cambios de estilo de vida cuando sea apropiado.",
-                },
-            },
-            {
-                title: {
-                    en: "Long-term plan",
-                    es: "Plan a largo plazo",
-                },
-                description: {
-                    en: "Preventive cardiology often focuses on consistent follow-up and risk reduction over time.",
-                    es: "La cardiología preventiva suele enfocarse en seguimiento constante y reducción de riesgo con el tiempo.",
+                    en: "Prevention often includes ongoing monitoring and follow-up.",
+                    es: "La prevención frecuentemente incluye monitoreo y seguimiento continuo.",
                 },
             },
         ],
         faqs: [
             {
                 question: {
-                    en: "Who should consider preventive cardiology?",
-                    es: "¿Quién debe considerar cardiología preventiva?",
+                    en: "Do I need symptoms for preventive cardiology?",
+                    es: "¿Necesito síntomas para cardiología preventiva?",
                 },
                 answer: {
-                    en: "Patients with high blood pressure, cholesterol, diabetes, family history, smoking history, or other cardiovascular risk factors may benefit from preventive evaluation.",
-                    es: "Pacientes con presión alta, colesterol, diabetes, antecedentes familiares, historial de fumar u otros factores de riesgo pueden beneficiarse de una evaluación preventiva.",
+                    en: "No. Many patients seek preventive cardiology because of risk factors, family history, or the desire to protect long-term heart health.",
+                    es: "No. Muchos pacientes buscan cardiología preventiva por factores de riesgo, antecedentes familiares o el deseo de proteger la salud cardíaca a largo plazo.",
                 },
             },
-            {
-                question: {
-                    en: "Is preventive cardiology only for older adults?",
-                    es: "¿La cardiología preventiva es solo para adultos mayores?",
-                },
-                answer: {
-                    en: "No. Prevention can be helpful at different ages, especially when risk factors or family history are present.",
-                    es: "No. La prevención puede ser útil a diferentes edades, especialmente cuando existen factores de riesgo o antecedentes familiares.",
-                },
-            },
+            appointmentFaq,
         ],
         keywords: {
             en: [
-                "preventive cardiology Miami",
-                "heart disease prevention Hialeah",
-                "cardiovascular risk assessment Miami",
-                "preventive heart doctor Miami-Dade",
+                "preventive cardiology Hialeah",
+                "heart disease prevention Miami",
+                "cardiologist for prevention Miami-Dade",
             ],
             es: [
-                "cardiología preventiva Miami",
-                "prevención enfermedad cardíaca Hialeah",
-                "evaluación riesgo cardiovascular Miami",
-                "doctor preventivo del corazón Miami-Dade",
+                "cardiología preventiva Hialeah",
+                "prevención enfermedad cardíaca Miami",
+                "cardiólogo para prevención Miami-Dade",
             ],
         },
         href: {
             en: "/services/preventive-cardiology/",
-            es: " /es/services/cardiologia-preventiva/",
+            es: "/es/services/cardiologia-preventiva/",
         },
         seo: {
             title: {
-                en: "Preventive Cardiology in Hialeah, FL | Heart Risk Evaluation",
-                es: "Cardiología Preventiva en Hialeah, FL | Evaluación de Riesgo Cardíaco",
+                en: "Preventive Cardiology in Hialeah, FL",
+                es: "Cardiología Preventiva en Hialeah, FL",
             },
             description: {
-                en: "Preventive cardiology in Hialeah focused on cardiovascular risk factors, blood pressure, cholesterol, family history, and long-term heart health.",
-                es: "Cardiología preventiva en Hialeah enfocada en factores de riesgo cardiovascular, presión, colesterol, antecedentes familiares y salud cardíaca a largo plazo.",
+                en: "Preventive cardiology in Hialeah focused on risk reduction, early detection, and long-term cardiovascular health.",
+                es: "Cardiología preventiva en Hialeah enfocada en reducción de riesgo, detección temprana y salud cardiovascular a largo plazo.",
             },
         },
-        priority: 8,
+        priority: 9,
     },
     {
-        id: "arrhythmia-evaluation",
+        id: "hypertension-management",
         slug: {
-            en: "arrhythmia-evaluation",
-            es: "evaluacion-arritmia",
+            en: "hypertension-management",
+            es: "manejo-hipertension",
         },
-        icon: Arrythmia,
+        icon: Hypertension,
         title: {
-            en: "Arrhythmia Evaluation",
-            es: "Evaluación de Arritmia",
+            en: "Hypertension Management",
+            es: "Manejo de Hipertensión",
         },
         shortTitle: {
-            en: "Arrhythmia",
-            es: "Arritmia",
+            en: "Hypertension Management",
+            es: "Manejo de Hipertensión",
         },
         description: {
-            en: "Cardiology evaluation for irregular heart rhythms, palpitations, or symptoms that may indicate arrhythmias.",
-            es: "Evaluación cardiológica para ritmos cardíacos irregulares, palpitaciones o síntomas que pueden indicar arritmias.",
+            en: "Cardiology care for high blood pressure focused on risk reduction, monitoring, treatment planning, and long-term heart health.",
+            es: "Cuidado cardiológico para presión alta enfocado en reducir riesgos, monitoreo, planificación de tratamiento y salud cardíaca a largo plazo.",
         },
         shortDescription: {
-            en: "Evaluation for irregular heart rhythms and palpitations.",
-            es: "Evaluación de ritmos cardíacos irregulares y palpitaciones.",
+            en: "Heart-focused care for high blood pressure.",
+            es: "Cuidado cardiológico para presión alta.",
         },
         overview: {
-            en: "Arrhythmias are irregular heart rhythms that may cause palpitations, skipped beats, racing heartbeat, dizziness, fatigue, or other symptoms. A cardiology evaluation can help determine whether additional testing or monitoring may be needed.",
-            es: "Las arritmias son ritmos cardíacos irregulares que pueden causar palpitaciones, latidos saltados, corazón acelerado, mareos, fatiga u otros síntomas. Una evaluación cardiológica puede ayudar a determinar si se necesitan pruebas o monitoreo adicional.",
+            en: "Hypertension management helps patients monitor and manage high blood pressure, reduce cardiovascular risk, and protect the heart, brain, kidneys, and blood vessels.",
+            es: "El manejo de hipertensión ayuda a los pacientes a monitorear y controlar la presión alta, reducir riesgo cardiovascular y proteger el corazón, cerebro, riñones y vasos sanguíneos.",
         },
-        detailImages: [
-            {
-                src: "/images/services/arrhythmia-evaluation/palpitations-evaluation.webp",
-                alt: {
-                    en: "Palpitations evaluation with a cardiologist",
-                    es: "Evaluación de palpitaciones con un cardiólogo",
-                },
-            },
-            {
-                src: "/images/services/arrhythmia-evaluation/irregular-heartbeat-review.webp",
-                alt: {
-                    en: "Irregular heartbeat review and rhythm evaluation",
-                    es: "Revisión de latidos irregulares y evaluación del ritmo cardíaco",
-                },
-            },
-            {
-                src: "/images/services/arrhythmia-evaluation/heart-rhythm-monitoring.webp",
-                alt: {
-                    en: "Heart rhythm monitoring and arrhythmia evaluation",
-                    es: "Monitoreo del ritmo cardíaco y evaluación de arritmia",
-                },
-            },
-        ],
+        detailImages: imageSets.hypertension,
         reasonsToSeekCare: [
             {
                 title: {
-                    en: "Palpitations",
-                    es: "Palpitaciones",
+                    en: "High or difficult-to-control blood pressure",
+                    es: "Presión alta o difícil de controlar",
                 },
                 description: {
-                    en: "Fluttering, racing, pounding, or skipped-beat sensations may need evaluation.",
-                    es: "Sensaciones de aleteo, latidos rápidos, fuertes o saltados pueden necesitar evaluación.",
+                    en: "Patients with elevated readings or changing blood pressure may need specialized review.",
+                    es: "Pacientes con lecturas elevadas o cambios en la presión pueden necesitar revisión especializada.",
                 },
             },
             {
                 title: {
-                    en: "Irregular heartbeat",
-                    es: "Latidos irregulares",
+                    en: "Cardiovascular risk",
+                    es: "Riesgo cardiovascular",
                 },
                 description: {
-                    en: "An irregular rhythm found on EKG or noticed by the patient may need cardiology follow-up.",
-                    es: "Un ritmo irregular encontrado en EKG o notado por el paciente puede necesitar seguimiento cardiológico.",
+                    en: "High blood pressure can increase the risk of heart disease, stroke, and other complications.",
+                    es: "La presión alta puede aumentar el riesgo de enfermedad cardíaca, derrame cerebral y otras complicaciones.",
                 },
             },
             {
                 title: {
-                    en: "Associated symptoms",
-                    es: "Síntomas asociados",
+                    en: "Medication and monitoring review",
+                    es: "Revisión de medicamentos y monitoreo",
                 },
                 description: {
-                    en: "Dizziness, shortness of breath, chest discomfort, or fainting with palpitations should be discussed promptly.",
-                    es: "Mareos, falta de aire, molestia en el pecho o desmayo con palpitaciones deben hablarse prontamente.",
+                    en: "A cardiology visit can help review medications, home readings, and follow-up needs.",
+                    es: "Una visita cardiológica puede ayudar a revisar medicamentos, lecturas en casa y necesidades de seguimiento.",
                 },
             },
         ],
         whatToExpect: [
             {
                 title: {
-                    en: "Rhythm symptom review",
-                    es: "Revisión de síntomas del ritmo",
+                    en: "Blood pressure history review",
+                    es: "Revisión del historial de presión",
                 },
                 description: {
-                    en: "The doctor may ask how often symptoms happen, how long they last, and whether they occur with activity, stress, or rest.",
-                    es: "El doctor puede preguntar con qué frecuencia ocurren los síntomas, cuánto duran y si aparecen con actividad, estrés o reposo.",
+                    en: "The provider may review readings, medications, symptoms, and risk factors.",
+                    es: "El proveedor puede revisar lecturas, medicamentos, síntomas y factores de riesgo.",
                 },
             },
             {
                 title: {
-                    en: "EKG or monitoring discussion",
-                    es: "Discusión de EKG o monitoreo",
+                    en: "Risk-based planning",
+                    es: "Planificación basada en riesgo",
                 },
                 description: {
-                    en: "Depending on symptoms, EKG or additional rhythm monitoring may be discussed.",
-                    es: "Dependiendo de los síntomas, se puede hablar sobre EKG o monitoreo adicional del ritmo.",
+                    en: "Care may include lifestyle guidance, medication review, testing, or monitoring recommendations.",
+                    es: "El cuidado puede incluir orientación de estilo de vida, revisión de medicamentos, pruebas o recomendaciones de monitoreo.",
                 },
             },
             {
                 title: {
-                    en: "Risk and next steps",
-                    es: "Riesgo y próximos pasos",
+                    en: "Long-term follow-up",
+                    es: "Seguimiento a largo plazo",
                 },
                 description: {
-                    en: "The evaluation may include discussion of triggers, risks, treatment options, and follow-up recommendations.",
-                    es: "La evaluación puede incluir conversación sobre desencadenantes, riesgos, opciones de tratamiento y seguimiento.",
+                    en: "Follow-up helps monitor blood pressure control and cardiovascular risk.",
+                    es: "El seguimiento ayuda a monitorear el control de presión arterial y riesgo cardiovascular.",
                 },
             },
         ],
         faqs: [
             {
                 question: {
-                    en: "Are palpitations always dangerous?",
-                    es: "¿Las palpitaciones siempre son peligrosas?",
+                    en: "Can high blood pressure affect the heart?",
+                    es: "¿La presión alta puede afectar el corazón?",
                 },
                 answer: {
-                    en: "Not always. Some palpitations are benign, but they should be evaluated when they are frequent, new, worsening, or associated with dizziness, chest discomfort, shortness of breath, or fainting.",
-                    es: "No siempre. Algunas palpitaciones son benignas, pero deben evaluarse si son frecuentes, nuevas, empeoran o se asocian con mareos, molestia en el pecho, falta de aire o desmayo.",
+                    en: "Yes. Over time, uncontrolled high blood pressure can increase strain on the heart and raise the risk of cardiovascular complications.",
+                    es: "Sí. Con el tiempo, la presión alta no controlada puede aumentar la carga del corazón y elevar el riesgo de complicaciones cardiovasculares.",
                 },
             },
-            {
-                question: {
-                    en: "What tests may be used for arrhythmias?",
-                    es: "¿Qué pruebas pueden usarse para arritmias?",
-                },
-                answer: {
-                    en: "Depending on the case, evaluation may involve EKG, rhythm monitoring, cardiac testing, or review of prior results.",
-                    es: "Dependiendo del caso, la evaluación puede incluir EKG, monitoreo del ritmo, pruebas cardíacas o revisión de resultados previos.",
-                },
-            },
+            appointmentFaq,
         ],
         keywords: {
             en: [
-                "arrhythmia cardiologist Miami",
-                "irregular heartbeat doctor Hialeah",
-                "palpitations evaluation Miami",
-                "cardiologist for arrhythmia Miami-Dade",
+                "hypertension doctor Hialeah",
+                "high blood pressure cardiologist Miami",
+                "blood pressure management Miami-Dade",
             ],
             es: [
-                "cardiólogo para arritmia Miami",
-                "doctor para latidos irregulares Hialeah",
-                "evaluación de palpitaciones Miami",
-                "cardiólogo para arritmia Miami-Dade",
+                "doctor hipertensión Hialeah",
+                "cardiólogo presión alta Miami",
+                "manejo de presión arterial Miami-Dade",
             ],
         },
         href: {
-            en: "/services/arrhythmia-evaluation/",
-            es: " /es/services/evaluacion-arritmia/",
+            en: "/services/hypertension-management/",
+            es: "/es/services/manejo-hipertension/",
         },
         seo: {
             title: {
-                en: "Arrhythmia & Palpitations Evaluation in Hialeah, FL",
-                es: "Evaluación de Arritmia y Palpitaciones en Hialeah, FL",
+                en: "Hypertension Management in Hialeah, FL",
+                es: "Manejo de Hipertensión en Hialeah, FL",
             },
             description: {
-                en: "Cardiology evaluation in Hialeah for irregular heartbeat, palpitations, skipped beats, racing heart, and possible arrhythmia symptoms.",
-                es: "Evaluación cardiológica en Hialeah para latidos irregulares, palpitaciones, latidos saltados, corazón acelerado y posibles síntomas de arritmia.",
+                en: "Hypertension management in Hialeah focused on blood pressure control, cardiovascular risk reduction, and long-term heart health.",
+                es: "Manejo de hipertensión en Hialeah enfocado en control de presión, reducción de riesgo cardiovascular y salud cardíaca a largo plazo.",
             },
         },
-        priority: 9,
+        featured: true,
+        priority: 10,
+    },
+    {
+        id: "heart-disease-evaluation-treatment",
+        slug: {
+            en: "heart-disease-evaluation-treatment",
+            es: "evaluacion-tratamiento-enfermedad-cardiaca",
+        },
+        icon: HeartDisease,
+        title: {
+            en: "Heart Disease Evaluation and Treatment",
+            es: "Evaluación y Tratamiento de Enfermedad Cardíaca",
+        },
+        shortTitle: {
+            en: "Heart Disease Care",
+            es: "Cuidado de Enfermedad Cardíaca",
+        },
+        description: {
+            en: "Evaluation and ongoing management for coronary artery disease, congestive heart failure, arrhythmias, peripheral vascular disease, and other cardiovascular conditions.",
+            es: "Evaluación y manejo continuo de enfermedad coronaria, insuficiencia cardíaca congestiva, arritmias, enfermedad vascular periférica y otras condiciones cardiovasculares.",
+        },
+        shortDescription: {
+            en: "Care for ongoing cardiovascular conditions.",
+            es: "Cuidado para condiciones cardiovasculares existentes.",
+        },
+        overview: {
+            en: "Heart disease evaluation and treatment focuses on diagnosing, monitoring, and managing cardiovascular conditions with individualized care planning.",
+            es: "La evaluación y tratamiento de enfermedad cardíaca se enfoca en diagnosticar, monitorear y manejar condiciones cardiovasculares con planificación individualizada.",
+        },
+        detailImages: imageSets.heartDisease,
+        reasonsToSeekCare: [
+            {
+                title: {
+                    en: "Known cardiovascular condition",
+                    es: "Condición cardiovascular conocida",
+                },
+                description: {
+                    en: "Patients with known heart disease may need follow-up, monitoring, testing, or treatment planning.",
+                    es: "Pacientes con enfermedad cardíaca conocida pueden necesitar seguimiento, monitoreo, pruebas o planificación de tratamiento.",
+                },
+            },
+            {
+                title: {
+                    en: "Symptoms or changing health",
+                    es: "Síntomas o cambios de salud",
+                },
+                description: {
+                    en: "New or worsening symptoms should be discussed with a cardiology provider.",
+                    es: "Síntomas nuevos o que empeoran deben conversarse con un proveedor de cardiología.",
+                },
+            },
+            {
+                title: {
+                    en: "Long-term management",
+                    es: "Manejo a largo plazo",
+                },
+                description: {
+                    en: "Ongoing care helps monitor disease progression, medications, and prevention needs.",
+                    es: "El cuidado continuo ayuda a monitorear progresión, medicamentos y necesidades de prevención.",
+                },
+            },
+        ],
+        whatToExpect: [
+            {
+                title: {
+                    en: "Condition review",
+                    es: "Revisión de la condición",
+                },
+                description: {
+                    en: "The provider reviews diagnosis, symptoms, medications, prior testing, and current concerns.",
+                    es: "El proveedor revisa diagnóstico, síntomas, medicamentos, pruebas previas y preocupaciones actuales.",
+                },
+            },
+            {
+                title: {
+                    en: "Testing or monitoring",
+                    es: "Pruebas o monitoreo",
+                },
+                description: {
+                    en: "Additional testing may be recommended depending on the patient’s condition and symptoms.",
+                    es: "Pruebas adicionales pueden recomendarse según la condición y síntomas del paciente.",
+                },
+            },
+            {
+                title: {
+                    en: "Individualized treatment planning",
+                    es: "Plan de tratamiento individualizado",
+                },
+                description: {
+                    en: "The care plan may include medication review, lifestyle guidance, monitoring, or referral for advanced procedures when needed.",
+                    es: "El plan puede incluir revisión de medicamentos, orientación de estilo de vida, monitoreo o referido para procedimientos avanzados cuando sea necesario.",
+                },
+            },
+        ],
+        faqs: [
+            {
+                question: {
+                    en: "What heart conditions does the office evaluate?",
+                    es: "¿Qué condiciones cardíacas evalúa la oficina?",
+                },
+                answer: {
+                    en: "The office evaluates and manages many cardiovascular conditions, including coronary artery disease, hypertension, congestive heart failure, arrhythmias, and peripheral vascular disease.",
+                    es: "La oficina evalúa y maneja muchas condiciones cardiovasculares, incluyendo enfermedad coronaria, hipertensión, insuficiencia cardíaca congestiva, arritmias y enfermedad vascular periférica.",
+                },
+            },
+            appointmentFaq,
+        ],
+        keywords: {
+            en: [
+                "heart disease doctor Hialeah",
+                "cardiologist for heart disease Miami",
+                "coronary artery disease Hialeah",
+                "heart failure cardiologist Miami",
+            ],
+            es: [
+                "doctor enfermedad cardíaca Hialeah",
+                "cardiólogo enfermedad cardíaca Miami",
+                "enfermedad coronaria Hialeah",
+                "cardiólogo insuficiencia cardíaca Miami",
+            ],
+        },
+        href: {
+            en: "/services/heart-disease-evaluation-treatment/",
+            es: "/es/services/evaluacion-tratamiento-enfermedad-cardiaca/",
+        },
+        seo: {
+            title: {
+                en: "Heart Disease Evaluation and Treatment in Hialeah, FL",
+                es: "Evaluación y Tratamiento de Enfermedad Cardíaca en Hialeah, FL",
+            },
+            description: {
+                en: "Heart disease evaluation and treatment in Hialeah for coronary artery disease, heart failure, arrhythmias, vascular disease, and ongoing cardiovascular care.",
+                es: "Evaluación y tratamiento de enfermedad cardíaca en Hialeah para enfermedad coronaria, insuficiencia cardíaca, arritmias, enfermedad vascular y cuidado cardiovascular continuo.",
+            },
+        },
+        priority: 11,
+    },
+    {
+        id: "pacemaker-aicd-interrogation",
+        slug: {
+            en: "pacemaker-aicd-interrogation",
+            es: "interrogacion-marcapasos-aicd",
+        },
+        icon: Arrythmia,
+        title: {
+            en: "Pacemaker / AICD Interrogation",
+            es: "Interrogación de Marcapasos / AICD",
+        },
+        shortTitle: {
+            en: "Pacemaker / AICD Checks",
+            es: "Chequeo Marcapasos / AICD",
+        },
+        description: {
+            en: "Device interrogation for patients with pacemakers or AICDs to review device function and rhythm-related information.",
+            es: "Interrogación de dispositivos para pacientes con marcapasos o AICD para revisar función del dispositivo e información relacionada con el ritmo cardíaco.",
+        },
+        shortDescription: {
+            en: "Device checks for pacemakers and AICDs.",
+            es: "Chequeos de dispositivos como marcapasos y AICD.",
+        },
+        overview: {
+            en: "Pacemaker and AICD interrogation helps review device performance, stored rhythm information, and other device-related findings as part of ongoing cardiac care.",
+            es: "La interrogación de marcapasos y AICD ayuda a revisar el funcionamiento del dispositivo, información almacenada del ritmo cardíaco y otros hallazgos como parte del cuidado cardíaco continuo.",
+        },
+        detailImages: imageSets.pacemakerAicd,
+        reasonsToSeekCare: [
+            {
+                title: {
+                    en: "Device follow-up",
+                    es: "Seguimiento del dispositivo",
+                },
+                description: {
+                    en: "Patients with implanted cardiac devices need regular checks as recommended by their provider.",
+                    es: "Pacientes con dispositivos cardíacos implantados necesitan chequeos regulares según recomendación médica.",
+                },
+            },
+            {
+                title: {
+                    en: "Rhythm monitoring",
+                    es: "Monitoreo del ritmo",
+                },
+                description: {
+                    en: "Device data can help evaluate rhythm-related events and device performance.",
+                    es: "Los datos del dispositivo pueden ayudar a evaluar eventos relacionados con el ritmo y funcionamiento del dispositivo.",
+                },
+            },
+            {
+                title: {
+                    en: "Ongoing cardiac management",
+                    es: "Manejo cardíaco continuo",
+                },
+                description: {
+                    en: "Results may help guide follow-up recommendations and care planning.",
+                    es: "Los resultados pueden ayudar a guiar recomendaciones de seguimiento y planificación de cuidado.",
+                },
+            },
+        ],
+        whatToExpect: [
+            {
+                title: {
+                    en: "Device data review",
+                    es: "Revisión de datos del dispositivo",
+                },
+                description: {
+                    en: "The device is checked to review function and stored information.",
+                    es: "El dispositivo se revisa para evaluar funcionamiento e información almacenada.",
+                },
+            },
+            {
+                title: {
+                    en: "Rhythm-related findings",
+                    es: "Hallazgos relacionados con ritmo",
+                },
+                description: {
+                    en: "The provider may review rhythm events or device alerts when present.",
+                    es: "El proveedor puede revisar eventos de ritmo o alertas del dispositivo si están presentes.",
+                },
+            },
+            {
+                title: {
+                    en: "Follow-up planning",
+                    es: "Planificación de seguimiento",
+                },
+                description: {
+                    en: "Follow-up timing or care recommendations may be discussed.",
+                    es: "Puede conversarse sobre el tiempo de seguimiento o recomendaciones de cuidado.",
+                },
+            },
+        ],
+        faqs: [
+            {
+                question: {
+                    en: "What is pacemaker or AICD interrogation?",
+                    es: "¿Qué es la interrogación de marcapasos o AICD?",
+                },
+                answer: {
+                    en: "It is a device check that reviews pacemaker or AICD function and stored rhythm information.",
+                    es: "Es un chequeo del dispositivo que revisa la función del marcapasos o AICD e información almacenada del ritmo cardíaco.",
+                },
+            },
+            appointmentFaq,
+        ],
+        keywords: {
+            en: [
+                "pacemaker check Hialeah",
+                "AICD interrogation Miami",
+                "cardiac device check Miami-Dade",
+            ],
+            es: [
+                "chequeo marcapasos Hialeah",
+                "interrogación AICD Miami",
+                "chequeo dispositivo cardíaco Miami-Dade",
+            ],
+        },
+        href: {
+            en: "/services/pacemaker-aicd-interrogation/",
+            es: "/es/services/interrogacion-marcapasos-aicd/",
+        },
+        seo: {
+            title: {
+                en: "Pacemaker / AICD Interrogation in Hialeah, FL",
+                es: "Interrogación de Marcapasos / AICD en Hialeah, FL",
+            },
+            description: {
+                en: "Pacemaker and AICD interrogation in Hialeah for device checks, rhythm review, and ongoing cardiac care.",
+                es: "Interrogación de marcapasos y AICD en Hialeah para chequeos de dispositivos, revisión de ritmo y cuidado cardíaco continuo.",
+            },
+        },
+        priority: 12,
+    },
+    {
+        id: "event-monitor",
+        slug: {
+            en: "event-monitor",
+            es: "monitor-eventos-cardiacos",
+        },
+        icon: Arrythmia,
+        title: {
+            en: "Event Monitor",
+            es: "Monitor de Eventos Cardíacos",
+        },
+        shortTitle: {
+            en: "Event Monitor",
+            es: "Monitor de Eventos",
+        },
+        description: {
+            en: "Heart rhythm monitoring used to evaluate intermittent symptoms such as palpitations, skipped beats, dizziness, or possible arrhythmias.",
+            es: "Monitoreo del ritmo cardíaco utilizado para evaluar síntomas intermitentes como palpitaciones, latidos saltados, mareos o posibles arritmias.",
+        },
+        shortDescription: {
+            en: "Heart rhythm monitoring for intermittent symptoms.",
+            es: "Monitoreo del ritmo cardíaco para síntomas intermitentes.",
+        },
+        overview: {
+            en: "An event monitor helps record heart rhythm information over time, especially when symptoms do not happen during a short office visit or standard EKG.",
+            es: "Un monitor de eventos ayuda a registrar información del ritmo cardíaco durante un periodo de tiempo, especialmente cuando los síntomas no ocurren durante una visita breve o EKG estándar.",
+        },
+        detailImages: imageSets.rhythm,
+        reasonsToSeekCare: [
+            {
+                title: {
+                    en: "Palpitations or skipped beats",
+                    es: "Palpitaciones o latidos saltados",
+                },
+                description: {
+                    en: "Intermittent rhythm symptoms may need longer monitoring.",
+                    es: "Síntomas intermitentes de ritmo pueden necesitar monitoreo más prolongado.",
+                },
+            },
+            {
+                title: {
+                    en: "Dizziness or fainting concerns",
+                    es: "Mareos o desmayos",
+                },
+                description: {
+                    en: "Rhythm monitoring may help evaluate symptoms that come and go.",
+                    es: "El monitoreo del ritmo puede ayudar a evaluar síntomas que aparecen y desaparecen.",
+                },
+            },
+            {
+                title: {
+                    en: "Possible arrhythmia",
+                    es: "Posible arritmia",
+                },
+                description: {
+                    en: "An event monitor may help capture rhythm changes for provider review.",
+                    es: "Un monitor de eventos puede ayudar a capturar cambios de ritmo para revisión médica.",
+                },
+            },
+        ],
+        whatToExpect: [
+            {
+                title: {
+                    en: "Longer rhythm monitoring",
+                    es: "Monitoreo de ritmo más prolongado",
+                },
+                description: {
+                    en: "The monitor records rhythm information over a period of time.",
+                    es: "El monitor registra información del ritmo durante un periodo de tiempo.",
+                },
+            },
+            {
+                title: {
+                    en: "Symptom correlation",
+                    es: "Correlación con síntomas",
+                },
+                description: {
+                    en: "The goal is to help connect symptoms with rhythm findings when possible.",
+                    es: "El objetivo es ayudar a conectar síntomas con hallazgos del ritmo cuando sea posible.",
+                },
+            },
+            {
+                title: {
+                    en: "Result review",
+                    es: "Revisión de resultados",
+                },
+                description: {
+                    en: "The provider reviews recorded information and discusses next steps.",
+                    es: "El proveedor revisa la información registrada y conversa sobre próximos pasos.",
+                },
+            },
+        ],
+        faqs: [
+            {
+                question: {
+                    en: "Why use an event monitor instead of only an EKG?",
+                    es: "¿Por qué usar un monitor de eventos en vez de solo un EKG?",
+                },
+                answer: {
+                    en: "An EKG records a short moment in time. An event monitor can record rhythm information over a longer period, which may help evaluate intermittent symptoms.",
+                    es: "Un EKG registra un momento breve. Un monitor de eventos puede registrar información del ritmo por más tiempo, lo que puede ayudar a evaluar síntomas intermitentes.",
+                },
+            },
+            appointmentFaq,
+        ],
+        keywords: {
+            en: [
+                "event monitor Hialeah",
+                "heart rhythm monitor Miami",
+                "palpitations monitor Hialeah",
+            ],
+            es: [
+                "monitor de eventos Hialeah",
+                "monitor ritmo cardíaco Miami",
+                "monitor para palpitaciones Hialeah",
+            ],
+        },
+        href: {
+            en: "/services/event-monitor/",
+            es: "/es/services/monitor-eventos-cardiacos/",
+        },
+        seo: {
+            title: {
+                en: "Event Monitor in Hialeah, FL | Heart Rhythm Monitoring",
+                es: "Monitor de Eventos en Hialeah, FL | Monitoreo Cardíaco",
+            },
+            description: {
+                en: "Event monitor services in Hialeah for palpitations, intermittent rhythm symptoms, dizziness, and possible arrhythmias.",
+                es: "Monitor de eventos en Hialeah para palpitaciones, síntomas intermitentes de ritmo, mareos y posibles arritmias.",
+            },
+        },
+        priority: 13,
+    },
+    {
+        id: "cardiac-catheterization",
+        slug: {
+            en: "cardiac-catheterization",
+            es: "cateterismo-cardiaco",
+        },
+        icon: InterventionalCardiology,
+        title: {
+            en: "Cardiac Catheterization",
+            es: "Cateterismo Cardíaco",
+        },
+        shortTitle: {
+            en: "Cardiac Catheterization",
+            es: "Cateterismo Cardíaco",
+        },
+        description: {
+            en: "Specialized cardiovascular procedure performed by collaborating physician Dr. Brian Valle, DO, for qualifying patients when clinically appropriate.",
+            es: "Procedimiento cardiovascular especializado realizado por el médico colaborador Dr. Brian Valle, DO, para pacientes que califican cuando es clínicamente apropiado.",
+        },
+        shortDescription: {
+            en: "Advanced procedure coordination for qualifying patients.",
+            es: "Coordinación de procedimiento avanzado para pacientes que califican.",
+        },
+        overview: {
+            en: "Cardiac catheterization is a specialized cardiovascular procedure that may be recommended for qualifying patients based on symptoms, test results, or clinical evaluation. Dr. Pazos collaborates with Dr. Brian Valle, DO, for this procedure when appropriate.",
+            es: "El cateterismo cardíaco es un procedimiento cardiovascular especializado que puede recomendarse para pacientes que califican según síntomas, resultados o evaluación clínica. El Dr. Pazos colabora con el Dr. Brian Valle, DO, para este procedimiento cuando corresponde.",
+        },
+        detailImages: imageSets.cardiacCatheterization,
+        reasonsToSeekCare: [
+            {
+                title: {
+                    en: "Abnormal cardiac testing",
+                    es: "Pruebas cardíacas anormales",
+                },
+                description: {
+                    en: "Certain test results may lead to discussion of advanced evaluation.",
+                    es: "Ciertos resultados de pruebas pueden llevar a discutir evaluación avanzada.",
+                },
+            },
+            {
+                title: {
+                    en: "Possible coronary artery disease",
+                    es: "Posible enfermedad coronaria",
+                },
+                description: {
+                    en: "Cardiac catheterization may be considered when coronary artery disease needs further evaluation.",
+                    es: "El cateterismo puede considerarse cuando se necesita evaluar más la enfermedad coronaria.",
+                },
+            },
+            {
+                title: {
+                    en: "Procedure coordination",
+                    es: "Coordinación del procedimiento",
+                },
+                description: {
+                    en: "The care team helps coordinate next steps for qualifying patients.",
+                    es: "El equipo ayuda a coordinar próximos pasos para pacientes que califican.",
+                },
+            },
+        ],
+        whatToExpect: [
+            {
+                title: {
+                    en: "Clinical review first",
+                    es: "Primero revisión clínica",
+                },
+                description: {
+                    en: "The provider reviews symptoms, history, and test results before discussing whether the procedure may be appropriate.",
+                    es: "El proveedor revisa síntomas, historial y resultados antes de discutir si el procedimiento puede ser apropiado.",
+                },
+            },
+            {
+                title: {
+                    en: "Collaborative procedure care",
+                    es: "Cuidado colaborativo del procedimiento",
+                },
+                description: {
+                    en: "For qualifying patients, the procedure is performed by collaborating physician Dr. Brian Valle, DO.",
+                    es: "Para pacientes que califican, el procedimiento es realizado por el médico colaborador Dr. Brian Valle, DO.",
+                },
+            },
+            {
+                title: {
+                    en: "Follow-up planning",
+                    es: "Planificación de seguimiento",
+                },
+                description: {
+                    en: "The care team helps guide follow-up and ongoing cardiovascular management.",
+                    es: "El equipo ayuda a guiar seguimiento y manejo cardiovascular continuo.",
+                },
+            },
+        ],
+        faqs: [
+            {
+                question: {
+                    en: "Does every patient with chest pain need cardiac catheterization?",
+                    es: "¿Todo paciente con dolor en el pecho necesita cateterismo?",
+                },
+                answer: {
+                    en: "No. Cardiac catheterization is only considered when clinically appropriate after evaluation and testing.",
+                    es: "No. El cateterismo cardíaco solo se considera cuando es clínicamente apropiado después de evaluación y pruebas.",
+                },
+            },
+            appointmentFaq,
+        ],
+        keywords: {
+            en: [
+                "cardiac catheterization Hialeah",
+                "cardiac cath Miami",
+                "interventional cardiology Hialeah",
+            ],
+            es: [
+                "cateterismo cardíaco Hialeah",
+                "cardiac cath Miami",
+                "cardiología intervencionista Hialeah",
+            ],
+        },
+        href: {
+            en: "/services/cardiac-catheterization/",
+            es: "/es/services/cateterismo-cardiaco/",
+        },
+        seo: {
+            title: {
+                en: "Cardiac Catheterization Coordination in Hialeah, FL",
+                es: "Coordinación de Cateterismo Cardíaco en Hialeah, FL",
+            },
+            description: {
+                en: "Cardiac catheterization coordination in Hialeah for qualifying patients through collaborative cardiovascular care.",
+                es: "Coordinación de cateterismo cardíaco en Hialeah para pacientes que califican mediante cuidado cardiovascular colaborativo.",
+            },
+        },
+        priority: 14,
+    },
+    {
+        id: "transesophageal-echocardiogram",
+        slug: {
+            en: "transesophageal-echocardiogram",
+            es: "ecocardiograma-transesofagico",
+        },
+        icon: InterventionalCardiology,
+        title: {
+            en: "Transesophageal Echocardiogram",
+            es: "Ecocardiograma Transesofágico",
+        },
+        shortTitle: {
+            en: "TEE",
+            es: "TEE",
+        },
+        description: {
+            en: "Specialized echocardiogram procedure performed by collaborating physician Dr. Brian Valle, DO, for qualifying patients when clinically appropriate.",
+            es: "Procedimiento especializado de ecocardiograma realizado por el médico colaborador Dr. Brian Valle, DO, para pacientes que califican cuando es clínicamente apropiado.",
+        },
+        shortDescription: {
+            en: "Advanced echocardiogram coordination for qualifying patients.",
+            es: "Coordinación de ecocardiograma avanzado para pacientes que califican.",
+        },
+        overview: {
+            en: "A transesophageal echocardiogram, or TEE, is a specialized cardiac imaging procedure that may be recommended when detailed heart images are needed. Dr. Pazos collaborates with Dr. Brian Valle, DO, for this procedure when appropriate.",
+            es: "Un ecocardiograma transesofágico, o TEE, es un procedimiento especializado de imágenes cardíacas que puede recomendarse cuando se necesitan imágenes detalladas del corazón. El Dr. Pazos colabora con el Dr. Brian Valle, DO, para este procedimiento cuando corresponde.",
+        },
+        detailImages: imageSets.transesophagealEchocardiogram,
+        reasonsToSeekCare: [
+            {
+                title: {
+                    en: "Need for detailed cardiac imaging",
+                    es: "Necesidad de imágenes cardíacas detalladas",
+                },
+                description: {
+                    en: "TEE may be considered when more detailed heart imaging is needed after evaluation.",
+                    es: "TEE puede considerarse cuando se necesitan imágenes más detalladas del corazón después de una evaluación.",
+                },
+            },
+            {
+                title: {
+                    en: "Valve or structural concerns",
+                    es: "Preocupaciones de válvulas o estructura",
+                },
+                description: {
+                    en: "The procedure may help evaluate certain valve or structural heart concerns.",
+                    es: "El procedimiento puede ayudar a evaluar ciertas preocupaciones de válvulas o estructura del corazón.",
+                },
+            },
+            {
+                title: {
+                    en: "Collaborative procedure planning",
+                    es: "Planificación colaborativa del procedimiento",
+                },
+                description: {
+                    en: "The care team helps coordinate this specialized procedure for qualifying patients.",
+                    es: "El equipo ayuda a coordinar este procedimiento especializado para pacientes que califican.",
+                },
+            },
+        ],
+        whatToExpect: [
+            {
+                title: {
+                    en: "Evaluation before procedure",
+                    es: "Evaluación antes del procedimiento",
+                },
+                description: {
+                    en: "The provider reviews symptoms, history, and test results before discussing whether TEE is appropriate.",
+                    es: "El proveedor revisa síntomas, historial y resultados antes de discutir si TEE es apropiado.",
+                },
+            },
+            {
+                title: {
+                    en: "Specialized cardiac imaging",
+                    es: "Imágenes cardíacas especializadas",
+                },
+                description: {
+                    en: "TEE is used when more detailed imaging is clinically needed.",
+                    es: "TEE se utiliza cuando se necesitan imágenes más detalladas clínicamente.",
+                },
+            },
+            {
+                title: {
+                    en: "Procedure coordination",
+                    es: "Coordinación del procedimiento",
+                },
+                description: {
+                    en: "For qualifying patients, the procedure is performed by collaborating physician Dr. Brian Valle, DO.",
+                    es: "Para pacientes que califican, el procedimiento es realizado por el médico colaborador Dr. Brian Valle, DO.",
+                },
+            },
+        ],
+        faqs: [
+            {
+                question: {
+                    en: "What does TEE stand for?",
+                    es: "¿Qué significa TEE?",
+                },
+                answer: {
+                    en: "TEE stands for Transesophageal Echocardiogram, a specialized heart imaging procedure used when detailed cardiac images are needed.",
+                    es: "TEE significa ecocardiograma transesofágico, un procedimiento especializado de imágenes del corazón usado cuando se necesitan imágenes cardíacas detalladas.",
+                },
+            },
+            appointmentFaq,
+        ],
+        keywords: {
+            en: [
+                "transesophageal echocardiogram Hialeah",
+                "TEE cardiology Miami",
+                "advanced echocardiogram Miami-Dade",
+            ],
+            es: [
+                "ecocardiograma transesofágico Hialeah",
+                "TEE cardiología Miami",
+                "ecocardiograma avanzado Miami-Dade",
+            ],
+        },
+        href: {
+            en: "/services/transesophageal-echocardiogram/",
+            es: "/es/services/ecocardiograma-transesofagico/",
+        },
+        seo: {
+            title: {
+                en: "Transesophageal Echocardiogram Coordination in Hialeah, FL",
+                es: "Coordinación de Ecocardiograma Transesofágico en Hialeah, FL",
+            },
+            description: {
+                en: "Transesophageal echocardiogram coordination in Hialeah for qualifying patients through collaborative cardiovascular care.",
+                es: "Coordinación de ecocardiograma transesofágico en Hialeah para pacientes que califican mediante cuidado cardiovascular colaborativo.",
+            },
+        },
+        priority: 15,
     },
 ];
 

@@ -34,7 +34,7 @@ export const aboutMetadata: PageMetadata = {
     },
     canonical: {
         en: "/about/",
-        es: "/es/sobre-nosotros/",
+        es: "/es/about/",
     },
 };
 
@@ -49,7 +49,7 @@ export const servicesIndexMetadata: PageMetadata = {
     },
     canonical: {
         en: "/services/",
-        es: " /es/services/",
+        es: "/es/services/",
     },
 };
 
@@ -64,7 +64,7 @@ export const locationsIndexMetadata: PageMetadata = {
     },
     canonical: {
         en: "/locations/",
-        es: " /es/locations/",
+        es: "/es/locations/",
     },
 };
 
@@ -79,6 +79,6 @@ export const contactMetadata: PageMetadata = {
     },
     canonical: {
         en: "/contact/",
-        es: "/es/contacto/",
+        es: "/es/contact/",
     },
 };

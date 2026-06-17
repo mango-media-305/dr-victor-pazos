@@ -1,20 +1,20 @@
 // src/data/site/siteConfig.ts
 
 export const siteConfig = {
-    name: "Victor Pazos, MD. PA.",
+    name: "Cardiovascular and Interventional Center of South Florida",
     shortName: "Victor Pazos, MD",
-    legalName: "Victor Pazos, MD. PA.",
+    legalName: "Victor Pazos, MD, PA",
 
     domain: "https://victorpazosmd.com",
 
     tagline: {
-        en: "Experienced Cardiology Care in Hialeah & Miami-Dade",
-        es: "Atención cardiológica con experiencia en Hialeah y Miami-Dade",
+        en: "Comprehensive Cardiovascular Care in South Florida",
+        es: "Cuidado cardiovascular integral en el sur de Florida",
     },
 
     description: {
-        en: "Victor Pazos, MD. PA. provides experienced cardiology and interventional cardiology care for patients in Hialeah, Miami, and Miami-Dade County.",
-        es: "Victor Pazos, MD. PA. ofrece atención cardiológica y cardiología intervencionista para pacientes en Hialeah, Miami y Miami-Dade County.",
+        en: "Cardiovascular and Interventional Center of South Florida, led by Victor Pazos, MD, provides comprehensive cardiology care, advanced diagnostic testing, preventive cardiology, and cardiovascular disease management in Hialeah, FL.",
+        es: "Cardiovascular and Interventional Center of South Florida, dirigido por Victor Pazos, MD, ofrece cuidado cardiológico integral, pruebas diagnósticas avanzadas, cardiología preventiva y manejo de enfermedades cardiovasculares en Hialeah, FL.",
     },
 
     doctor: {
@@ -95,17 +95,18 @@ export const siteConfig = {
         phone: "(305) 835-0551",
         phoneHref: "tel:+13058350551",
 
-        email: "johndoe@testing.com",
-        emailHref: "mailto:johndoe@testing.com",
+        email: "admin@victorpazosmd.com",
+        emailHref: "mailto:admin@victorpazosmd.com",
 
         address: {
-            street: "7100 W 20th Avenue",
-            suite: "Suite G166",
+            street: "7100 W 20th Ave",
+            suite: "Suite G-166",
+            building: "Palmetto Medical Plaza",
             city: "Hialeah",
             state: "FL",
             zip: "33016",
             country: "US",
-            full: "7100 W 20th Avenue Suite G166, Hialeah, FL 33016",
+            full: "7100 W 20th Ave, Suite G-166, Palmetto Medical Plaza, Hialeah, FL 33016",
         },
 
         coordinates: {
@@ -114,7 +115,7 @@ export const siteConfig = {
         },
 
         googleMapsUrl:
-            "https://www.google.com/maps/search/?api=1&query=7100%20W%2020th%20Avenue%20Suite%20G166%2C%20Hialeah%2C%20FL%2033016",
+            "https://maps.app.goo.gl/u2zeY5qEvhHE4eUt5",
 
         appointmentPriority: ["phone", "email", "form"],
     },

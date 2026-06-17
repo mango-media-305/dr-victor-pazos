@@ -49,11 +49,12 @@ export interface MiamiDadeLocation {
 const officeDisplay = contactInfo.address.display;
 
 const defaultNearbyServices = [
-    "general-cardiology",
-    "chest-pain-evaluation",
-    "hypertension-treatment",
-    "ekg-cardiac-testing",
-    "arrhythmia-evaluation",
+    "comprehensive-cardiology-consultations",
+    "echocardiograms",
+    "nuclear-stress-testing",
+    "carotid-ultrasound-studies",
+    "hypertension-management",
+    "heart-disease-evaluation-treatment",
 ];
 
 const getDefaultReasons = (city: string): LocationContentBlock[] => [
@@ -187,7 +188,7 @@ export const miamiDadeLocations: MiamiDadeLocation[] = [
         faqs: getDefaultFaqs("Hialeah"),
         href: {
             en: "/locations/hialeah/",
-            es: " /es/locations/hialeah/",
+            es: "/es/locations/hialeah/",
         },
         nearbyOffice: {
             label: {
@@ -256,7 +257,7 @@ export const miamiDadeLocations: MiamiDadeLocation[] = [
         faqs: getDefaultFaqs("Miami"),
         href: {
             en: "/locations/miami/",
-            es: " /es/locations/miami/",
+            es: "/es/locations/miami/",
         },
         nearbyOffice: {
             label: {
@@ -325,7 +326,7 @@ export const miamiDadeLocations: MiamiDadeLocation[] = [
         faqs: getDefaultFaqs("Miami Lakes"),
         href: {
             en: "/locations/miami-lakes/",
-            es: " /es/locations/miami-lakes/",
+            es: "/es/locations/miami-lakes/",
         },
         nearbyOffice: {
             label: {
@@ -392,7 +393,7 @@ export const miamiDadeLocations: MiamiDadeLocation[] = [
         faqs: getDefaultFaqs("Doral"),
         href: {
             en: "/locations/doral/",
-            es: " /es/locations/doral/",
+            es: "/es/locations/doral/",
         },
         nearbyOffice: {
             label: {
@@ -459,7 +460,7 @@ export const miamiDadeLocations: MiamiDadeLocation[] = [
         faqs: getDefaultFaqs("Hialeah Gardens"),
         href: {
             en: "/locations/hialeah-gardens/",
-            es: " /es/locations/hialeah-gardens/",
+            es: "/es/locations/hialeah-gardens/",
         },
         nearbyOffice: {
             label: {
@@ -524,7 +525,7 @@ export const miamiDadeLocations: MiamiDadeLocation[] = [
         faqs: getDefaultFaqs("Miami Gardens"),
         href: {
             en: "/locations/miami-gardens/",
-            es: " /es/locations/miami-gardens/",
+            es: "/es/locations/miami-gardens/",
         },
         nearbyOffice: {
             label: {
@@ -589,7 +590,7 @@ export const miamiDadeLocations: MiamiDadeLocation[] = [
         faqs: getDefaultFaqs("Westchester"),
         href: {
             en: "/locations/westchester/",
-            es: " /es/locations/westchester/",
+            es: "/es/locations/westchester/",
         },
         nearbyOffice: {
             label: {
@@ -654,7 +655,7 @@ export const miamiDadeLocations: MiamiDadeLocation[] = [
         faqs: getDefaultFaqs("Fontainebleau"),
         href: {
             en: "/locations/fontainebleau/",
-            es: " /es/locations/fontainebleau/",
+            es: "/es/locations/fontainebleau/",
         },
         nearbyOffice: {
             label: {
@@ -719,7 +720,7 @@ export const miamiDadeLocations: MiamiDadeLocation[] = [
         faqs: getDefaultFaqs("Kendall"),
         href: {
             en: "/locations/kendall/",
-            es: " /es/locations/kendall/",
+            es: "/es/locations/kendall/",
         },
         nearbyOffice: {
             label: {

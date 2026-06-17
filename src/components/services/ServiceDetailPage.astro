@@ -81,7 +81,7 @@ const content = {
         officeDescription:
             "Atendiendo pacientes de Hialeah, Miami, Miami Lakes, Doral, Hialeah Gardens, Miami Gardens y comunidades cercanas de Miami-Dade.",
         backToServices: "Volver a todos los servicios",
-        backHref: " /es/services/",
+        backHref: "/es/services/",
         floatingAlt: `${service.title.es} con Victor Pazos, MD en Hialeah, FL`,
     },
 };
@@ -174,7 +174,7 @@ const serviceSchema = {
 
                 <span class="section-kicker">{service.shortTitle[currentLanguage]}</span>
 
-                <h1 class="max-w-[980px]  text-[clamp(3rem,7vw,6.7rem)] text-[var(--color-heading)] max-[440px]:text-[clamp(2.75rem,15vw,4.25rem)]">
+                <h1 class="max-w-[980px] text-7xl text-[var(--color-heading)] max-[440px]:text-[clamp(2.75rem,15vw,4.25rem)]">
                     {service.title[currentLanguage]}
                 </h1>
 
@@ -205,7 +205,7 @@ const serviceSchema = {
                 >
                 </div>
 
-                <div class="service-detail-slider service-detail-floating relative aspect-[4/5] overflow-hidden rounded-[2rem] border border-[color-mix(in_srgb,var(--color-secondary)_28%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-surface)_76%,transparent)] shadow-[var(--shadow-card)]">
+                <div class="service-detail-slider relative aspect-[4/5] overflow-hidden rounded-[2rem] border border-[color-mix(in_srgb,var(--color-secondary)_28%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-surface)_76%,transparent)] shadow-[var(--shadow-card)]">
                     {
                         serviceImages.map((image, index) => (
                             <figure
@@ -223,11 +223,7 @@ const serviceSchema = {
                         ))
                     }
 
-                    <div
-                        class="absolute inset-0 bg-gradient-to-t from-[color-mix(in_srgb,var(--color-bg)_88%,transparent)] via-[color-mix(in_srgb,var(--color-bg)_24%,transparent)] to-transparent"
-                        aria-hidden="true"
-                    >
-                    </div>
+                    
 
                     <div
                         class="absolute inset-0 bg-[radial-gradient(circle_at_50%_28%,transparent,color-mix(in_srgb,var(--color-bg)_18%,transparent)_72%)]"
@@ -251,7 +247,7 @@ const serviceSchema = {
     </section>
 
     <section class="section-padding-sm">
-        <div class="site-container glow-panel grid items-start gap-[clamp(1.25rem,4vw,3rem)] p-[clamp(1.25rem,3vw,2rem)] max-md:rounded-[1.65rem] lg:grid-cols-[minmax(0,0.72fr)_minmax(0,1fr)]">
+        <div class="site-container glow-panel grid items-start gap-[clamp(1.25rem,4vw,3rem)] p-[clamp(1.25rem,3vw,2rem)] max-md:rounded-[1.65rem]">
             <div>
                 <span class="section-kicker">{t.overviewLabel}</span>
 

@@ -2,6 +2,7 @@
 import MainLayout from "../../layouts/MainLayout.astro";
 import HomeHero from "../../components/home/HomeHero.astro";
 import TrustStrip from "../../components/home/TrustStrip.astro";
+import TrustStripShared from "../../components/shared/TrustStripShared.astro";
 import ServicesPreview from "../../components/home/ServicesPreview.astro";
 import SymptomsPreview from "../../components/home/SymptomsPreview.astro";
 import AboutDoctorPreview from "../../components/home/AboutDoctorPreview.astro";
@@ -9,6 +10,7 @@ import VisitExpectations from "../../components/home/VisitExpectations.astro";
 import WhyChooseUs from "../../components/home/WhyChooseUs.astro";
 import LocationsPreview from "../../components/home/LocationsPreview.astro";
 import AppointmentCTA from "../../components/home/AppointmentCTA.astro";
+import HomeFAQ from "../../components/home/HomeFAQ.astro";
 import FinalCTA from "../../components/home/FinalCTA.astro";
 
 import { homeMetadata } from "../../data/seo/pageMetadata";
@@ -41,12 +43,14 @@ const metadata = homeMetadata;
 >
     <HomeHero language="es" />
     <TrustStrip language="es" />
+    <TrustStripShared language="en" variant="full"/>
     <ServicesPreview language="es" />
     <SymptomsPreview language="es" />
-    <AboutDoctorPreview language="es" />
+    <!-- <AboutDoctorPreview language="es" /> -->
     <VisitExpectations language="es" />
     <WhyChooseUs language="es" />
     <LocationsPreview language="es" />
     <AppointmentCTA language="es" />
+    <HomeFAQ language="es" />
     <FinalCTA language="es" />
 </MainLayout>

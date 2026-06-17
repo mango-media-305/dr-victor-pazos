@@ -265,7 +265,10 @@ const currentPath = Astro.url.pathname;
             {currentLanguage === "es" ? "Saltar al contenido" : "Skip to content"}
         </a>
 
-        <Header language={currentLanguage} />
+        <Header
+            language={currentLanguage}
+            alternateUrls={alternateUrls}
+        />
 
         <main id="main-content">
             <slot />

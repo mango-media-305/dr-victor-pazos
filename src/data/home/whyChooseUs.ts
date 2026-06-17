@@ -141,7 +141,7 @@ export const whyChooseUsContent: WhyChooseUsContent = {
         },
         href: {
             en: "/services/",
-            es: " /es/services/",
+            es: "/es/services/",
         },
     },
 };

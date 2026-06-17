@@ -27,7 +27,7 @@ export const mainNavigation: NavigationItem[] = [
         },
         href: {
             en: "/about/",
-            es: "/es/sobre-el-doctor/",
+            es: "/es/about/",
         },
         description: {
             en: "Learn about Dr. Victor Pazos, his medical experience, credentials, and approach to cardiology care.",
@@ -41,7 +41,7 @@ export const mainNavigation: NavigationItem[] = [
         },
         href: {
             en: "/services/",
-            es: " /es/services/",
+            es: "/es/services/",
         },
         description: {
             en: "Explore cardiology and interventional cardiology services for patients in Hialeah and Miami-Dade.",
@@ -50,62 +50,62 @@ export const mainNavigation: NavigationItem[] = [
         children: [
             {
                 label: {
-                    en: "Cardiology Consultation",
-                    es: "Consulta Cardiológica",
+                    en: "Cardiology Consultations",
+                    es: "Consultas de Cardiología",
                 },
                 href: {
-                    en: "/services/cardiology-consultation/",
-                    es: " /es/services/consulta-cardiologica/",
+                    en: "/services/comprehensive-cardiology-consultations/",
+                    es: "/es/services/consultas-cardiologia-integral/",
                 },
             },
             {
                 label: {
-                    en: "Interventional Cardiology",
-                    es: "Cardiología Intervencionista",
+                    en: "Echocardiograms",
+                    es: "Ecocardiogramas",
                 },
                 href: {
-                    en: "/services/interventional-cardiology/",
-                    es: " /es/services/cardiologia-intervencionista/",
+                    en: "/services/echocardiograms/",
+                    es: "/es/services/ecocardiogramas/",
                 },
             },
             {
                 label: {
-                    en: "Chest Pain Evaluation",
-                    es: "Evaluación de Dolor en el Pecho",
+                    en: "Nuclear Stress Testing",
+                    es: "Prueba de Esfuerzo Nuclear",
                 },
                 href: {
-                    en: "/services/chest-pain-evaluation/",
-                    es: " /es/services/evaluacion-dolor-pecho/",
+                    en: "/services/nuclear-stress-testing/",
+                    es: "/es/services/prueba-esfuerzo-nuclear/",
                 },
             },
             {
                 label: {
-                    en: "High Blood Pressure Care",
-                    es: "Cuidado de Presión Alta",
+                    en: "Carotid Ultrasound",
+                    es: "Ultrasonido de Carótidas",
                 },
                 href: {
-                    en: "/services/hypertension/",
-                    es: " /es/services/presion-alta/",
+                    en: "/services/carotid-ultrasound-studies/",
+                    es: "/es/services/ultrasonido-carotidas/",
                 },
             },
             {
                 label: {
-                    en: "EKG / ECG Testing",
-                    es: "Prueba EKG / ECG",
+                    en: "Hypertension Management",
+                    es: "Manejo de Hipertensión",
                 },
                 href: {
-                    en: "/services/ekg-ecg-testing/",
-                    es: " /es/services/prueba-ekg-ecg/",
+                    en: "/services/hypertension-management/",
+                    es: "/es/services/manejo-hipertension/",
                 },
             },
             {
                 label: {
-                    en: "Stress Test",
-                    es: "Prueba de Esfuerzo",
+                    en: "Heart Disease Care",
+                    es: "Cuidado de Enfermedad Cardíaca",
                 },
                 href: {
-                    en: "/services/stress-test/",
-                    es: " /es/services/prueba-de-esfuerzo/",
+                    en: "/services/heart-disease-evaluation-treatment/",
+                    es: "/es/services/evaluacion-tratamiento-enfermedad-cardiaca/",
                 },
             },
         ],
@@ -117,7 +117,7 @@ export const mainNavigation: NavigationItem[] = [
         },
         href: {
             en: "/locations/",
-            es: " /es/locations/",
+            es: "/es/locations/",
         },
         description: {
             en: "Find cardiology care for patients across Hialeah, Miami, and Miami-Dade County.",
@@ -131,7 +131,7 @@ export const mainNavigation: NavigationItem[] = [
         },
         href: {
             en: "/patient-info/",
-            es: "/es/informacion-para-pacientes/",
+            es: "/es/patient-info/",
         },
         description: {
             en: "Helpful information for new and returning patients before scheduling an appointment.",
@@ -145,7 +145,7 @@ export const mainNavigation: NavigationItem[] = [
         },
         href: {
             en: "/contact/",
-            es: "/es/contacto/",
+            es: "/es/contact/",
         },
     },
 ];
@@ -159,7 +159,7 @@ export const footerNavigation = {
             },
             href: {
                 en: "/about/",
-                es: "/es/sobre-el-doctor/",
+                es: "/es/about/",
             },
         },
         {
@@ -169,7 +169,7 @@ export const footerNavigation = {
             },
             href: {
                 en: "/services/",
-                es: " /es/services/",
+                es: "/es/services/",
             },
         },
         {
@@ -179,7 +179,7 @@ export const footerNavigation = {
             },
             href: {
                 en: "/locations/",
-                es: " /es/locations/",
+                es: "/es/locations/",
             },
         },
         {
@@ -189,7 +189,7 @@ export const footerNavigation = {
             },
             href: {
                 en: "/patient-info/",
-                es: "/es/informacion-para-pacientes/",
+                es: "/es/patient-info/",
             },
         },
         {
@@ -199,7 +199,7 @@ export const footerNavigation = {
             },
             href: {
                 en: "/contact/",
-                es: "/es/contacto/",
+                es: "/es/contact/",
             },
         },
     ],
@@ -207,62 +207,62 @@ export const footerNavigation = {
     services: [
         {
             label: {
-                en: "Cardiology Consultation",
-                es: "Consulta Cardiológica",
+                en: "Cardiology Consultations",
+                es: "Consultas de Cardiología",
             },
             href: {
-                en: "/services/cardiology-consultation/",
-                es: " /es/services/consulta-cardiologica/",
+                en: "/services/comprehensive-cardiology-consultations/",
+                es: "/es/services/consultas-cardiologia-integral/",
             },
         },
         {
             label: {
-                en: "Interventional Cardiology",
-                es: "Cardiología Intervencionista",
+                en: "Echocardiograms",
+                es: "Ecocardiogramas",
             },
             href: {
-                en: "/services/interventional-cardiology/",
-                es: " /es/services/cardiologia-intervencionista/",
+                en: "/services/echocardiograms/",
+                es: "/es/services/ecocardiogramas/",
             },
         },
         {
             label: {
-                en: "Chest Pain Evaluation",
-                es: "Evaluación de Dolor en el Pecho",
+                en: "Nuclear Stress Testing",
+                es: "Prueba de Esfuerzo Nuclear",
             },
             href: {
-                en: "/services/chest-pain-evaluation/",
-                es: " /es/services/evaluacion-dolor-pecho/",
+                en: "/services/nuclear-stress-testing/",
+                es: "/es/services/prueba-esfuerzo-nuclear/",
             },
         },
         {
             label: {
-                en: "High Blood Pressure Care",
-                es: "Cuidado de Presión Alta",
+                en: "Carotid Ultrasound",
+                es: "Ultrasonido de Carótidas",
             },
             href: {
-                en: "/services/hypertension/",
-                es: " /es/services/presion-alta/",
+                en: "/services/carotid-ultrasound-studies/",
+                es: "/es/services/ultrasonido-carotidas/",
             },
         },
         {
             label: {
-                en: "EKG / ECG Testing",
-                es: "Prueba EKG / ECG",
+                en: "Hypertension Management",
+                es: "Manejo de Hipertensión",
             },
             href: {
-                en: "/services/ekg-ecg-testing/",
-                es: " /es/services/prueba-ekg-ecg/",
+                en: "/services/hypertension-management/",
+                es: "/es/services/manejo-hipertension/",
             },
         },
         {
             label: {
-                en: "Stress Test",
-                es: "Prueba de Esfuerzo",
+                en: "Heart Disease Care",
+                es: "Cuidado de Enfermedad Cardíaca",
             },
             href: {
-                en: "/services/stress-test/",
-                es: " /es/services/prueba-de-esfuerzo/",
+                en: "/services/heart-disease-evaluation-treatment/",
+                es: "/es/services/evaluacion-tratamiento-enfermedad-cardiaca/",
             },
         },
     ],
@@ -275,7 +275,7 @@ export const footerNavigation = {
             },
             href: {
                 en: "/privacy-policy/",
-                es: "/es/politica-de-privacidad/",
+                es: "/es/privacy-policy/",
             },
         },
         {
@@ -285,7 +285,7 @@ export const footerNavigation = {
             },
             href: {
                 en: "/medical-disclaimer/",
-                es: "/es/aviso-medico/",
+                es: "/es/medical-disclaimer/",
             },
         },
     ],
@@ -325,7 +325,7 @@ export const ctaNavigation = {
         },
         href: {
             en: "/contact/#appointment-form",
-            es: "/es/contacto/#appointment-form",
+            es: "/es/contact/#appointment-form",
         },
     },
 

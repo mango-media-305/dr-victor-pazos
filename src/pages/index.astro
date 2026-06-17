@@ -2,6 +2,7 @@
 import MainLayout from "../layouts/MainLayout.astro";
 import HomeHero from "../components/home/HomeHero.astro";
 import TrustStrip from "../components/home/TrustStrip.astro";
+import TrustStripShared from "../components/shared/TrustStripShared.astro";
 import ServicesPreview from "../components/home/ServicesPreview.astro";
 import SymptomsPreview from "../components/home/SymptomsPreview.astro";
 import AboutDoctorPreview from "../components/home/AboutDoctorPreview.astro";
@@ -41,9 +42,10 @@ const metadata = homeMetadata;
 >
     <HomeHero language="en" />
     <TrustStrip language="en" />
+    <TrustStripShared language="en" variant="full"/>
     <ServicesPreview language="en" />
     <SymptomsPreview language="en" />
-    <AboutDoctorPreview language="en" />
+    <!-- <AboutDoctorPreview language="en" /> -->
     <VisitExpectations language="en" />
     <WhyChooseUs language="en" />
     <LocationsPreview language="en" />

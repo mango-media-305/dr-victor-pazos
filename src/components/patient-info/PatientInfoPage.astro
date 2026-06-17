@@ -1,0 +1,597 @@
+---
+// src/components/patient-info/PatientInfoPage.astro
+
+import MainLayout from "../../layouts/MainLayout.astro";
+import { contactInfo } from "../../data/site/contact";
+import {
+    getBreadcrumbSchema,
+    getGlobalSchema,
+    getWebPageSchema,
+} from "../../data/seo/schema";
+import type { LanguageCode } from "../../data/site/siteConfig";
+import {
+    insuranceCta,
+    insuranceDisclaimer,
+    insuranceGroups,
+} from "../../data/practice/insurance";
+
+interface Props {
+    language: LanguageCode;
+}
+
+const { language } = Astro.props as Props;
+
+const currentLanguage = language;
+
+const pageMetadata = {
+    title: {
+        en: "Patient Information & Insurance | Victor Pazos, MD",
+        es: "Información para Pacientes y Seguros | Victor Pazos, MD",
+    },
+    description: {
+        en: "View office hours, accepted insurance plans, appointment information, and contact details for Cardiovascular and Interventional Center of South Florida in Hialeah, FL.",
+        es: "Vea horarios, seguros aceptados, información de citas y datos de contacto para Cardiovascular and Interventional Center of South Florida en Hialeah, FL.",
+    },
+    canonical: {
+        en: "/patient-info/",
+        es: "/es/patient-info/",
+    },
+};
+
+const officeInfo = {
+    practiceName: "Cardiovascular and Interventional Center of South Florida",
+    legalName: "Victor Pazos, MD, PA",
+    phone: {
+        label: "(305) 835-0551",
+        href: "tel:+13058350551",
+    },
+    fax: {
+        label: "(305) 696-7704",
+    },
+    email: {
+        label: "admin@victorpazosmd.com",
+        href: "mailto:admin@victorpazosmd.com",
+    },
+    address: {
+        line1: "7100 W 20th Ave, Suite G-166",
+        line2: "Palmetto Medical Plaza",
+        line3: "Hialeah, FL 33016",
+    },
+};
+
+const content = {
+    en: {
+        kicker: "Patient information",
+        title: "Plan your cardiology visit with confidence.",
+        description:
+            "Find office hours, contact details, accepted insurance plans, and helpful information before visiting Cardiovascular and Interventional Center of South Florida in Hialeah, FL.",
+        callLabel: "Call to Schedule",
+        emailLabel: "Email the Office",
+        directionsLabel: contactInfo.map.directionsLabel.en,
+
+        quickInfoTitle: "Office information",
+        addressLabel: "Address",
+        phoneLabel: "Phone",
+        faxLabel: "Fax",
+        emailLabelInfo: "Email",
+        hoursLabel: "Office Hours",
+
+        hours: [
+            {
+                day: "Monday – Thursday",
+                time: "8:00 AM – 4:00 PM",
+            },
+            {
+                day: "Friday",
+                time: "7:30 AM – 1:00 PM",
+            },
+        ],
+
+        insuranceKicker: "Accepted insurance",
+        insuranceTitle: "Insurance plans accepted by the office.",
+        insuranceDescription:
+            "The practice participates with a variety of Medicare, Medicaid, and commercial insurance plans to help patients access cardiovascular care.",
+
+        featuredInsuranceTitle: "Commonly recognized plans",
+        featuredInsuranceDescription:
+            "Some plans are shown with logos for easier recognition. Please contact the office to verify your specific benefits before your visit.",
+
+        allPlansTitle: "Accepted insurance by category",
+
+        notListedTitle: "Don’t see your insurance listed?",
+        notListedDescription: insuranceDisclaimer.en,
+
+        beforeVisitKicker: "Before your visit",
+        beforeVisitTitle: "What patients should know.",
+        beforeVisitItems: [
+            "Call the office to schedule or confirm appointment availability.",
+            "Have your insurance card and identification ready when contacting the office.",
+            "Bring a list of current medications, previous cardiac testing, and relevant medical records if available.",
+            "For insurance questions, contact the office before your visit so staff can help verify your benefits.",
+        ],
+
+        emergencyKicker: "Medical emergency?",
+        emergencyTitle: "Do not wait for an appointment in an emergency.",
+        emergencyDescription:
+            "If you are experiencing severe chest pain, sudden shortness of breath, fainting, stroke symptoms, severe weakness, or symptoms that feel like a medical emergency, call 911 immediately.",
+
+        bottomCtaTitle: "Need help scheduling your cardiology visit?",
+        bottomCtaDescription:
+            "Call the Hialeah office directly for appointment availability, insurance questions, and directions.",
+
+        logoFallbackLabel: "Insurance plan",
+    },
+    es: {
+        kicker: "Información para pacientes",
+        title: "Planifique su visita de cardiología con confianza.",
+        description:
+            "Vea horarios, información de contacto, seguros aceptados y detalles útiles antes de visitar Cardiovascular and Interventional Center of South Florida en Hialeah, FL.",
+        callLabel: "Llamar para cita",
+        emailLabel: "Enviar email",
+        directionsLabel: contactInfo.map.directionsLabel.es,
+
+        quickInfoTitle: "Información de la oficina",
+        addressLabel: "Dirección",
+        phoneLabel: "Teléfono",
+        faxLabel: "Fax",
+        emailLabelInfo: "Email",
+        hoursLabel: "Horario de oficina",
+
+        hours: [
+            {
+                day: "Lunes – Jueves",
+                time: "8:00 AM – 4:00 PM",
+            },
+            {
+                day: "Viernes",
+                time: "7:30 AM – 1:00 PM",
+            },
+        ],
+
+        insuranceKicker: "Seguros aceptados",
+        insuranceTitle: "Planes de seguro aceptados por la oficina.",
+        insuranceDescription:
+            "La práctica participa con una variedad de planes Medicare, Medicaid y seguros comerciales para ayudar a los pacientes a recibir cuidado cardiovascular.",
+
+        featuredInsuranceTitle: "Planes comúnmente reconocidos",
+        featuredInsuranceDescription:
+            "Algunos planes se muestran con logos para facilitar su reconocimiento. Por favor contacte la oficina para verificar sus beneficios específicos antes de su visita.",
+
+        allPlansTitle: "Seguros aceptados por categoría",
+
+        notListedTitle: "¿No ve su seguro en la lista?",
+        notListedDescription: insuranceDisclaimer.es,
+
+        beforeVisitKicker: "Antes de su visita",
+        beforeVisitTitle: "Lo que los pacientes deben saber.",
+        beforeVisitItems: [
+            "Llame a la oficina para programar o confirmar disponibilidad de citas.",
+            "Tenga a mano su tarjeta de seguro e identificación al contactar la oficina.",
+            "Traiga una lista de medicamentos actuales, estudios cardíacos previos y registros médicos relevantes si están disponibles.",
+            "Para preguntas sobre seguro, contacte la oficina antes de su visita para que el personal pueda ayudarle a verificar sus beneficios.",
+        ],
+
+        emergencyKicker: "¿Emergencia médica?",
+        emergencyTitle: "No espere una cita si es una emergencia.",
+        emergencyDescription:
+            "Si está experimentando dolor fuerte en el pecho, falta de aire repentina, desmayo, síntomas de derrame cerebral, debilidad severa o síntomas que parezcan una emergencia médica, llame al 911 inmediatamente.",
+
+        bottomCtaTitle: "¿Necesita ayuda para programar su visita de cardiología?",
+        bottomCtaDescription:
+            "Llame directamente a la oficina de Hialeah para disponibilidad de citas, preguntas sobre seguro y direcciones.",
+
+        logoFallbackLabel: "Plan de seguro",
+    },
+};
+
+const t = content[currentLanguage];
+
+const pageTitle = pageMetadata.title[currentLanguage];
+const pageDescription = pageMetadata.description[currentLanguage];
+const canonicalPath = pageMetadata.canonical[currentLanguage];
+
+const featuredPlans = insuranceGroups
+    .flatMap((group) => group.plans)
+    .filter((plan) => plan.isFeatured)
+    .slice(0, 9);
+
+const getPlanInitials = (name: string) =>
+    name
+        .split(" ")
+        .map((word) => word[0])
+        .join("")
+        .slice(0, 3)
+        .toUpperCase();
+
+const breadcrumbSchema = getBreadcrumbSchema([
+    {
+        name: currentLanguage === "es" ? "Inicio" : "Home",
+        href: currentLanguage === "es" ? "/es/" : "/",
+    },
+    {
+        name:
+            currentLanguage === "es"
+                ? "Información para Pacientes"
+                : "Patient Information",
+        href: canonicalPath,
+    },
+]);
+---
+
+<MainLayout
+    fullTitle
+    language={currentLanguage}
+    title={pageTitle}
+    description={pageDescription}
+    canonical={canonicalPath}
+    alternateUrls={{
+        en: pageMetadata.canonical.en,
+        es: pageMetadata.canonical.es,
+    }}
+    schema={[
+        ...getGlobalSchema(),
+        getWebPageSchema({
+            title: pageTitle,
+            description: pageDescription,
+            path: canonicalPath,
+            language: currentLanguage === "es" ? "es-US" : "en-US",
+        }),
+        breadcrumbSchema,
+    ]}
+>
+    <section class="relative isolate overflow-hidden section-padding-lg medical-grid-bg">
+        <div
+            class="pointer-events-none absolute -left-20 top-[12%] -z-10 aspect-square w-[22rem] rounded-full bg-[color-mix(in_srgb,var(--color-secondary)_24%,transparent)] opacity-45 blur-[58px]"
+            aria-hidden="true"
+        >
+        </div>
+
+        <div
+            class="pointer-events-none absolute -right-20 bottom-[12%] -z-10 aspect-square w-[24rem] rounded-full bg-[color-mix(in_srgb,var(--color-heart)_14%,transparent)] opacity-45 blur-[58px]"
+            aria-hidden="true"
+        >
+        </div>
+
+        <div class="site-container relative z-10 grid items-center gap-[clamp(2rem,6vw,5rem)] lg:grid-cols-[minmax(0,1fr)_minmax(320px,0.48fr)]">
+            <div>
+                <span class="section-kicker">{t.kicker}</span>
+
+                <h1 class="mt-4 max-w-[980px] text-[clamp(3rem,7vw,6.2rem)] text-[var(--color-heading)] max-[440px]:text-[clamp(2.75rem,15vw,4.25rem)]">
+                    {t.title}
+                </h1>
+
+                <p class="mt-5 max-w-[760px] text-[clamp(1.05rem,1.5vw,1.22rem)] text-[var(--color-text-soft)]">
+                    {t.description}
+                </p>
+
+                <div class="mt-8 flex flex-wrap gap-3">
+                    <a href={officeInfo.phone.href} class="btn btn-primary">
+                        {t.callLabel}
+                    </a>
+
+                    <a href={officeInfo.email.href} class="btn btn-secondary">
+                        {t.emailLabel}
+                    </a>
+
+                    <a
+                        href={contactInfo.map.googleMapsUrl}
+                        class="btn btn-ghost"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        {t.directionsLabel}
+                    </a>
+                </div>
+            </div>
+
+            <aside class="glow-panel p-[clamp(1.25rem,3vw,2rem)]">
+                <span class="section-kicker">{t.quickInfoTitle}</span>
+
+                <div class="mt-5 grid gap-5">
+                    <div>
+                        <p class="text-sm font-black uppercase tracking-[0.16em] text-[var(--color-text-muted)]">
+                            {t.addressLabel}
+                        </p>
+
+                        <p class="mt-2 font-bold text-[var(--color-heading)]">
+                            {officeInfo.practiceName}
+                        </p>
+
+                        <p class="text-[var(--color-text-soft)]">
+                            {officeInfo.address.line1}<br />
+                            {officeInfo.address.line2}<br />
+                            {officeInfo.address.line3}
+                        </p>
+                    </div>
+
+                    <div class="grid gap-4 sm:grid-cols-2">
+                        <div>
+                            <p class="text-sm font-black uppercase tracking-[0.16em] text-[var(--color-text-muted)]">
+                                {t.phoneLabel}
+                            </p>
+
+                            <a
+                                href={officeInfo.phone.href}
+                                class="mt-2 inline-block font-bold text-[var(--color-heading)] hover:text-[var(--color-secondary)]"
+                            >
+                                {officeInfo.phone.label}
+                            </a>
+                        </div>
+
+                        <div>
+                            <p class="text-sm font-black uppercase tracking-[0.16em] text-[var(--color-text-muted)]">
+                                {t.faxLabel}
+                            </p>
+
+                            <p class="mt-2 font-bold text-[var(--color-heading)]">
+                                {officeInfo.fax.label}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <p class="text-sm font-black uppercase tracking-[0.16em] text-[var(--color-text-muted)]">
+                            {t.emailLabelInfo}
+                        </p>
+
+                        <a
+                            href={officeInfo.email.href}
+                            class="mt-2 inline-block font-bold text-[var(--color-heading)] hover:text-[var(--color-secondary)]"
+                        >
+                            {officeInfo.email.label}
+                        </a>
+                    </div>
+
+                    <div>
+                        <p class="text-sm font-black uppercase tracking-[0.16em] text-[var(--color-text-muted)]">
+                            {t.hoursLabel}
+                        </p>
+
+                        <div class="mt-3 grid gap-2">
+                            {
+                                t.hours.map((item) => (
+                                    <div class="flex items-center justify-between gap-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3">
+                                        <span class="font-bold text-[var(--color-heading)]">
+                                            {item.day}
+                                        </span>
+
+                                        <span class="text-right text-[var(--color-text-soft)]">
+                                            {item.time}
+                                        </span>
+                                    </div>
+                                ))
+                            }
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </section>
+
+    <section id="insurance" class="section-padding">
+        <div class="site-container">
+            <div class="mx-auto max-w-[860px] text-center">
+                <span class="section-kicker">{t.insuranceKicker}</span>
+
+                <h2 class="mt-4 text-[clamp(2.35rem,5vw,4.5rem)] text-[var(--color-heading)]">
+                    {t.insuranceTitle}
+                </h2>
+
+                <p class="mt-5 text-lg text-[var(--color-text-soft)]">
+                    {t.insuranceDescription}
+                </p>
+            </div>
+
+            {
+                featuredPlans.length > 0 && (
+                    <div class="mt-12 rounded-[var(--radius-panel)] border border-[var(--color-border)] bg-[var(--color-surface)] p-[clamp(1.25rem,3vw,2.5rem)] shadow-[var(--shadow-card)]">
+                        <div class="mx-auto max-w-[780px] text-center">
+                            <h3 class="text-[clamp(1.8rem,3vw,2.75rem)] text-[var(--color-heading)]">
+                                {t.featuredInsuranceTitle}
+                            </h3>
+
+                            <p class="mt-3 text-[var(--color-text-soft)]">
+                                {t.featuredInsuranceDescription}
+                            </p>
+                        </div>
+
+                        <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                            {featuredPlans.map((plan) => {
+                                const planCard = (
+                                    <div class="flex flex-col h-full items-center gap-4 rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface-soft)] p-4 transition hover:-translate-y-1 hover:shadow-[var(--shadow-soft)]">
+                                        <div class="flex h-auto w-full shrink-0 items-center justify-center rounded-2xl bg-white p-3 shadow-sm">
+                                            {plan.logoSrc ? (
+                                                <img
+                                                    src={plan.logoSrc}
+                                                    alt={
+                                                        plan.logoAlt ??
+                                                        `${plan.name} logo`
+                                                    }
+                                                    class="max-w-full object-cover"
+                                                    loading="lazy"
+                                                />
+                                            ) : (
+                                                <span
+                                                    aria-label={t.logoFallbackLabel}
+                                                    class="text-sm font-black text-[var(--color-primary)]"
+                                                >
+                                                    {getPlanInitials(plan.name)}
+                                                </span>
+                                            )}
+                                        </div>
+
+                                        <div>
+                                            <p class="font-black text-[var(--color-heading)]">
+                                                {plan.name}
+                                            </p>
+
+                                            {plan.note && (
+                                                <p class="mt-1 text-sm font-bold text-[var(--color-secondary)]">
+                                                    {plan.note[currentLanguage]}
+                                                </p>
+                                            )}
+                                        </div>
+                                    </div>
+                                );
+
+                                return plan.href ? (
+                                    <a
+                                        href={plan.href}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        aria-label={plan.name}
+                                    >
+                                        {planCard}
+                                    </a>
+                                ) : (
+                                    <div>{planCard}</div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                )
+            }
+
+            <div class="mt-10">
+                <div class="mx-auto max-w-[760px] text-center">
+                    <h3 class="text-[clamp(1.85rem,3vw,2.75rem)] text-[var(--color-heading)]">
+                        {t.allPlansTitle}
+                    </h3>
+                </div>
+
+                <div class="mt-8 grid gap-5 lg:grid-cols-3">
+                    {
+                        insuranceGroups.map((group) => (
+                            <article class="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] p-[clamp(1.25rem,3vw,2rem)] shadow-[var(--shadow-soft)]">
+                                <h3 class="text-2xl text-[var(--color-heading)]">
+                                    {group.title[currentLanguage]}
+                                </h3>
+
+                                <p class="mt-3 text-[var(--color-text-soft)]">
+                                    {group.description[currentLanguage]}
+                                </p>
+
+                                <ul class="mt-6 grid gap-3">
+                                    {group.plans.map((plan) => (
+                                        <li class="flex gap-3 rounded-2xl bg-[var(--color-surface-soft)] px-4 py-3 text-sm font-bold text-[var(--color-heading)]">
+                                            <span
+                                                class="mt-1 h-2 w-2 shrink-0 rounded-full bg-[var(--color-secondary)]"
+                                                aria-hidden="true"
+                                            />
+
+                                            <span>
+                                                {plan.name}
+
+                                                {plan.note && (
+                                                    <span class="ml-1 text-[var(--color-secondary)]">
+                                                        —
+                                                        {" "}
+                                                        {plan.note[currentLanguage]}
+                                                    </span>
+                                                )}
+                                            </span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </article>
+                        ))
+                    }
+                </div>
+            </div>
+
+            <div class="mt-8 rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-primary-soft)] p-[clamp(1.25rem,3vw,2rem)]">
+                <h3 class="text-2xl text-[var(--color-heading)]">
+                    {t.notListedTitle}
+                </h3>
+
+                <p class="mt-3 max-w-[900px] text-[var(--color-text-soft)]">
+                    {t.notListedDescription}
+                </p>
+
+                <div class="mt-6 flex flex-wrap gap-3">
+                    <a href={officeInfo.phone.href} class="btn btn-primary">
+                        {insuranceCta[currentLanguage].buttonLabel}
+                    </a>
+
+                    <a href={officeInfo.email.href} class="btn btn-secondary">
+                        {t.emailLabel}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding-sm bg-[var(--color-surface-soft)]">
+        <div class="site-container grid gap-[clamp(2rem,6vw,5rem)] lg:grid-cols-[0.42fr_1fr]">
+            <div>
+                <span class="section-kicker">{t.beforeVisitKicker}</span>
+
+                <h2 class="mt-4 text-[clamp(2.25rem,5vw,4rem)] text-[var(--color-heading)]">
+                    {t.beforeVisitTitle}
+                </h2>
+            </div>
+
+            <div class="grid gap-4">
+                {
+                    t.beforeVisitItems.map((item, index) => (
+                        <div class="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[var(--shadow-soft)]">
+                            <div class="flex gap-4">
+                                <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--color-secondary-soft)] text-sm font-black text-[var(--color-secondary-dark)]">
+                                    {index + 1}
+                                </span>
+
+                                <p class="pt-2 text-[var(--color-text-soft)]">
+                                    {item}
+                                </p>
+                            </div>
+                        </div>
+                    ))
+                }
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding-sm">
+        <div class="site-container grid gap-6 lg:grid-cols-[1fr_0.8fr]">
+            <div class="rounded-[var(--radius-panel)] border border-[var(--color-border)] bg-[var(--color-surface)] p-[clamp(1.5rem,4vw,3rem)] shadow-[var(--shadow-card)]">
+                <span class="section-kicker">{t.emergencyKicker}</span>
+
+                <h2 class="mt-4 text-[clamp(2rem,4vw,3.4rem)] text-[var(--color-heading)]">
+                    {t.emergencyTitle}
+                </h2>
+
+                <p class="mt-4 text-lg text-[var(--color-text-soft)]">
+                    {t.emergencyDescription}
+                </p>
+            </div>
+
+            <div class="rounded-[var(--radius-panel)] bg-[var(--color-primary)] p-[clamp(1.5rem,4vw,3rem)] text-white shadow-[var(--shadow-glow)]">
+                <h2 class="text-[clamp(2rem,4vw,3.2rem)] text-white">
+                    {t.bottomCtaTitle}
+                </h2>
+
+                <p class="mt-4 text-white/80">
+                    {t.bottomCtaDescription}
+                </p>
+
+                <div class="mt-7 flex flex-wrap gap-3">
+                    <a
+                        href={officeInfo.phone.href}
+                        class="btn bg-white text-[var(--color-primary)] hover:bg-white/90"
+                    >
+                        {t.callLabel}
+                    </a>
+
+                    <a
+                        href={contactInfo.map.googleMapsUrl}
+                        class="btn border border-white/30 bg-white/10 text-white hover:bg-white/20"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        {t.directionsLabel}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+</MainLayout>

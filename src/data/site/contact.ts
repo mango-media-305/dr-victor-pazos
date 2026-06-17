@@ -1,7 +1,7 @@
 // src/data/site/contact.ts
 
 export const contactInfo = {
-    practiceName: "Victor Pazos, MD. PA.",
+    practiceName: "Cardiovascular and Interventional Center of South Florida",
 
     phone: {
         label: "(305) 835-0551",
@@ -10,19 +10,26 @@ export const contactInfo = {
     },
 
     email: {
-        label: "johndoe@testing.com",
-        href: "mailto:johndoe@testing.com",
+        label: "admin@victorpazosmd.com",
+        href: "mailto:admin@victorpazosmd.com",
     },
 
     address: {
-        street: "7100 W 20th Avenue",
-        suite: "Suite G166",
+        street: "7100 W 20th Ave",
+        suite: "Suite G-166",
+        building: "Palmetto Medical Plaza",
         city: "Hialeah",
         state: "FL",
         zip: "33016",
         country: "US",
-        full: "7100 W 20th Avenue Suite G166, Hialeah, FL 33016",
-        display: "7100 W 20th Avenue, Suite G166, Hialeah, FL 33016",
+        full: "7100 W 20th Ave, Suite G-166, Palmetto Medical Plaza, Hialeah, FL 33016",
+        display: "7100 W 20th Ave, Suite G-166, Palmetto Medical Plaza, Hialeah, FL 33016",
+    },
+
+    fax: {
+        label: "(305) 696-7704",
+        href: "fax:+13056967704",
+        raw: "+13056967704",
     },
 
     map: {
@@ -38,59 +45,29 @@ export const contactInfo = {
 
     hours: {
         note: {
-            en: "Office hours will be updated soon. Please call the office to confirm availability.",
-            es: "El horario de atención será actualizado pronto. Por favor llame a la oficina para confirmar disponibilidad.",
+            en: "Office hours are Monday through Thursday from 8:00 AM to 4:00 PM and Friday from 7:30 AM to 1:00 PM.",
+            es: "El horario de oficina es de lunes a jueves de 8:00 AM a 4:00 PM y viernes de 7:30 AM a 1:00 PM.",
         },
         weekly: [
             {
-                day: {
-                    en: "Monday",
-                    es: "Lunes",
-                },
-                hours: {
-                    en: "Call for availability",
-                    es: "Llamar para confirmar",
-                },
+                day: { en: "Monday", es: "Lunes" },
+                hours: { en: "8:00 AM – 4:00 PM", es: "8:00 AM – 4:00 PM" },
             },
             {
-                day: {
-                    en: "Tuesday",
-                    es: "Martes",
-                },
-                hours: {
-                    en: "Call for availability",
-                    es: "Llamar para confirmar",
-                },
+                day: { en: "Tuesday", es: "Martes" },
+                hours: { en: "8:00 AM – 4:00 PM", es: "8:00 AM – 4:00 PM" },
             },
             {
-                day: {
-                    en: "Wednesday",
-                    es: "Miércoles",
-                },
-                hours: {
-                    en: "Call for availability",
-                    es: "Llamar para confirmar",
-                },
+                day: { en: "Wednesday", es: "Miércoles" },
+                hours: { en: "8:00 AM – 4:00 PM", es: "8:00 AM – 4:00 PM" },
             },
             {
-                day: {
-                    en: "Thursday",
-                    es: "Jueves",
-                },
-                hours: {
-                    en: "Call for availability",
-                    es: "Llamar para confirmar",
-                },
+                day: { en: "Thursday", es: "Jueves" },
+                hours: { en: "8:00 AM – 4:00 PM", es: "8:00 AM – 4:00 PM" },
             },
             {
-                day: {
-                    en: "Friday",
-                    es: "Viernes",
-                },
-                hours: {
-                    en: "Call for availability",
-                    es: "Llamar para confirmar",
-                },
+                day: { en: "Friday", es: "Viernes" },
+                hours: { en: "7:30 AM – 1:00 PM", es: "7:30 AM – 1:00 PM" },
             },
         ],
     },

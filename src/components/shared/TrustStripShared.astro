@@ -1,0 +1,225 @@
+---
+// src/components/shared/TrustStrip.astro
+
+import type { LanguageCode } from "../../data/site/siteConfig";
+import {
+    collaborativeCare,
+    hospitalAffiliations,
+} from "../../data/practice/affiliations";
+
+interface Props {
+    language: LanguageCode;
+    variant?: "compact" | "full";
+    showCollaborativeCare?: boolean;
+}
+
+const {
+    language,
+    variant = "compact",
+    showCollaborativeCare = false,
+} = Astro.props as Props;
+
+const currentLanguage = language;
+const isFull = variant === "full";
+
+const content = {
+    en: {
+        kicker: "Hospital affiliations",
+        title: "Connected cardiovascular care across South Florida.",
+        compactTitle: "Hospital-affiliated cardiovascular care.",
+        description:
+            "Dr. Pazos is affiliated with respected hospital institutions in South Florida, supporting continuity of care when patients need hospital-based services, specialized testing, or additional care coordination.",
+        compactDescription:
+            "Affiliations with South Florida hospitals help support continuity of care when patients need additional coordination.",
+        collaborativeCareLabel: "Collaborative care",
+        collaborativeCareTitle: "A coordinated approach to advanced cardiovascular care.",
+        visitWebsiteLabel: "Visit website",
+        externalLabel: "opens in a new tab",
+    },
+    es: {
+        kicker: "Afiliaciones hospitalarias",
+        title: "Cuidado cardiovascular conectado en South Florida.",
+        compactTitle: "Cuidado cardiovascular con afiliaciones hospitalarias.",
+        description:
+            "El Dr. Pazos está afiliado con instituciones hospitalarias reconocidas en South Florida, apoyando la continuidad del cuidado cuando los pacientes necesitan servicios hospitalarios, pruebas especializadas o coordinación adicional.",
+        compactDescription:
+            "Las afiliaciones con hospitales de South Florida ayudan a apoyar la continuidad del cuidado cuando los pacientes necesitan coordinación adicional.",
+        collaborativeCareLabel: "Cuidado colaborativo",
+        collaborativeCareTitle: "Un enfoque coordinado para el cuidado cardiovascular avanzado.",
+        visitWebsiteLabel: "Visitar sitio web",
+        externalLabel: "abre en una nueva pestaña",
+    },
+};
+
+const t = content[currentLanguage];
+---
+
+<section
+    class:list={[
+        "relative isolate overflow-hidden",
+        isFull ? "section-padding bg-[var(--color-surface-soft)]" : "section-padding-sm",
+    ]}
+>
+    <div
+        class="pointer-events-none absolute left-1/2 top-0 -z-10 h-[22rem] w-[min(56rem,92vw)] -translate-x-1/2 rounded-full bg-[color-mix(in_srgb,var(--color-secondary)_12%,transparent)] blur-[70px]"
+        aria-hidden="true"
+    >
+    </div>
+
+    <div class="site-container">
+        <div
+            class:list={[
+                "mx-auto text-center",
+                isFull ? "max-w-[900px]" : "max-w-[760px]",
+            ]}
+        >
+            <span class="section-kicker">{t.kicker}</span>
+
+            <h2
+                class:list={[
+                    "mt-4 text-[var(--color-heading)]",
+                    isFull
+                        ? "text-[clamp(2.35rem,5vw,4.5rem)]"
+                        : "text-[clamp(2rem,4vw,3.35rem)]",
+                ]}
+            >
+                {isFull ? t.title : t.compactTitle}
+            </h2>
+
+            <p
+                class:list={[
+                    "mx-auto mt-4 text-[var(--color-text-soft)]",
+                    isFull ? "max-w-[760px] text-lg" : "max-w-[680px]",
+                ]}
+            >
+                {isFull ? t.description : t.compactDescription}
+            </p>
+        </div>
+
+        <div
+            class:list={[
+                "mx-auto mt-10 grid gap-4",
+                isFull
+                    ? "max-w-[1080px] md:grid-cols-3"
+                    : "max-w-[980px] sm:grid-cols-3",
+            ]}
+        >
+            {
+                hospitalAffiliations.map((hospital) => {
+                    const card = (
+                        <div
+                            class:list={[
+                                "group relative h-full overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] shadow-[var(--shadow-soft)] transition duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-card)]",
+                                isFull ? "p-6" : "p-5",
+                            ]}
+                        >
+                            <div
+                                class="pointer-events-none absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-[var(--color-secondary)] to-transparent opacity-60"
+                                aria-hidden="true"
+                            >
+                            </div>
+
+                            <div
+                                class:list={[
+                                    "flex items-center",
+                                    isFull
+                                        ? "flex-col text-center"
+                                        : "gap-4 sm:flex-col sm:text-center",
+                                ]}
+                            >
+                                <div
+                                    class:list={[
+                                        "flex shrink-0 items-center justify-center rounded-3xl bg-white p-4 shadow-sm ring-1 ring-black/5",
+                                        isFull ? "w-full object-cover" : "w-full object-cover",
+                                    ]}
+                                >
+                                    <img
+                                        src={hospital.logoSrc}
+                                        alt={hospital.logoAlt}
+                                        class="max-h-full max-w-full object-cover rounded-2xl"
+                                        loading="lazy"
+                                    />
+                                </div>
+
+                                <div class={isFull ? "mt-5" : "sm:mt-4"}>
+                                    <p
+                                        class:list={[
+                                            "font-black leading-snug text-[var(--color-heading)]",
+                                            isFull ? "text-lg" : "text-base",
+                                        ]}
+                                    >
+                                        {hospital.name}
+                                    </p>
+
+                                    {
+                                        hospital.href && (
+                                            <span class="mt-2 inline-flex items-center gap-2 text-sm font-bold text-[var(--color-secondary)]">
+                                                {t.visitWebsiteLabel}
+                                                <span
+                                                    class="transition group-hover:translate-x-1"
+                                                    aria-hidden="true"
+                                                >
+                                                    →
+                                                </span>
+                                            </span>
+                                        )
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    );
+
+                    return hospital.href ? (
+                        <a
+                            href={hospital.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`${t.visitWebsiteLabel}: ${hospital.name} (${t.externalLabel})`}
+                            class="block"
+                        >
+                            {card}
+                        </a>
+                    ) : (
+                        <div>{card}</div>
+                    );
+                })
+            }
+        </div>
+
+        {
+            showCollaborativeCare && (
+                <div class="mx-auto mt-8 max-w-[1080px]">
+                    <div class="relative overflow-hidden rounded-[var(--radius-panel)] border border-[var(--color-border)] bg-[var(--color-primary)] p-[clamp(1.5rem,4vw,3rem)] text-white shadow-[var(--shadow-glow)]">
+                        <div
+                            class="pointer-events-none absolute -right-20 -top-20 h-60 w-60 rounded-full bg-white/10 blur-3xl"
+                            aria-hidden="true"
+                        >
+                        </div>
+
+                        <div
+                            class="pointer-events-none absolute -bottom-24 left-10 h-64 w-64 rounded-full bg-[var(--color-secondary)]/20 blur-3xl"
+                            aria-hidden="true"
+                        >
+                        </div>
+
+                        <div class="relative z-10 grid gap-6 lg:items-start">
+                            <div>
+                                <span class="inline-flex rounded-full bg-white/10 px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-white/80 ring-1 ring-white/15">
+                                    {t.collaborativeCareLabel}
+                                </span>
+
+                                <h3 class="mt-5 text-[clamp(1.8rem,3vw,2.75rem)] text-white">
+                                    {t.collaborativeCareTitle}
+                                </h3>
+                            </div>
+
+                            <p class="text-lg leading-relaxed text-white/82">
+                                {collaborativeCare[currentLanguage]}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+    </div>
+</section>

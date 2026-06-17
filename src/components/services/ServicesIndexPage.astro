@@ -9,13 +9,20 @@ import {
 import { contactInfo } from "../../data/site/contact";
 import { servicesIndexMetadata } from "../../data/seo/pageMetadata";
 import { getGlobalSchema, getWebPageSchema } from "../../data/seo/schema";
+import type { LanguageCode } from "../../data/site/siteConfig";
 
-const currentLanguage = "en";
+interface Props {
+    language: LanguageCode;
+}
+
+const { language } = Astro.props as Props;
+
+const currentLanguage = language;
 const metadata = servicesIndexMetadata;
 
 const heroFloatingImage = "/images/services/cardiology-services-floating.webp";
 
-const services = cardiologyServices.sort((a, b) => a.priority - b.priority);
+const services = [...cardiologyServices].sort((a, b) => a.priority - b.priority);
 
 const content = {
     kicker: "Cardiology services",
@@ -44,9 +51,10 @@ const content = {
 
 <MainLayout
     fullTitle
-    title={metadata.title.en}
-    description={metadata.description.en}
-    canonical={metadata.canonical.en}
+    language={currentLanguage}
+    title={metadata.title[currentLanguage]}
+    description={metadata.description[currentLanguage]}
+    canonical={metadata.canonical[currentLanguage]}
     alternateUrls={{
         en: metadata.canonical.en,
         es: metadata.canonical.es,
@@ -54,9 +62,9 @@ const content = {
     schema={[
         ...getGlobalSchema(),
         getWebPageSchema({
-        title: metadata.title.en,
-        description: metadata.description.en,
-        path: metadata.canonical.en,
+        title: metadata.title[currentLanguage],
+        description: metadata.description[currentLanguage],
+        path: metadata.canonical[currentLanguage],
         }),
     ]}
 >
@@ -171,47 +179,45 @@ const content = {
         <div class="site-container">
         <div class="relative z-10 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {
-            services.map((service, index) => {
-                const Icon = service.icon;
+                services.map((service, index) => {
+                    const Icon = service.icon;
 
-                return (
+                    return (
                         <a
                             href={getCardiologyServiceHref(service, currentLanguage)}
-                            class="service-card-link medical-card group grid min-h-72 content-between p-[clamp(1.1rem,2vw,1.35rem)] text-inherit max-[680px]:min-h-0"
+                            class="service-card-link medical-card group relative grid min-h-72 overflow-hidden content-between p-[clamp(1.25rem,2.4vw,1.65rem)] text-inherit max-[680px]:min-h-0"
                             style={`--service-delay: ${index * 80}ms;`}
                             aria-label={`${content.viewService}: ${service.title[currentLanguage]}`}
                         >
-                            <div class="relative z-[1] flex items-center justify-between gap-4">
-                                <span
-                                    class="inline-grid size-[3.2rem] place-items-center rounded-[1.05rem] border border-[color-mix(in_srgb,var(--color-secondary)_32%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-surface)_76%,transparent)] text-[var(--color-secondary)] shadow-[0_14px_34px_rgba(15,23,42,0.07)]"
-                                    aria-hidden="true"
-                                >
-                                    <Icon class="h-7 w-7" />
-                                </span>
+                            <Icon
+                                class="pointer-events-none absolute -right-5 -top-5 h-32 w-32 text-[var(--color-secondary)] opacity-[0.08] transition duration-300 group-hover:scale-110 group-hover:opacity-[0.13] max-[680px]:h-28 max-[680px]:w-28"
+                                aria-hidden="true"
+                            />
+
+                            <div
+                                class="pointer-events-none absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-[var(--color-secondary)] to-transparent opacity-0 transition duration-300 group-hover:opacity-70"
+                                aria-hidden="true"
+                            >
                             </div>
 
-                            <div class="relative z-[1] mt-[2.4rem] grid gap-3 max-[680px]:mt-7">
-                                <h4
-                                    class="font-heading text-md text-[var(--color-heading)]"
-                                >
+                            <div class="relative z-[1] mt-[3.3rem] grid gap-3 max-[680px]:mt-9">
+                                <h4 class="font-heading text-[clamp(1.45rem,2.1vw,2rem)] leading-[1] text-[var(--color-heading)]">
                                     {service.shortTitle[currentLanguage]}
                                 </h4>
 
-                                <p class="text-[0.96rem] text-[var(--color-text-soft)]">
+                                <p class="max-w-[30rem] text-[0.98rem] leading-relaxed text-[var(--color-text-soft)]">
                                     {service.shortDescription[currentLanguage]}
                                 </p>
                             </div>
 
-                            <span
-                                class="relative z-[1] mt-[1.35rem] inline-flex w-fit items-center gap-[0.45rem] text-[0.88rem] font-black uppercase text-[var(--color-secondary)] transition-[color,transform] duration-200 group-hover:translate-x-1 group-hover:text-[var(--color-accent-dark)] dark:group-hover:text-[var(--color-accent)]"
-                            >
+                            <span class="relative z-[1] mt-[1.6rem] inline-flex w-fit items-center gap-[0.45rem] text-[0.82rem] font-black uppercase tracking-[0.12em] text-[var(--color-secondary)] transition-[color,transform] duration-200 group-hover:translate-x-1 group-hover:text-[var(--color-accent-dark)] dark:group-hover:text-[var(--color-accent)]">
                                 {content.viewService}
 
                                 <ArrowRight size={18} strokeWidth={2} aria-hidden="true" />
                             </span>
                         </a>
                     );
-            })
+                })
             }
         </div>
 

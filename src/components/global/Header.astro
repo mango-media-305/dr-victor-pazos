@@ -17,13 +17,16 @@ import {
 
 interface Props {
     language?: LanguageCode;
+    alternateUrls?: Partial<Record<LanguageCode, string>>;
 }
 
-const { language } = Astro.props as Props;
+const { language, alternateUrls = {} } = Astro.props as Props;
 
 const currentLanguage = language ?? getLanguageFromUrl(Astro.url.pathname);
-const alternatePath = getAlternateLanguagePath(Astro.url.pathname);
 const alternateLanguage = currentLanguage === "en" ? "es" : "en";
+
+const fallbackAlternatePath = getAlternateLanguagePath(Astro.url.pathname);
+const alternatePath = alternateUrls[alternateLanguage] ?? fallbackAlternatePath;
 ---
 
 <header
@@ -229,8 +232,8 @@ const alternateLanguage = currentLanguage === "en" ? "es" : "en";
         const closeIcon = toggle.querySelector(".menu-close-icon");
 
         function openMenu() {
-            menu.removeAttribute("hidden");
-            toggle.setAttribute("aria-expanded", "true");
+            menu?.removeAttribute("hidden");
+            toggle?.setAttribute("aria-expanded", "true");
             document.documentElement.classList.add("menu-open");
 
             openIcon?.classList.add("hidden");
@@ -238,8 +241,8 @@ const alternateLanguage = currentLanguage === "en" ? "es" : "en";
         }
 
         function closeMenu() {
-            menu.setAttribute("hidden", "");
-            toggle.setAttribute("aria-expanded", "false");
+            menu?.setAttribute("hidden", "");
+            toggle?.setAttribute("aria-expanded", "false");
             document.documentElement.classList.remove("menu-open");
 
             openIcon?.classList.remove("hidden");
@@ -247,7 +250,7 @@ const alternateLanguage = currentLanguage === "en" ? "es" : "en";
         }
 
         function toggleMenu() {
-            const isExpanded = toggle.getAttribute("aria-expanded") === "true";
+            const isExpanded = toggle?.getAttribute("aria-expanded") === "true";
 
             if (isExpanded) {
                 closeMenu();
@@ -269,12 +272,12 @@ const alternateLanguage = currentLanguage === "en" ? "es" : "en";
         }
 
         function handleScroll() {
-            header.classList.toggle("is-scrolled", window.scrollY > 16);
+            header?.classList.toggle("is-scrolled", window.scrollY > 16);
         }
 
         toggle.addEventListener("click", toggleMenu);
         closeButton?.addEventListener("click", closeMenu);
-        menu.addEventListener("click", handleOverlayClick);
+        menu?.addEventListener("click", handleOverlayClick);
         window.addEventListener("keydown", handleEscape);
         window.addEventListener("scroll", handleScroll, { passive: true });
 
