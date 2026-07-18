@@ -80,7 +80,7 @@ const t = content[currentLanguage];
                 <span class="section-kicker">{t.kicker}</span>
 
                 <h2
-                    class="max-w-[820px] text-[clamp(2.55rem,6vw,5.45rem)] text-[var(--color-heading)] max-[440px]:text-[clamp(2.35rem,12vw,3.8rem)]"
+                    class="text-[clamp(2.55rem,6vw,5.45rem)] text-[var(--color-heading)] max-[440px]:text-[clamp(2.35rem,12vw,3.8rem)]"
                 >
                     {t.title}
 
@@ -92,12 +92,12 @@ const t = content[currentLanguage];
                 </h2>
 
                 <p
-                    class="mt-[1.15rem] max-w-[700px] text-[clamp(1rem,1.35vw,1.16rem)] text-[var(--color-text-soft)]"
+                    class="mt-[1.15rem] text-[clamp(1rem,1.35vw,1.16rem)] text-[var(--color-text-soft)]"
                 >
                     {t.description}
                 </p>
 
-                <div class="mt-7 flex flex-wrap gap-[0.85rem] max-[720px]:grid">
+                <div class="mt-7 flex flex-wrap gap-[0.85rem]">
                     <a href={contactInfo.phone.href} class="btn btn-primary">
                         <span
                             class="cta-pulse-dot size-[0.65rem] rounded-full bg-current opacity-90 shadow-[0_0_0_0_currentColor]"
@@ -114,7 +114,7 @@ const t = content[currentLanguage];
 
                     <a
                         href={contactInfo.map.googleMapsUrl}
-                        class="btn btn-secondary"
+                        class="btn btn-secondary mt-5"
                         target="_blank"
                         rel="noopener noreferrer"
                     >

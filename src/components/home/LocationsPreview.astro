@@ -1,6 +1,8 @@
 ---
 import { ArrowRight } from "@lucide/astro";
 
+import { Image } from "astro:assets";
+
 import { getLanguageFromUrl } from "../../data/i18n/language";
 import type { LanguageCode } from "../../data/site/siteConfig";
 import { contactInfo } from "../../data/site/contact";
@@ -71,19 +73,19 @@ const locations = featuredMiamiDadeLocations
             <span class="section-kicker">{t.kicker}</span>
 
             <h2
-                class="max-w-[760px] text-[clamp(2.35rem,5.5vw,5rem)] text-[var(--color-heading)] max-[440px]:text-[clamp(2.25rem,12vw,3.85rem)]"
+                class="text-[clamp(2.35rem,5.5vw,5rem)] text-[var(--color-heading)] max-[440px]:text-[clamp(2.25rem,12vw,3.85rem)]"
             >
                 {t.title}
             </h2>
 
             <p
-                class="mt-5 max-w-[640px] text-[clamp(1rem,1.35vw,1.15rem)] text-[var(--color-text-soft)]"
+                class="mt-5 text-[clamp(1rem,1.35vw,1.15rem)] text-[var(--color-text-soft)]"
             >
                 {t.description}
             </p>
 
             <div
-                class="glow-panel mt-[1.65rem] grid w-[min(100%,560px)] gap-[0.45rem] p-[clamp(1rem,2vw,1.35rem)]"
+                class="glow-panel mt-[1.65rem] grid gap-[0.45rem] p-[clamp(1rem,2vw,1.35rem)]"
             >
                 <span
                     class="text-xs font-black uppercase text-[var(--color-secondary)]"
@@ -122,14 +124,15 @@ const locations = featuredMiamiDadeLocations
             <div
                 class="glass-panel-strong relative min-h-[420px] overflow-hidden p-0 max-[1060px]:min-h-[360px] max-[720px]:min-h-[320px]"
             >
-                <iframe
-                    src={contactInfo.map.embedUrl}
-                    title={t.mapTitle}
+                <Image
+                    src="/images/hospitals/palmetto-general.webp"
+                    width={720}
+                    height={480}
+                    alt={t.mapTitle}
                     class="office-map absolute inset-0 h-full w-full border-0 contrast-[1.04] saturate-[0.88]"
                     loading="lazy"
                     referrerpolicy="no-referrer-when-downgrade"
-                    allowfullscreen
-                ></iframe>
+                />
 
                 <div class="map-overlay pointer-events-none absolute inset-0" aria-hidden="true"></div>
 
