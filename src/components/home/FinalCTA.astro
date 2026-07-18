@@ -11,7 +11,8 @@ interface Props {
 
 const { language } = Astro.props as Props;
 
-const currentLanguage = language ?? getLanguageFromUrl(Astro.url.pathname);
+const currentLanguage =
+    language ?? getLanguageFromUrl(Astro.url.pathname);
 
 const content = {
     en: {
@@ -27,6 +28,7 @@ const content = {
         phoneNote: "Appointments are prioritized by phone.",
         emergencyNote: contactInfo.appointment.disclaimer.en,
     },
+
     es: {
         kicker: "Dé el próximo paso",
         title: "Comience con una llamada a la oficina.",
@@ -45,23 +47,33 @@ const content = {
 const t = content[currentLanguage];
 ---
 
-<section class="relative isolate overflow-hidden section-padding">
+<section
+    class="section-padding relative isolate overflow-hidden"
+>
     <div
         class="pointer-events-none absolute left-[-5rem] top-[10%] z-[-1] aspect-square w-[22rem] rounded-full bg-[color-mix(in_srgb,var(--color-secondary)_24%,transparent)] opacity-45 blur-[60px]"
+        aria-hidden="true"
     >
     </div>
 
     <div
         class="pointer-events-none absolute bottom-[10%] right-[-5rem] z-[-1] aspect-square w-96 rounded-full bg-[color-mix(in_srgb,var(--color-heart)_14%,transparent)] opacity-45 blur-[60px]"
+        aria-hidden="true"
     >
     </div>
 
     <div class="site-container">
         <div
-            class="final-cta-panel glow-panel relative grid grid-cols-[minmax(0,1fr)_minmax(280px,0.38fr)] items-center gap-[clamp(1.5rem,4vw,3rem)] overflow-hidden p-[clamp(1.35rem,4vw,2.5rem)] max-[1060px]:grid-cols-1 max-[720px]:rounded-[1.65rem]"
+            class="glow-panel relative grid grid-cols-[minmax(0,1fr)_minmax(280px,0.38fr)] items-center gap-[clamp(1.5rem,4vw,3rem)] overflow-hidden p-[clamp(1.35rem,4vw,2.5rem)] max-[1060px]:grid-cols-1 max-[720px]:rounded-[1.65rem]"
         >
             <div
-                class="final-cta-bg-line pointer-events-none absolute left-1/2 top-1/2 w-[min(92%,760px)] -translate-x-1/2 -translate-y-1/2 text-[var(--color-accent)] opacity-[0.18]"
+                class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_15%,color-mix(in_srgb,var(--color-secondary)_20%,transparent),transparent_18rem),radial-gradient(circle_at_86%_72%,color-mix(in_srgb,var(--color-heart)_14%,transparent),transparent_18rem),radial-gradient(circle_at_58%_40%,color-mix(in_srgb,var(--color-accent)_14%,transparent),transparent_24rem)]"
+                aria-hidden="true"
+            >
+            </div>
+
+            <div
+                class="pointer-events-none absolute left-1/2 top-1/2 w-[min(92%,760px)] -translate-x-1/2 -translate-y-1/2 text-[var(--color-accent)] opacity-[0.18] animate-pulse-glow motion-reduce:animate-none"
                 aria-hidden="true"
             >
                 <svg
@@ -71,13 +83,15 @@ const t = content[currentLanguage];
                 >
                     <path
                         d="M0 72H150L176 72L204 72L232 24L274 118L310 72H372L398 72L428 48L462 98L496 72H760"
-                        class="final-heartline-path"
+                        class="stroke-current stroke-[5px] [stroke-linecap:round] [stroke-linejoin:round]"
                     />
                 </svg>
             </div>
 
             <div class="relative z-[1] grid content-center">
-                <span class="section-kicker">{t.kicker}</span>
+                <span class="section-kicker">
+                    {t.kicker}
+                </span>
 
                 <h2
                     class="text-[clamp(2.55rem,6vw,5.45rem)] text-[var(--color-heading)] max-[440px]:text-[clamp(2.35rem,12vw,3.8rem)]"
@@ -85,22 +99,27 @@ const t = content[currentLanguage];
                     {t.title}
 
                     <span
-                        class="final-cta-highlight block bg-gradient-to-br from-[var(--color-primary-dark)] via-[var(--color-secondary)] to-[var(--color-accent)] bg-clip-text pb-[0.08em] text-transparent"
+                        class="block bg-gradient-to-br from-[var(--color-primary-dark)] via-[var(--color-secondary)] to-[var(--color-accent)] bg-clip-text pb-[0.08em] text-transparent dark:from-[var(--color-heading)]"
                     >
                         {t.highlighted}
                     </span>
                 </h2>
 
                 <p
-                    class="mt-[1.15rem] text-[clamp(1rem,1.35vw,1.16rem)] text-[var(--color-text-soft)]"
+                    class="mt-[1.15rem] max-w-[820px] text-[clamp(1rem,1.35vw,1.16rem)] text-[var(--color-text-soft)]"
                 >
                     {t.description}
                 </p>
 
-                <div class="mt-7 flex flex-wrap gap-[0.85rem]">
-                    <a href={contactInfo.phone.href} class="btn btn-primary">
+                <div
+                    class="mt-7 flex flex-wrap gap-[0.85rem] max-[720px]:grid"
+                >
+                    <a
+                        href={contactInfo.phone.href}
+                        class="btn btn-primary"
+                    >
                         <span
-                            class="cta-pulse-dot size-[0.65rem] rounded-full bg-current opacity-90 shadow-[0_0_0_0_currentColor]"
+                            class="animate-pulse-glow size-[0.65rem] rounded-full bg-current opacity-90 motion-reduce:animate-none"
                             aria-hidden="true"
                         >
                         </span>
@@ -108,13 +127,16 @@ const t = content[currentLanguage];
                         {t.callLabel}
                     </a>
 
-                    <a href={contactInfo.email.href} class="btn btn-secondary">
+                    <a
+                        href={contactInfo.email.href}
+                        class="btn btn-secondary"
+                    >
                         {t.emailLabel}
                     </a>
 
                     <a
                         href={contactInfo.map.googleMapsUrl}
-                        class="btn btn-secondary mt-5"
+                        class="btn btn-secondary"
                         target="_blank"
                         rel="noopener noreferrer"
                     >
@@ -127,18 +149,21 @@ const t = content[currentLanguage];
                 class="medical-card relative z-[1] grid gap-[0.45rem] p-[clamp(1rem,2vw,1.25rem)] max-[1060px]:w-[min(100%,460px)] max-[720px]:w-full"
             >
                 <span
-                    class="text-xs font-black uppercase text-[var(--color-secondary)]"
+                    class="text-xs font-black uppercase tracking-[0.14em] text-[var(--color-secondary)]"
                 >
                     {t.officeLabel}
                 </span>
 
-                <strong
-                    class="font-heading text-[clamp(1.8rem,3vw,2.45rem)] text-[var(--color-heading)]"
+                <a
+                    href={contactInfo.phone.href}
+                    class="w-fit font-heading text-[clamp(1.8rem,3vw,2.45rem)] text-[var(--color-heading)] transition-colors hover:text-[var(--color-secondary)]"
                 >
                     {contactInfo.phone.label}
-                </strong>
+                </a>
 
-                <p class="text-[0.95rem] text-[var(--color-text-soft)]">
+                <p
+                    class="text-[0.95rem] text-[var(--color-text-soft)]"
+                >
                     {contactInfo.address.display}
                 </p>
 
@@ -150,104 +175,10 @@ const t = content[currentLanguage];
             </div>
 
             <p
-                class="relative z-[1] col-span-full max-w-[920px] border-t border-[var(--color-border)] pt-4 text-[0.84rem] text-[var(--color-text-soft)]"
+                class="relative z-1 col-span-full max-w-[920px] border-t border-[var(--color-border)] pt-4 text-[0.84rem] text-[var(--color-text-soft)]"
             >
                 {t.emergencyNote}
             </p>
         </div>
     </div>
 </section>
-
-<style>
-    .final-cta-panel::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background:
-            radial-gradient(
-                circle at 18% 15%,
-                color-mix(in srgb, var(--color-secondary) 20%, transparent),
-                transparent 18rem
-            ),
-            radial-gradient(
-                circle at 86% 72%,
-                color-mix(in srgb, var(--color-heart) 14%, transparent),
-                transparent 18rem
-            ),
-            radial-gradient(
-                circle at 58% 40%,
-                color-mix(in srgb, var(--color-accent) 14%, transparent),
-                transparent 24rem
-            );
-        pointer-events: none;
-    }
-
-    .final-heartline-path {
-        stroke: currentColor;
-        stroke-width: 5;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-        stroke-dasharray: 980;
-        stroke-dashoffset: 980;
-        animation: final-heartline 4.2s ease-in-out infinite;
-    }
-
-    :global(.dark) .final-cta-highlight {
-        background: linear-gradient(
-            135deg,
-            var(--color-heading),
-            var(--color-secondary),
-            var(--color-accent)
-        );
-        background-clip: text;
-        -webkit-background-clip: text;
-    }
-
-    .cta-pulse-dot {
-        animation: final-dot-pulse 1.55s ease-in-out infinite;
-    }
-
-    @keyframes final-heartline {
-        0% {
-            opacity: 0;
-            stroke-dashoffset: 980;
-        }
-
-        12% {
-            opacity: 1;
-        }
-
-        48% {
-            opacity: 1;
-            stroke-dashoffset: 0;
-        }
-
-        72% {
-            opacity: 0.85;
-            stroke-dashoffset: 0;
-        }
-
-        100% {
-            opacity: 0;
-            stroke-dashoffset: -980;
-        }
-    }
-
-    @keyframes final-dot-pulse {
-        0%,
-        100% {
-            transform: scale(1);
-            opacity: 0.9;
-        }
-
-        18% {
-            transform: scale(1.45);
-            opacity: 0.65;
-        }
-
-        32% {
-            transform: scale(1);
-            opacity: 0.9;
-        }
-    }
-</style>

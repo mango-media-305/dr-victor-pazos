@@ -1,593 +1,285 @@
 ---
-// src/components/contact/ContactPage.astro
+// src/components/home/AboutDoctorPreview.astro
 
-import MainLayout from "../../layouts/MainLayout.astro";
-import { contactInfo } from "../../data/site/contact";
-import { siteConfig } from "../../data/site/siteConfig";
-import { contactMetadata } from "../../data/seo/pageMetadata";
 import {
-    getGlobalSchema,
-    getWebPageSchema,
-} from "../../data/seo/schema";
+    ArrowRight,
+    HeartPulse,
+    Languages,
+    MapPin,
+    Phone,
+    Stethoscope,
+} from "@lucide/astro";
+
+import { getLanguageFromUrl } from "../../data/i18n/language";
+import { doctorProfile } from "../../data/doctor/doctorProfile";
+import { aboutMetadata } from "../../data/seo/pageMetadata";
+import { contactInfo } from "../../data/site/contact";
 import type { LanguageCode } from "../../data/site/siteConfig";
 
 interface Props {
-    language: LanguageCode;
+    language?: LanguageCode;
 }
 
 const { language } = Astro.props as Props;
 
-const currentLanguage = language;
-const metadata = contactMetadata;
-
-const formName = siteConfig.forms.appointment.netlifyName;
+const currentLanguage =
+    language ?? getLanguageFromUrl(Astro.url.pathname);
 
 const content = {
     en: {
-        kicker: "Contact the office",
-        title: "Request a cardiology appointment in Hialeah, FL.",
+        kicker: "Meet the cardiologist",
+        title:
+            "Experienced cardiovascular care with clear, bilingual communication.",
         description:
-            "Contact Victor Pazos, MD. PA. to request an appointment, call the office, or get directions to the Hialeah cardiology location.",
-        callLabel: contactInfo.appointment.primaryCta.en,
-        emailLabel: contactInfo.appointment.secondaryCta.en,
-        directionsLabel: contactInfo.map.directionsLabel.en,
-
-        formKicker: "Appointment request",
-        formTitle: "Send an appointment request.",
-        formDescription:
-            "Use this form for non-emergency appointment requests only. The office may contact you to confirm availability and next steps.",
-
-        firstNameLabel: "First name",
-        lastNameLabel: "Last name",
-        phoneLabel: "Phone number",
-        emailFieldLabel: "Email address",
-        preferredContactLabel: "Preferred contact method",
-        reasonLabel: "Reason for visit",
-        messageLabel: "Message",
-        submitLabel: "Submit request",
-
-        firstNamePlaceholder: "First name",
-        lastNamePlaceholder: "Last name",
-        phonePlaceholder: "(305) 000-0000",
-        emailPlaceholder: "name@email.com",
-        reasonPlaceholder: "Select a reason",
-        messagePlaceholder:
-            "Briefly describe the reason for your appointment request.",
-
-        contactOptions: {
-            phone: "Phone",
-            email: "Email",
-        },
-
-        reasons: [
-            "General cardiology visit",
-            "Chest discomfort",
-            "Shortness of breath",
-            "Palpitations",
-            "High blood pressure",
-            "Abnormal EKG",
-            "Heart disease follow-up",
-            "Other",
-        ],
-
-        officeKicker: "Office information",
-        officeTitle: "Hialeah cardiology office",
-        addressLabel: "Address",
-        phoneInfoLabel: "Phone",
-        emailInfoLabel: "Email",
-        languagesLabel: "Languages",
-        hoursLabel: "Hours",
-
-        mapKicker: "Directions",
-        mapTitle: "Find the office on Google Maps.",
-        mapDescription:
-            "The office is located in Hialeah and serves patients from Miami, Miami Lakes, Doral, Hialeah Gardens, Miami Gardens, and nearby Miami-Dade communities.",
-
-        emergencyKicker: "Medical emergency?",
-        emergencyTitle: "Do not use this form for emergencies.",
-        emergencyDescription:
-            "If you are experiencing severe chest pain, sudden shortness of breath, fainting, stroke symptoms, severe weakness, or symptoms that feel like a medical emergency, call 911 immediately.",
-
-        privacyNote:
-            "Please do not include sensitive medical details in this form. A team member may contact you to discuss appointment availability and next steps.",
+            "Learn more about Victor Pazos, MD and the patient-centered cardiology care available from his Hialeah office.",
+        profileLabel: "Doctor profile",
+        viewProfile: "Learn more about Dr. Pazos",
+        callOffice: "Call the office",
+        servingLabel: "Serving Miami-Dade",
+        servingText:
+            "Care for patients from Hialeah, Miami, Miami Lakes, Doral, and nearby communities.",
     },
+
     es: {
-        kicker: "Contacte la oficina",
-        title: "Solicite una cita de cardiología en Hialeah, FL.",
+        kicker: "Conozca al cardiólogo",
+        title:
+            "Atención cardiovascular con experiencia y comunicación bilingüe clara.",
         description:
-            "Contacte a Victor Pazos, MD. PA. para solicitar una cita, llamar a la oficina u obtener direcciones a la ubicación de cardiología en Hialeah.",
-        callLabel: contactInfo.appointment.primaryCta.es,
-        emailLabel: contactInfo.appointment.secondaryCta.es,
-        directionsLabel: contactInfo.map.directionsLabel.es,
-
-        formKicker: "Solicitud de cita",
-        formTitle: "Envíe una solicitud de cita.",
-        formDescription:
-            "Use este formulario solo para solicitudes de cita que no sean emergencias. La oficina puede contactarle para confirmar disponibilidad y próximos pasos.",
-
-        firstNameLabel: "Nombre",
-        lastNameLabel: "Apellido",
-        phoneLabel: "Número de teléfono",
-        emailFieldLabel: "Correo electrónico",
-        preferredContactLabel: "Método de contacto preferido",
-        reasonLabel: "Razón de la visita",
-        messageLabel: "Mensaje",
-        submitLabel: "Enviar solicitud",
-
-        firstNamePlaceholder: "Nombre",
-        lastNamePlaceholder: "Apellido",
-        phonePlaceholder: "(305) 000-0000",
-        emailPlaceholder: "nombre@email.com",
-        reasonPlaceholder: "Seleccione una razón",
-        messagePlaceholder:
-            "Describa brevemente la razón de su solicitud de cita.",
-
-        contactOptions: {
-            phone: "Teléfono",
-            email: "Email",
-        },
-
-        reasons: [
-            "Visita de cardiología general",
-            "Molestia en el pecho",
-            "Falta de aire",
-            "Palpitaciones",
-            "Presión alta",
-            "EKG anormal",
-            "Seguimiento de enfermedad cardíaca",
-            "Otro",
-        ],
-
-        officeKicker: "Información de la oficina",
-        officeTitle: "Oficina de cardiología en Hialeah",
-        addressLabel: "Dirección",
-        phoneInfoLabel: "Teléfono",
-        emailInfoLabel: "Email",
-        languagesLabel: "Idiomas",
-        hoursLabel: "Horario",
-
-        mapKicker: "Direcciones",
-        mapTitle: "Encuentre la oficina en Google Maps.",
-        mapDescription:
-            "La oficina está ubicada en Hialeah y atiende pacientes de Miami, Miami Lakes, Doral, Hialeah Gardens, Miami Gardens y comunidades cercanas de Miami-Dade.",
-
-        emergencyKicker: "¿Emergencia médica?",
-        emergencyTitle: "No use este formulario para emergencias.",
-        emergencyDescription:
-            "Si está experimentando dolor fuerte en el pecho, falta de aire repentina, desmayo, síntomas de derrame cerebral, debilidad severa o síntomas que parezcan una emergencia médica, llame al 911 inmediatamente.",
-
-        privacyNote:
-            "Por favor no incluya detalles médicos sensibles en este formulario. Un miembro del equipo puede contactarle para hablar sobre disponibilidad de citas y próximos pasos.",
+            "Conozca más sobre Victor Pazos, MD y la atención cardiológica centrada en el paciente disponible desde su oficina en Hialeah.",
+        profileLabel: "Perfil del doctor",
+        viewProfile: "Conozca más sobre Dr. Pazos",
+        callOffice: "Llamar a la oficina",
+        servingLabel: "Sirviendo Miami-Dade",
+        servingText:
+            "Atención para pacientes de Hialeah, Miami, Miami Lakes, Doral y comunidades cercanas.",
     },
 };
 
 const t = content[currentLanguage];
 
-const pageTitle = metadata.title[currentLanguage];
-const pageDescription = metadata.description[currentLanguage];
-const canonicalPath = metadata.canonical[currentLanguage];
+const aboutHref = aboutMetadata.canonical[currentLanguage];
 
-const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-        {
-            "@type": "ListItem",
-            position: 1,
-            name: currentLanguage === "es" ? "Inicio" : "Home",
-            item: currentLanguage === "es" ? "/es/" : "/",
-        },
-        {
-            "@type": "ListItem",
-            position: 2,
-            name: currentLanguage === "es" ? "Contacto" : "Contact",
-            item: canonicalPath,
-        },
-    ],
-};
-
-const contactPageSchema = {
-    "@context": "https://schema.org",
-    "@type": "ContactPage",
-    name: pageTitle,
-    description: pageDescription,
-    url: canonicalPath,
-};
+const highlightIcons = [
+    HeartPulse,
+    Languages,
+    MapPin,
+    Stethoscope,
+];
 ---
 
-<MainLayout
-    fullTitle
-    language={currentLanguage}
-    title={pageTitle}
-    description={pageDescription}
-    canonical={canonicalPath}
-    alternateUrls={{
-        en: metadata.canonical.en,
-        es: metadata.canonical.es,
-    }}
-    schema={[
-        ...getGlobalSchema(),
-        getWebPageSchema({
-            title: pageTitle,
-            description: pageDescription,
-            path: canonicalPath,
-        }),
-        breadcrumbSchema,
-        contactPageSchema,
-    ]}
+<section
+    class="section-padding relative isolate overflow-hidden"
 >
-    <section class="relative isolate overflow-hidden section-padding-lg medical-grid-bg">
-        <div
-            class="pointer-events-none absolute -left-20 top-[12%] -z-10 aspect-square w-[22rem] rounded-full bg-[color-mix(in_srgb,var(--color-secondary)_24%,transparent)] opacity-45 blur-[58px]"
-            aria-hidden="true"
-        >
-        </div>
+    <div
+        class="pointer-events-none absolute -left-20 top-[12%] -z-10 aspect-square w-[22rem] rounded-full bg-[color-mix(in_srgb,var(--color-secondary)_22%,transparent)] opacity-45 blur-[58px]"
+        aria-hidden="true"
+    >
+    </div>
 
-        <div
-            class="pointer-events-none absolute -right-20 bottom-[12%] -z-10 aspect-square w-[24rem] rounded-full bg-[color-mix(in_srgb,var(--color-heart)_14%,transparent)] opacity-45 blur-[58px]"
-            aria-hidden="true"
-        >
-        </div>
+    <div
+        class="pointer-events-none absolute -right-20 bottom-[10%] -z-10 aspect-square w-[24rem] rounded-full bg-[color-mix(in_srgb,var(--color-heart)_14%,transparent)] opacity-45 blur-[58px]"
+        aria-hidden="true"
+    >
+    </div>
 
-        <div class="site-container relative z-10 grid items-center gap-[clamp(2rem,6vw,5rem)] lg:grid-cols-[minmax(0,1fr)_minmax(320px,0.48fr)]">
-            <div class="grid content-center">
-                <span class="section-kicker">{t.kicker}</span>
+    <div
+        class="site-container relative z-10 grid items-center gap-[clamp(2rem,6vw,5rem)] lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)]"
+    >
+        <div class="grid content-center">
+            <span class="section-kicker">
+                {t.kicker}
+            </span>
 
-                <h1 class="max-w-[980px] text-[clamp(3rem,7vw,6.7rem)] text-[var(--color-heading)] max-[440px]:text-[clamp(2.75rem,15vw,4.25rem)]">
-                    {t.title}
-                </h1>
+            <h2
+                class="max-w-[820px] text-[clamp(2.35rem,5.5vw,5rem)] text-[var(--color-heading)] max-[440px]:text-[clamp(2.25rem,12vw,3.85rem)]"
+            >
+                {t.title}
+            </h2>
 
-                <p class="mt-5 max-w-[760px] text-[clamp(1.05rem,1.5vw,1.22rem)] leading-[1.85] text-[var(--color-text-soft)]">
-                    {t.description}
-                </p>
+            <p
+                class="mt-5 max-w-[680px] text-[clamp(1rem,1.35vw,1.15rem)] leading-relaxed text-[var(--color-text-soft)]"
+            >
+                {t.description}
+            </p>
 
-                <div class="mt-8 flex flex-wrap gap-3 max-md:grid max-md:w-full">
-                    <a href={contactInfo.phone.href} class="btn btn-primary">
-                        {t.callLabel}
-                    </a>
+            <div
+                class="mt-7 flex flex-wrap gap-3 max-[720px]:grid"
+            >
+                <a
+                    href={aboutHref}
+                    class="btn btn-primary"
+                >
+                    {t.viewProfile}
 
-                    <a href={contactInfo.email.href} class="btn btn-secondary">
-                        {t.emailLabel}
-                    </a>
+                    <ArrowRight
+                        size={18}
+                        stroke-width={2}
+                        aria-hidden="true"
+                    />
+                </a>
 
-                    <a
-                        href={contactInfo.map.googleMapsUrl}
-                        class="btn btn-secondary"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        {t.directionsLabel}
-                    </a>
-                </div>
+                <a
+                    href={contactInfo.phone.href}
+                    class="btn btn-secondary"
+                >
+                    <Phone
+                        size={18}
+                        stroke-width={2}
+                        aria-hidden="true"
+                    />
+
+                    {t.callOffice}
+                </a>
             </div>
 
-            <aside class="contact-office-card relative overflow-hidden rounded-[2rem] border border-[color-mix(in_srgb,var(--color-secondary)_28%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-surface)_78%,transparent)] p-[clamp(1.1rem,2.5vw,1.5rem)] shadow-[var(--shadow-card)] backdrop-blur-xl">
-                <div
-                    class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,color-mix(in_srgb,var(--color-secondary)_20%,transparent),transparent_14rem),radial-gradient(circle_at_bottom_left,color-mix(in_srgb,var(--color-heart)_12%,transparent),transparent_13rem)]"
-                    aria-hidden="true"
+            <div
+                class="glow-panel mt-5 grid gap-2 p-[clamp(1rem,2vw,1.25rem)]"
+            >
+                <span
+                    class="text-xs font-black uppercase tracking-[0.14em] text-[var(--color-secondary)]"
                 >
-                </div>
-
-                <div class="relative z-10 grid gap-4">
-                    <span class="section-kicker">{t.officeKicker}</span>
-
-                    <strong class="font-heading text-[clamp(1.8rem,3.2vw,2.75rem)] text-[var(--color-heading)]">
-                        {t.officeTitle}
-                    </strong>
-
-                    <div class="grid gap-3">
-                        <div class="rounded-[1.35rem] border border-[color-mix(in_srgb,var(--color-border)_82%,transparent)] bg-[color-mix(in_srgb,var(--color-surface)_76%,transparent)] p-4">
-                            <span class="text-xs font-black uppercase text-[var(--color-secondary)]">
-                                {t.addressLabel}
-                            </span>
-
-                            <p class="mt-2 text-sm font-black leading-[1.5] text-[var(--color-heading)]">
-                                {contactInfo.address.display}
-                            </p>
-                        </div>
-
-                        <div class="grid gap-3 sm:grid-cols-2">
-                            <a
-                                href={contactInfo.phone.href}
-                                class="rounded-[1.35rem] border border-[color-mix(in_srgb,var(--color-border)_82%,transparent)] bg-[color-mix(in_srgb,var(--color-surface)_76%,transparent)] p-4 transition-transform duration-300 hover:-translate-y-1"
-                            >
-                                <span class="text-xs font-black uppercase text-[var(--color-secondary)]">
-                                    {t.phoneInfoLabel}
-                                </span>
-
-                                <p class="mt-2 text-sm font-black text-[var(--color-heading)]">
-                                    {contactInfo.phone.label}
-                                </p>
-                            </a>
-
-                            <a
-                                href={contactInfo.email.href}
-                                class="rounded-[1.35rem] border border-[color-mix(in_srgb,var(--color-border)_82%,transparent)] bg-[color-mix(in_srgb,var(--color-surface)_76%,transparent)] p-4 transition-transform duration-300 hover:-translate-y-1"
-                            >
-                                <span class="text-xs font-black uppercase text-[var(--color-secondary)]">
-                                    {t.emailInfoLabel}
-                                </span>
-
-                                <p class="mt-2 break-all text-sm font-black text-[var(--color-heading)]">
-                                    {contactInfo.email.label}
-                                </p>
-                            </a>
-                        </div>
-
-                        <div class="rounded-[1.35rem] border border-[color-mix(in_srgb,var(--color-border)_82%,transparent)] bg-[color-mix(in_srgb,var(--color-surface)_76%,transparent)] p-4">
-                            <span class="text-xs font-black uppercase text-[var(--color-secondary)]">
-                                {t.languagesLabel}
-                            </span>
-
-                            <p class="mt-2 text-sm font-black text-[var(--color-heading)]">
-                                {contactInfo.languages.display[currentLanguage]}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </aside>
-        </div>
-    </section>
-
-    <section class="section-padding-sm">
-        <div class="site-container">
-            <div class="rounded-[1.65rem] border border-[color-mix(in_srgb,var(--color-heart)_28%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-heart-soft)_30%,transparent)] p-[clamp(1rem,2vw,1.25rem)]">
-                <span class="text-xs font-black uppercase text-[var(--color-heart)]">
-                    {t.emergencyKicker}
+                    {t.servingLabel}
                 </span>
 
-                <h2 class="mt-2 font-heading text-[clamp(1.45rem,2.5vw,2.15rem)] text-[var(--color-heading)]">
-                    {t.emergencyTitle}
-                </h2>
-
-                <p class="mt-3 max-w-[980px] text-sm font-bold text-[var(--color-text-soft)]">
-                    {t.emergencyDescription}
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <section class="relative isolate overflow-hidden section-padding">
-        <div
-            class="pointer-events-none absolute -right-20 top-[10%] -z-10 aspect-square w-[22rem] rounded-full bg-[color-mix(in_srgb,var(--color-secondary)_22%,transparent)] opacity-45 blur-[58px]"
-            aria-hidden="true"
-        >
-        </div>
-
-        <div class="site-container grid gap-[clamp(2rem,6vw,5rem)] lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
-            <div class="lg:sticky lg:top-28 lg:self-start">
-                <span class="section-kicker">{t.formKicker}</span>
-
-                <h2 class="max-w-[720px] text-[clamp(2.25rem,5vw,4.8rem)] text-[var(--color-heading)]">
-                    {t.formTitle}
-                </h2>
-
-                <p class="mt-5 max-w-[620px] text-[clamp(1rem,1.35vw,1.12rem)] leading-[1.85] text-[var(--color-text-soft)]">
-                    {t.formDescription}
-                </p>
-
-                <p class="mt-5 max-w-[620px] rounded-[1.25rem] border border-[color-mix(in_srgb,var(--color-border)_86%,transparent)] bg-[color-mix(in_srgb,var(--color-surface)_76%,transparent)] p-4 text-sm font-bold leading-[1.65] text-[var(--color-text-soft)]">
-                    {t.privacyNote}
-                </p>
-            </div>
-
-            <form
-                name={formName}
-                method="POST"
-                data-netlify="true"
-                netlify-honeypot="bot-field"
-                action={currentLanguage === "es" ? "/es/thank-you/" : "/thank-you/"}
-                class="medical-card grid gap-5 p-[clamp(1rem,2vw,1.35rem)]"
-            >
-                <input type="hidden" name="form-name" value={formName} />
-
-                <p class="hidden">
-                    <label>
-                        Do not fill this out if you are human:
-                        <input name="bot-field" />
-                    </label>
-                </p>
-
-                <input
-                    type="hidden"
-                    name="language"
-                    value={currentLanguage}
-                />
-
-                <div class="grid gap-4 sm:grid-cols-2">
-                    <label class="grid gap-2">
-                        <span class="text-sm font-black text-[var(--color-heading)]">
-                            {t.firstNameLabel}
-                        </span>
-
-                        <input
-                            type="text"
-                            name="firstName"
-                            required
-                            placeholder={t.firstNamePlaceholder}
-                            class="contact-input"
-                        />
-                    </label>
-
-                    <label class="grid gap-2">
-                        <span class="text-sm font-black text-[var(--color-heading)]">
-                            {t.lastNameLabel}
-                        </span>
-
-                        <input
-                            type="text"
-                            name="lastName"
-                            required
-                            placeholder={t.lastNamePlaceholder}
-                            class="contact-input"
-                        />
-                    </label>
-                </div>
-
-                <div class="grid gap-4 sm:grid-cols-2">
-                    <label class="grid gap-2">
-                        <span class="text-sm font-black text-[var(--color-heading)]">
-                            {t.phoneLabel}
-                        </span>
-
-                        <input
-                            type="tel"
-                            name="phone"
-                            required
-                            placeholder={t.phonePlaceholder}
-                            class="contact-input"
-                        />
-                    </label>
-
-                    <label class="grid gap-2">
-                        <span class="text-sm font-black text-[var(--color-heading)]">
-                            {t.emailFieldLabel}
-                        </span>
-
-                        <input
-                            type="email"
-                            name="email"
-                            placeholder={t.emailPlaceholder}
-                            class="contact-input"
-                        />
-                    </label>
-                </div>
-
-                <label class="grid gap-2">
-                    <span class="text-sm font-black text-[var(--color-heading)]">
-                        {t.preferredContactLabel}
-                    </span>
-
-                    <select name="preferredContact" class="contact-input">
-                        <option value="phone">{t.contactOptions.phone}</option>
-                        <option value="email">{t.contactOptions.email}</option>
-                    </select>
-                </label>
-
-                <label class="grid gap-2">
-                    <span class="text-sm font-black text-[var(--color-heading)]">
-                        {t.reasonLabel}
-                    </span>
-
-                    <select name="reason" required class="contact-input">
-                        <option value="">{t.reasonPlaceholder}</option>
-                        {
-                            t.reasons.map((reason) => (
-                                <option value={reason}>{reason}</option>
-                            ))
-                        }
-                    </select>
-                </label>
-
-                <label class="grid gap-2">
-                    <span class="text-sm font-black text-[var(--color-heading)]">
-                        {t.messageLabel}
-                    </span>
-
-                    <textarea
-                        name="message"
-                        rows="5"
-                        placeholder={t.messagePlaceholder}
-                        class="contact-input resize-y"
-                    >
-                    </textarea>
-                </label>
-
-                <button type="submit" class="btn btn-primary w-full">
-                    {t.submitLabel}
-                </button>
-            </form>
-        </div>
-    </section>
-
-    <section class="section-padding">
-        <div class="site-container grid gap-[clamp(2rem,6vw,5rem)] lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)]">
-            <div class="lg:sticky lg:top-28 lg:self-start">
-                <span class="section-kicker">{t.mapKicker}</span>
-
-                <h2 class="max-w-[720px] text-[clamp(2.25rem,5vw,4.8rem)] text-[var(--color-heading)]">
-                    {t.mapTitle}
-                </h2>
-
-                <p class="mt-5 max-w-[620px] text-[clamp(1rem,1.35vw,1.12rem)] text-[var(--color-text-soft)]">
-                    {t.mapDescription}
-                </p>
-
-                <div class="mt-8 flex flex-wrap gap-3 max-md:grid max-md:w-full">
-                    <a
-                        href={contactInfo.map.googleMapsUrl}
-                        class="btn btn-primary"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        {t.directionsLabel}
-                    </a>
-
-                    <a href={contactInfo.phone.href} class="btn btn-secondary">
-                        {t.callLabel}
-                    </a>
-                </div>
-            </div>
-
-            <div class="relative overflow-hidden rounded-[2rem] border border-[color-mix(in_srgb,var(--color-secondary)_24%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-surface)_78%,transparent)] p-2 shadow-[var(--shadow-card)]">
-                <iframe
-                    src={contactInfo.map.embedUrl}
-                    title={t.mapTitle}
-                    loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade"
-                    class="min-h-[420px] w-full rounded-[1.55rem] border-0 grayscale-[0.15]"
+                <p
+                    class="text-[0.94rem] text-[var(--color-text-soft)]"
                 >
-                </iframe>
+                    {t.servingText}
+                </p>
             </div>
         </div>
-    </section>
-</MainLayout>
 
-<style>
-    .contact-office-card {
-        animation: contact-office-float 6.5s ease-in-out infinite;
-        will-change: transform;
-    }
+        <article
+            class="medical-card group relative overflow-hidden p-[clamp(1.2rem,3vw,2rem)] animate-fade-up"
+        >
+            <div
+                class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,color-mix(in_srgb,var(--color-secondary)_22%,transparent),transparent_16rem),radial-gradient(circle_at_bottom_left,color-mix(in_srgb,var(--color-heart)_12%,transparent),transparent_15rem)]"
+                aria-hidden="true"
+            >
+            </div>
 
-    .contact-input {
-        width: 100%;
-        border: 1px solid color-mix(in srgb, var(--color-border) 86%, transparent);
-        border-radius: 1rem;
-        background: color-mix(in srgb, var(--color-surface) 78%, transparent);
-        padding: 0.9rem 1rem;
-        color: var(--color-heading);
-        font-weight: 700;
-        outline: none;
-        transition:
-            border-color var(--theme-transition),
-            background var(--theme-transition),
-            box-shadow 220ms var(--motion-smooth);
-    }
+            <div
+                class="pointer-events-none absolute -right-12 -top-12 opacity-[0.07]"
+                aria-hidden="true"
+            >
+                <HeartPulse
+                    size={220}
+                    stroke-width={1.15}
+                    class="text-[var(--color-secondary)]"
+                />
+            </div>
 
-    .contact-input::placeholder {
-        color: var(--color-text-muted);
-    }
+            <div class="relative z-10 grid gap-6">
+                <div
+                    class="flex items-start justify-between gap-5 max-[560px]:grid"
+                >
+                    <div class="grid gap-2">
+                        <span
+                            class="text-xs font-black uppercase tracking-[0.14em] text-[var(--color-secondary)]"
+                        >
+                            {t.profileLabel}
+                        </span>
 
-    .contact-input:focus {
-        border-color: color-mix(in srgb, var(--color-secondary) 58%, var(--color-border));
-        background: color-mix(in srgb, var(--color-surface) 94%, transparent);
-        box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-secondary) 14%, transparent);
-    }
+                        <h3
+                            class="font-heading text-[clamp(2rem,4.4vw,3.6rem)] leading-[0.95] text-[var(--color-heading)]"
+                        >
+                            {doctorProfile.displayName}
+                        </h3>
 
-    @keyframes contact-office-float {
-        0%,
-        100% {
-            transform: translate3d(0, 0, 0) rotate(-1deg);
-        }
+                        <p
+                            class="font-black text-[var(--color-secondary)]"
+                        >
+                            {
+                                doctorProfile.specialty[
+                                    currentLanguage
+                                ]
+                            }
+                        </p>
+                    </div>
 
-        50% {
-            transform: translate3d(0, -12px, 0) rotate(1deg);
-        }
-    }
+                    <div
+                        class="inline-grid size-16 flex-none place-items-center rounded-[1.35rem] border border-[color-mix(in_srgb,var(--color-secondary)_34%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-secondary-soft)_48%,transparent)] text-[var(--color-secondary)] shadow-[var(--shadow-soft)]"
+                        aria-hidden="true"
+                    >
+                        <Stethoscope
+                            size={30}
+                            stroke-width={1.9}
+                        />
+                    </div>
+                </div>
 
-    @media (prefers-reduced-motion: reduce) {
-        .contact-office-card {
-            animation: none;
-        }
-    }
-</style>
+                <p
+                    class="max-w-[720px] text-[0.98rem] leading-relaxed text-[var(--color-text-soft)]"
+                >
+                    {doctorProfile.shortBio[currentLanguage]}
+                </p>
+
+                <div
+                    class="grid grid-cols-2 gap-3 max-[560px]:grid-cols-1"
+                >
+                    {
+                        doctorProfile.highlights
+                            .slice(0, 4)
+                            .map((item, index) => {
+                                const Icon =
+                                    highlightIcons[index] ??
+                                    Stethoscope;
+
+                                return (
+                                    <div class="relative overflow-hidden rounded-[1.35rem] border border-[color-mix(in_srgb,var(--color-border)_84%,transparent)] bg-[color-mix(in_srgb,var(--color-surface)_76%,transparent)] p-4">
+                                        <div
+                                            class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,color-mix(in_srgb,var(--color-secondary)_13%,transparent),transparent_8rem)]"
+                                            aria-hidden="true"
+                                        >
+                                        </div>
+
+                                        <div class="relative z-10">
+                                            <div class="flex items-start justify-between gap-3">
+                                                <span
+                                                    class="font-heading text-[clamp(1.55rem,3vw,2.25rem)] font-extrabold text-[var(--color-heading)]"
+                                                >
+                                                    {item.value}
+                                                </span>
+
+                                                <Icon
+                                                    size={21}
+                                                    stroke-width={2}
+                                                    class="flex-none text-[var(--color-secondary)]"
+                                                    aria-hidden="true"
+                                                />
+                                            </div>
+
+                                            <p
+                                                class="mt-3 text-xs font-black uppercase tracking-[0.08em] text-[var(--color-secondary)]"
+                                            >
+                                                {
+                                                    item.label[
+                                                        currentLanguage
+                                                    ]
+                                                }
+                                            </p>
+                                        </div>
+                                    </div>
+                                );
+                            })
+                    }
+                </div>
+
+                <a
+                    href={aboutHref}
+                    class="group/link inline-flex w-fit items-center gap-2 font-black text-[var(--color-secondary)] transition-colors hover:text-[var(--color-accent-dark)] dark:hover:text-[var(--color-accent)]"
+                    aria-label={`${t.viewProfile}: ${doctorProfile.displayName}`}
+                >
+                    {t.viewProfile}
+
+                    <ArrowRight
+                        size={18}
+                        stroke-width={2}
+                        class="transition-transform duration-200 group-hover/link:translate-x-1"
+                        aria-hidden="true"
+                    />
+                </a>
+            </div>
+        </article>
+    </div>
+</section>

@@ -1,4 +1,6 @@
 ---
+// src/components/home/ServicesPreview.astro
+
 import { ArrowRight, CircleAlert } from "@lucide/astro";
 
 import { getLanguageFromUrl } from "../../data/i18n/language";
@@ -14,47 +16,79 @@ interface Props {
 
 const { language } = Astro.props as Props;
 
-const currentLanguage = language ?? getLanguageFromUrl(Astro.url.pathname);
+const currentLanguage =
+    language ?? getLanguageFromUrl(Astro.url.pathname);
+
+const animationDelayClasses = [
+    "[animation-delay:0ms]",
+    "[animation-delay:80ms]",
+    "[animation-delay:160ms]",
+    "[animation-delay:240ms]",
+    "[animation-delay:320ms]",
+    "[animation-delay:400ms]",
+    "[animation-delay:480ms]",
+    "[animation-delay:560ms]",
+    "[animation-delay:640ms]",
+    "[animation-delay:720ms]",
+    "[animation-delay:800ms]",
+    "[animation-delay:880ms]",
+    "[animation-delay:960ms]",
+    "[animation-delay:1040ms]",
+    "[animation-delay:1120ms]",
+];
+
+const getAnimationDelayClass = (index: number) =>
+    animationDelayClasses[
+        Math.min(index, animationDelayClasses.length - 1)
+    ];
 
 const content = {
     en: {
         kicker: "How we can help",
-        title: "Care for common heart symptoms, risk factors, and ongoing conditions.",
+        title:
+            "Care for common heart symptoms, risk factors, and ongoing conditions.",
         description:
             "Patients often visit a cardiologist for chest discomfort, high blood pressure, palpitations, shortness of breath, abnormal test results, or long-term heart disease management.",
         viewAll: "View all cardiology services",
         viewService: "Explore service",
         href: "/services/",
-        note: "If you are experiencing a medical emergency, call 911 or go to the nearest emergency room.",
+        note:
+            "If you are experiencing a medical emergency, call 911 or go to the nearest emergency room.",
     },
+
     es: {
         kicker: "Cómo podemos ayudarle",
-        title: "Atención para síntomas cardíacos, factores de riesgo y condiciones continuas.",
+        title:
+            "Atención para síntomas cardíacos, factores de riesgo y condiciones continuas.",
         description:
             "Los pacientes suelen visitar a un cardiólogo por dolor en el pecho, presión alta, palpitaciones, falta de aire, resultados anormales o manejo continuo de enfermedades del corazón.",
         viewAll: "Ver todos los servicios de cardiología",
         viewService: "Explorar servicio",
         href: "/es/services/",
-        note: "Si está experimentando una emergencia médica, llame al 911 o vaya a la sala de emergencias más cercana.",
+        note:
+            "Si está experimentando una emergencia médica, llame al 911 o vaya a la sala de emergencias más cercana.",
     },
 };
 
 const t = content[currentLanguage];
 
-const services = cardiologyServices.map((service) => ({
-    ...service,
-    Icon: service.icon,
-}));
+const services = [...cardiologyServices].sort(
+    (a, b) => a.priority - b.priority,
+);
 ---
 
-<section class="relative isolate overflow-hidden section-padding">
+<section
+    class="section-padding relative isolate overflow-hidden"
+>
     <div
         class="pointer-events-none absolute right-[-4rem] top-[10%] z-[-1] aspect-square w-80 rounded-full bg-[color-mix(in_srgb,var(--color-secondary)_24%,transparent)] opacity-45 blur-[58px]"
+        aria-hidden="true"
     >
     </div>
 
     <div
         class="pointer-events-none absolute bottom-[6%] left-[-5rem] z-[-1] aspect-square w-72 rounded-full bg-[color-mix(in_srgb,var(--color-accent)_20%,transparent)] opacity-45 blur-[58px]"
+        aria-hidden="true"
     >
     </div>
 
@@ -62,7 +96,9 @@ const services = cardiologyServices.map((service) => ({
         <div
             class="relative z-[1] mb-[clamp(1.75rem,4vw,3rem)] grid gap-[0.85rem]"
         >
-            <span class="section-kicker">{t.kicker}</span>
+            <span class="section-kicker">
+                {t.kicker}
+            </span>
 
             <div class="grid grid-cols-1 gap-8">
                 <h2
@@ -71,7 +107,9 @@ const services = cardiologyServices.map((service) => ({
                     {t.title}
                 </h2>
 
-                <div class="grid justify-items-start gap-5 max-[680px]:justify-items-stretch">
+                <div
+                    class="grid justify-items-start gap-5 max-[680px]:justify-items-stretch"
+                >
                     <p
                         class="text-[clamp(1rem,1.35vw,1.15rem)] text-[var(--color-text-soft)]"
                     >
@@ -93,40 +131,72 @@ const services = cardiologyServices.map((service) => ({
         >
             {
                 services.map((service, index) => {
-                    const Icon = service.Icon;
+                    const Icon = service.icon;
 
                     return (
                         <a
-                            href={getCardiologyServiceHref(service, currentLanguage)}
-                            class="service-card-link medical-card group relative grid min-h-72 overflow-hidden content-between p-[clamp(1.25rem,2.4vw,1.65rem)] text-inherit max-[680px]:min-h-0"
-                            style={`--service-delay: ${index * 80}ms;`}
+                            href={getCardiologyServiceHref(
+                                service,
+                                currentLanguage,
+                            )}
+                            class:list={[
+                                "medical-card group relative grid min-h-72 content-between overflow-hidden p-[clamp(1.25rem,2.4vw,1.65rem)] text-inherit animate-fade-up max-[680px]:min-h-0",
+                                getAnimationDelayClass(index),
+                            ]}
                             aria-label={`${t.viewService}: ${service.title[currentLanguage]}`}
                         >
-                            <Icon
-                                class="pointer-events-none absolute -right-5 -top-5 h-32 w-32 text-[var(--color-secondary)] opacity-[0.08] transition duration-300 group-hover:scale-110 group-hover:opacity-[0.13] max-[680px]:h-28 max-[680px]:w-28"
-                                aria-hidden="true"
-                            />
-
                             <div
-                                class="pointer-events-none absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-[var(--color-secondary)] to-transparent opacity-0 transition duration-300 group-hover:opacity-70"
+                                class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,color-mix(in_srgb,var(--color-secondary)_22%,transparent),transparent_13rem),radial-gradient(circle_at_bottom_left,color-mix(in_srgb,var(--color-accent)_14%,transparent),transparent_12rem)] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
                                 aria-hidden="true"
                             >
                             </div>
 
-                            <div class="relative z-[1] mt-[3.3rem] grid gap-3 max-[680px]:mt-9">
-                                <h3 class="font-heading text-[clamp(1.65rem,2.6vw,2.35rem)] leading-[0.98] text-[var(--color-heading)]">
-                                    {service.shortTitle[currentLanguage]}
+                            <div
+                                class="pointer-events-none absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-[var(--color-secondary)] to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-70"
+                                aria-hidden="true"
+                            >
+                            </div>
+
+                            <Icon
+                                class="pointer-events-none absolute -right-5 -top-5 h-32 w-32 text-[var(--color-secondary)] opacity-[0.08] transition-[transform,opacity] duration-300 group-hover:scale-110 group-hover:opacity-[0.13] max-[680px]:h-28 max-[680px]:w-28"
+                                aria-hidden="true"
+                            />
+
+                            <div
+                                class="relative z-[1] mt-[3.3rem] grid gap-3 max-[680px]:mt-9"
+                            >
+                                <h3
+                                    class="font-heading text-[clamp(1.65rem,2.6vw,2.35rem)] leading-[0.98] text-[var(--color-heading)]"
+                                >
+                                    {
+                                        service.shortTitle[
+                                            currentLanguage
+                                        ]
+                                    }
                                 </h3>
 
-                                <p class="max-w-[30rem] text-[0.98rem] leading-relaxed text-[var(--color-text-soft)]">
-                                    {service.shortDescription[currentLanguage]}
+                                <p
+                                    class="max-w-[30rem] text-[0.98rem] leading-relaxed text-[var(--color-text-soft)]"
+                                >
+                                    {
+                                        service
+                                            .shortDescription[
+                                            currentLanguage
+                                        ]
+                                    }
                                 </p>
                             </div>
 
-                            <span class="relative z-[1] mt-[1.6rem] inline-flex w-fit items-center gap-[0.45rem] text-[0.82rem] font-black uppercase tracking-[0.12em] text-[var(--color-secondary)] transition-[color,transform] duration-200 group-hover:translate-x-1 group-hover:text-[var(--color-accent-dark)] dark:group-hover:text-[var(--color-accent)]">
+                            <span
+                                class="relative z-[1] mt-[1.6rem] inline-flex w-fit items-center gap-[0.45rem] text-[0.82rem] font-black uppercase tracking-[0.12em] text-[var(--color-secondary)] transition-[color,transform] duration-200 group-hover:translate-x-1 group-hover:text-[var(--color-accent-dark)] dark:group-hover:text-[var(--color-accent)]"
+                            >
                                 {t.viewService}
 
-                                <ArrowRight size={18} aria-hidden="true" />
+                                <ArrowRight
+                                    size={18}
+                                    stroke-width={2}
+                                    aria-hidden="true"
+                                />
                             </span>
                         </a>
                     );
@@ -137,66 +207,19 @@ const services = cardiologyServices.map((service) => ({
         <div
             class="relative z-[1] mt-[clamp(1.25rem,3vw,2rem)] flex items-start gap-[0.65rem] rounded-[1.25rem] border border-[color-mix(in_srgb,var(--color-accent)_30%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-accent-soft)_44%,transparent)] px-4 py-[0.85rem] text-[var(--color-accent-dark)] dark:bg-[color-mix(in_srgb,var(--color-accent-soft)_34%,transparent)] dark:text-[var(--color-accent)]"
         >
-            <span class="mt-[0.12rem] flex-none" aria-hidden="true">
-                <CircleAlert size={18} />
+            <span
+                class="mt-[0.12rem] flex-none"
+                aria-hidden="true"
+            >
+                <CircleAlert
+                    size={18}
+                    stroke-width={2}
+                />
             </span>
 
-            <p class="text-sm text-current">{t.note}</p>
+            <p class="text-sm text-current">
+                {t.note}
+            </p>
         </div>
     </div>
 </section>
-
-<style>
-    .service-card-link {
-        position: relative;
-        overflow: hidden;
-        animation: service-card-in 650ms var(--motion-smooth) both;
-        animation-delay: var(--service-delay);
-    }
-
-    .service-card-link::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        opacity: 0;
-        background:
-            radial-gradient(
-                circle at top right,
-                color-mix(in srgb, var(--color-secondary) 22%, transparent),
-                transparent 13rem
-            ),
-            radial-gradient(
-                circle at bottom left,
-                color-mix(in srgb, var(--color-accent) 14%, transparent),
-                transparent 12rem
-            );
-        transition: opacity 240ms var(--motion-smooth);
-        pointer-events: none;
-    }
-
-    .service-card-link:hover::before {
-        opacity: 1;
-    }
-
-    .service-card-link span[aria-hidden="true"] {
-        background:
-            radial-gradient(
-                circle at top,
-                color-mix(in srgb, var(--color-secondary) 18%, transparent),
-                transparent 4rem
-            ),
-            color-mix(in srgb, var(--color-surface) 76%, transparent);
-    }
-
-    @keyframes service-card-in {
-        from {
-            opacity: 0;
-            transform: translateY(1.15rem) scale(0.985);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-    }
-</style>

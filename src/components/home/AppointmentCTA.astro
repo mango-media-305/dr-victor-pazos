@@ -1,4 +1,6 @@
 ---
+// src/components/home/AppointmentCTA.astro
+
 import { Mail, Phone } from "@lucide/astro";
 
 import { contactInfo } from "../../data/site/contact";
@@ -11,7 +13,8 @@ interface Props {
 
 const { language } = Astro.props as Props;
 
-const currentLanguage = language ?? getLanguageFromUrl(Astro.url.pathname);
+const currentLanguage =
+    language ?? getLanguageFromUrl(Astro.url.pathname);
 
 const content = {
     en: {
@@ -36,10 +39,11 @@ const content = {
         submitLabel: "Submit Request",
         disclaimer: contactInfo.appointment.disclaimer.en,
         officeLabel: "Office location",
-        contactPriority: "Appointments are prioritized by phone.",
-        successMessage:
-            "Thank you. Your request has been received. Please call the office for the fastest response.",
+        contactPriority:
+            "Appointments are prioritized by phone.",
+        honeypotLabel: "Do not fill this out:",
     },
+
     es: {
         kicker: "Solicitar una cita",
         title: "¿Listo para comunicarse con la oficina?",
@@ -62,9 +66,9 @@ const content = {
         submitLabel: "Enviar solicitud",
         disclaimer: contactInfo.appointment.disclaimer.es,
         officeLabel: "Ubicación de la oficina",
-        contactPriority: "Las citas se priorizan por teléfono.",
-        successMessage:
-            "Gracias. Su solicitud ha sido recibida. Por favor llame a la oficina para una respuesta más rápida.",
+        contactPriority:
+            "Las citas se priorizan por teléfono.",
+        honeypotLabel: "No complete este campo:",
     },
 };
 
@@ -77,16 +81,18 @@ const formName =
 ---
 
 <section
-    class="relative isolate overflow-hidden section-padding"
     id="appointment"
+    class="section-padding relative isolate overflow-hidden"
 >
     <div
         class="pointer-events-none absolute right-[-5rem] top-[10%] z-[-1] aspect-square w-[22rem] rounded-full bg-[color-mix(in_srgb,var(--color-secondary)_22%,transparent)] opacity-45 blur-[58px]"
+        aria-hidden="true"
     >
     </div>
 
     <div
         class="pointer-events-none absolute bottom-[8%] left-[-5rem] z-[-1] aspect-square w-80 rounded-full bg-[color-mix(in_srgb,var(--color-heart)_14%,transparent)] opacity-45 blur-[58px]"
+        aria-hidden="true"
     >
     </div>
 
@@ -94,7 +100,9 @@ const formName =
         class="site-container relative z-[1] grid grid-cols-[minmax(0,0.9fr)_minmax(320px,0.8fr)] items-center gap-[clamp(2rem,6vw,5rem)] max-[1060px]:grid-cols-1"
     >
         <div class="grid content-center">
-            <span class="section-kicker">{t.kicker}</span>
+            <span class="section-kicker">
+                {t.kicker}
+            </span>
 
             <h2
                 class="text-[clamp(2.35rem,5.5vw,5rem)] text-[var(--color-heading)]"
@@ -112,21 +120,26 @@ const formName =
                 class="glow-panel mt-[1.65rem] grid gap-4 p-[clamp(1rem,2vw,1.3rem)]"
             >
                 <span
-                    class="text-[0.78rem] font-black uppercase text-(--color-secondary)"
+                    class="text-[0.78rem] font-black uppercase text-[var(--color-secondary)]"
                 >
                     {t.contactPriority}
                 </span>
 
-                <div class="grid grid-cols-2 gap-3 max-[720px]:grid-cols-1">
+                <div
+                    class="grid grid-cols-2 gap-3 max-[720px]:grid-cols-1"
+                >
                     <a
                         href={contactInfo.phone.href}
                         class="group flex items-center gap-3 rounded-[1.2rem] border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface)_78%,transparent)] p-[0.95rem] transition-[transform,border-color,background] duration-200 hover:-translate-y-0.5 hover:border-[color-mix(in_srgb,var(--color-secondary)_42%,var(--color-border))] hover:bg-[color-mix(in_srgb,var(--color-secondary-soft)_34%,transparent)]"
                     >
                         <span
-                            class="inline-grid size-12 flex-none place-items-center rounded-2xl bg-[color-mix(in_srgb,var(--color-secondary-soft)_58%,transparent)] text-[var(--color-secondary)]"
+                            class="inline-grid size-12 flex-none place-items-center rounded-2xl bg-[color-mix(in_srgb,var(--color-secondary-soft)_58%,transparent)] text-[var(--color-secondary)] transition-transform duration-200 group-hover:scale-105"
                             aria-hidden="true"
                         >
-                            <Phone size={22} />
+                            <Phone
+                                size={22}
+                                stroke-width={2}
+                            />
                         </span>
 
                         <span class="grid min-w-0 gap-0.5">
@@ -137,7 +150,7 @@ const formName =
                             </small>
 
                             <strong
-                                class="break-words text-[0.72rem] font-black text-[var(--color-heading)]"
+                                class="break-words text-[0.82rem] font-black text-[var(--color-heading)]"
                             >
                                 {contactInfo.phone.label}
                             </strong>
@@ -146,24 +159,27 @@ const formName =
 
                     <a
                         href={contactInfo.email.href}
-                        class="group flex items-center gap-3 rounded-[1.2rem] border border-(--color-border) bg-[color-mix(in_srgb,var(--color-surface)_78%,transparent)] p-[0.95rem] transition-[transform,border-color,background] duration-200 hover:-translate-y-0.5 hover:border-[color-mix(in_srgb,var(--color-secondary)_42%,var(--color-border))] hover:bg-[color-mix(in_srgb,var(--color-secondary-soft)_34%,transparent)]"
+                        class="group flex items-center gap-3 rounded-[1.2rem] border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface)_78%,transparent)] p-[0.95rem] transition-[transform,border-color,background] duration-200 hover:-translate-y-0.5 hover:border-[color-mix(in_srgb,var(--color-secondary)_42%,var(--color-border))] hover:bg-[color-mix(in_srgb,var(--color-secondary-soft)_34%,transparent)]"
                     >
                         <span
-                            class="inline-grid size-12 flex-none place-items-center rounded-2xl bg-[color-mix(in_srgb,var(--color-secondary-soft)_58%,transparent)] text-(--color-secondary)"
+                            class="inline-grid size-12 flex-none place-items-center rounded-2xl bg-[color-mix(in_srgb,var(--color-secondary-soft)_58%,transparent)] text-[var(--color-secondary)] transition-transform duration-200 group-hover:scale-105"
                             aria-hidden="true"
                         >
-                            <Mail size={22} />
+                            <Mail
+                                size={22}
+                                stroke-width={2}
+                            />
                         </span>
 
                         <span class="grid min-w-0 gap-0.5">
                             <small
-                                class="text-[0.74rem] font-black uppercase text-(--color-text-soft)"
+                                class="text-[0.74rem] font-black uppercase text-[var(--color-text-soft)]"
                             >
                                 {t.emailLabel}
                             </small>
 
                             <strong
-                                class="break-words text-[0.72rem] font-black text-(--color-heading)"
+                                class="break-all text-[0.82rem] font-black text-[var(--color-heading)]"
                             >
                                 {contactInfo.email.label}
                             </strong>
@@ -172,17 +188,15 @@ const formName =
                 </div>
             </div>
 
-            <div
-                class="medical-card mt-4 grid gap-[0.3rem] p-4"
-            >
+            <div class="medical-card mt-4 grid gap-[0.3rem] p-4">
                 <span
-                    class="text-[0.72rem] font-black uppercase text-(--color-text-soft)"
+                    class="text-[0.72rem] font-black uppercase text-[var(--color-text-soft)]"
                 >
                     {t.officeLabel}
                 </span>
 
                 <strong
-                    class="text-[0.98rem] text-(--color-heading)"
+                    class="text-[0.98rem] text-[var(--color-heading)]"
                 >
                     {contactInfo.address.display}
                 </strong>
@@ -191,24 +205,36 @@ const formName =
                     href={contactInfo.map.googleMapsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="w-fit text-[0.88rem] font-black text-[var(--color-secondary)]"
+                    class="w-fit text-[0.88rem] font-black text-[var(--color-secondary)] transition-colors hover:text-[var(--color-accent-dark)] dark:hover:text-[var(--color-accent)]"
                 >
-                    {contactInfo.map.directionsLabel[currentLanguage]}
+                    {
+                        contactInfo.map.directionsLabel[
+                            currentLanguage
+                        ]
+                    }
                 </a>
             </div>
         </div>
 
         <div
-            class="appointment-form-panel glass-panel-strong relative grid gap-4 overflow-hidden p-[clamp(1rem,2.4vw,1.5rem)] max-[720px]:rounded-[1.65rem]"
+            class="glass-panel-strong relative grid gap-4 overflow-hidden p-[clamp(1rem,2.4vw,1.5rem)] max-[720px]:rounded-[1.65rem]"
         >
+            <div
+                class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,color-mix(in_srgb,var(--color-secondary)_18%,transparent),transparent_16rem),radial-gradient(circle_at_bottom_left,color-mix(in_srgb,var(--color-accent)_14%,transparent),transparent_14rem)]"
+                aria-hidden="true"
+            >
+            </div>
+
             <div class="relative z-[1] grid gap-[0.35rem]">
-                <span
+                <h3
                     class="font-heading text-[clamp(1.65rem,3vw,2.35rem)] font-extrabold text-[var(--color-heading)]"
                 >
                     {t.formTitle}
-                </span>
+                </h3>
 
-                <p class="text-[0.95rem]  text-[var(--color-text-soft)]">
+                <p
+                    class="text-[0.95rem] text-[var(--color-text-soft)]"
+                >
                     {t.formDescription}
                 </p>
             </div>
@@ -220,16 +246,26 @@ const formName =
                 netlify-honeypot="bot-field"
                 class="relative z-[1] grid gap-[0.85rem]"
             >
-                <input type="hidden" name="form-name" value={formName} />
+                <input
+                    type="hidden"
+                    name="form-name"
+                    value={formName}
+                />
 
                 <p class="hidden">
                     <label>
-                        Do not fill this out:
-                        <input name="bot-field" />
+                        {t.honeypotLabel}
+                        <input
+                            name="bot-field"
+                            tabindex="-1"
+                            autocomplete="off"
+                        />
                     </label>
                 </p>
 
-                <div class="grid grid-cols-2 gap-[0.85rem] max-[720px]:grid-cols-1">
+                <div
+                    class="grid grid-cols-2 gap-[0.85rem] max-[720px]:grid-cols-1"
+                >
                     <label class="grid gap-[0.4rem]">
                         <span
                             class="text-[0.8rem] font-black uppercase text-[var(--color-heading)]"
@@ -259,6 +295,7 @@ const formName =
                             name="phone"
                             placeholder={t.phonePlaceholder}
                             autocomplete="tel"
+                            inputmode="tel"
                             required
                             class="rounded-2xl bg-[color-mix(in_srgb,var(--color-surface)_82%,transparent)]"
                         />
@@ -297,7 +334,11 @@ const formName =
                     ></textarea>
                 </label>
 
-                <input type="hidden" name="language" value={currentLanguage} />
+                <input
+                    type="hidden"
+                    name="language"
+                    value={currentLanguage}
+                />
 
                 <input
                     type="hidden"
@@ -305,34 +346,19 @@ const formName =
                     value="Homepage Appointment CTA"
                 />
 
-                <button type="submit" class="btn btn-primary mt-1 w-full">
+                <button
+                    type="submit"
+                    class="btn btn-primary mt-1 w-full"
+                >
                     {t.submitLabel}
                 </button>
 
-                <p class="text-[0.82rem] text-[var(--color-text-soft)]">
+                <p
+                    class="text-[0.82rem] text-[var(--color-text-soft)]"
+                >
                     {t.disclaimer}
                 </p>
             </form>
         </div>
     </div>
 </section>
-
-<style>
-    .appointment-form-panel::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background:
-            radial-gradient(
-                circle at top right,
-                color-mix(in srgb, var(--color-secondary) 18%, transparent),
-                transparent 16rem
-            ),
-            radial-gradient(
-                circle at bottom left,
-                color-mix(in srgb, var(--color-accent) 14%, transparent),
-                transparent 14rem
-            );
-        pointer-events: none;
-    }
-</style>

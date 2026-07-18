@@ -1,5 +1,5 @@
 ---
-// src/components/pages/services/ServiceDetailPage.astro
+// src/components/services/ServiceDetailPage.astro
 
 import MainLayout from "../../layouts/MainLayout.astro";
 import { contactInfo } from "../../data/site/contact";
@@ -22,25 +22,43 @@ interface Props {
 const { service, language } = Astro.props as Props;
 
 const currentLanguage = language;
-const Icon = service.icon;
-
 const serviceImages = service.detailImages.slice(0, 3);
-const slideDuration = 15;
-
 const relatedServices = getRelatedCardiologyServices(service.id, 3);
+
+const animationDelayClasses = [
+    "[animation-delay:0ms]",
+    "[animation-delay:80ms]",
+    "[animation-delay:160ms]",
+    "[animation-delay:240ms]",
+    "[animation-delay:320ms]",
+    "[animation-delay:400ms]",
+    "[animation-delay:480ms]",
+    "[animation-delay:560ms]",
+    "[animation-delay:640ms]",
+    "[animation-delay:720ms]",
+];
+
+const getAnimationDelayClass = (index: number) =>
+    animationDelayClasses[
+        Math.min(index, animationDelayClasses.length - 1)
+    ];
 
 const content = {
     en: {
         servicesLabel: "Services",
         overviewLabel: "Service overview",
         reasonsKicker: "Reasons to seek care",
-        reasonsTitle: "Common reasons patients request this cardiology service.",
+        reasonsTitle:
+            "Common reasons patients request this cardiology service.",
         expectKicker: "What to expect",
-        expectTitle: "A clear visit process focused on your heart health.",
+        expectTitle:
+            "A clear visit process focused on your heart health.",
         faqKicker: "Service FAQ",
-        faqTitle: "Questions patients often ask about this service.",
+        faqTitle:
+            "Questions patients often ask about this service.",
         relatedKicker: "Related services",
-        relatedTitle: "Other cardiology services that may be helpful.",
+        relatedTitle:
+            "Other cardiology services that may be helpful.",
         exploreService: "Explore service",
         callLabel: contactInfo.appointment.primaryCta.en,
         directionsLabel: contactInfo.map.directionsLabel.en,
@@ -50,24 +68,25 @@ const content = {
             "Call the office to request an appointment or ask whether this type of cardiology evaluation may be appropriate for your concern.",
         emergencyNote:
             "If you are experiencing severe chest pain, sudden shortness of breath, fainting, stroke symptoms, or a medical emergency, call 911 immediately.",
-        officeLabel: "Hialeah cardiology office",
-        officeDescription:
-            "Serving patients from Hialeah, Miami, Miami Lakes, Doral, Hialeah Gardens, Miami Gardens, and nearby Miami-Dade communities.",
-        backToServices: "Back to all services",
         backHref: "/services/",
-        floatingAlt: `${service.title.en} with Victor Pazos, MD in Hialeah, FL`,
+        galleryLabel: `${service.shortTitle.en} image gallery`,
+        showImageLabel: "Show image",
     },
     es: {
         servicesLabel: "Servicios",
         overviewLabel: "Resumen del servicio",
         reasonsKicker: "Razones para buscar atención",
-        reasonsTitle: "Razones comunes por las que los pacientes solicitan este servicio cardiológico.",
+        reasonsTitle:
+            "Razones comunes por las que los pacientes solicitan este servicio cardiológico.",
         expectKicker: "Qué esperar",
-        expectTitle: "Un proceso claro enfocado en la salud de su corazón.",
+        expectTitle:
+            "Un proceso claro enfocado en la salud de su corazón.",
         faqKicker: "Preguntas frecuentes",
-        faqTitle: "Preguntas que los pacientes suelen hacer sobre este servicio.",
+        faqTitle:
+            "Preguntas que los pacientes suelen hacer sobre este servicio.",
         relatedKicker: "Servicios relacionados",
-        relatedTitle: "Otros servicios de cardiología que pueden ser útiles.",
+        relatedTitle:
+            "Otros servicios de cardiología que pueden ser útiles.",
         exploreService: "Explorar servicio",
         callLabel: contactInfo.appointment.primaryCta.es,
         directionsLabel: contactInfo.map.directionsLabel.es,
@@ -77,12 +96,9 @@ const content = {
             "Llame a la oficina para solicitar una cita o preguntar si este tipo de evaluación cardiológica puede ser apropiada para su preocupación.",
         emergencyNote:
             "Si está experimentando dolor fuerte en el pecho, falta de aire repentina, desmayo, síntomas de derrame cerebral o una emergencia médica, llame al 911 inmediatamente.",
-        officeLabel: "Oficina de cardiología en Hialeah",
-        officeDescription:
-            "Atendiendo pacientes de Hialeah, Miami, Miami Lakes, Doral, Hialeah Gardens, Miami Gardens y comunidades cercanas de Miami-Dade.",
-        backToServices: "Volver a todos los servicios",
         backHref: "/es/services/",
-        floatingAlt: `${service.title.es} con Victor Pazos, MD en Hialeah, FL`,
+        galleryLabel: `Galería de imágenes de ${service.shortTitle.es}`,
+        showImageLabel: "Mostrar imagen",
     },
 };
 
@@ -145,7 +161,9 @@ const serviceSchema = {
         faqSchema,
     ]}
 >
-    <section class="relative isolate overflow-hidden section-padding-lg medical-grid-bg">
+    <section
+        class="medical-grid-bg section-padding-lg relative isolate overflow-hidden"
+    >
         <div
             class="pointer-events-none absolute -left-20 top-[12%] -z-10 aspect-square w-88 rounded-full bg-[color-mix(in_srgb,var(--color-secondary)_24%,transparent)] opacity-45 blur-[58px]"
             aria-hidden="true"
@@ -158,10 +176,17 @@ const serviceSchema = {
         >
         </div>
 
-        <div class="site-container relative z-10 grid items-center gap-[clamp(2rem,6vw,5rem)] lg:grid-cols-2">
+        <div
+            class="site-container relative z-10 grid items-center gap-[clamp(2rem,6vw,5rem)] lg:grid-cols-2"
+        >
             <div class="grid content-center">
-                <nav class="mb-6 flex flex-wrap items-center gap-2 text-sm font-black text-(--color-text-soft)">
-                    <a href={t.backHref} class="transition-colors hover:text-(--color-secondary)">
+                <nav
+                    class="mb-6 flex flex-wrap items-center gap-2 text-sm font-black text-(--color-text-soft)"
+                >
+                    <a
+                        href={t.backHref}
+                        class="transition-colors hover:text-(--color-secondary)"
+                    >
                         {t.servicesLabel}
                     </a>
 
@@ -172,18 +197,29 @@ const serviceSchema = {
                     </span>
                 </nav>
 
-                <span class="section-kicker">{service.shortTitle[currentLanguage]}</span>
+                <span class="section-kicker">
+                    {service.shortTitle[currentLanguage]}
+                </span>
 
-                <h1 class="max-w-245 text-7xl text-(--color-heading) max-[440px]:text-[clamp(2.75rem,15vw,4.25rem)]">
+                <h1
+                    class="max-w-245 text-7xl text-(--color-heading) max-[440px]:text-[clamp(2.75rem,15vw,4.25rem)]"
+                >
                     {service.title[currentLanguage]}
                 </h1>
 
-                <p class="mt-5 max-w-[760px] text-[clamp(1.05rem,1.5vw,1.22rem)] text-(--color-text-soft)">
+                <p
+                    class="mt-5 max-w-[760px] text-[clamp(1.05rem,1.5vw,1.22rem)] text-(--color-text-soft)"
+                >
                     {service.description[currentLanguage]}
                 </p>
 
-                <div class="mt-8 flex flex-wrap gap-3 max-md:grid max-md:w-full">
-                    <a href={contactInfo.phone.href} class="btn btn-primary">
+                <div
+                    class="mt-8 flex flex-wrap gap-3 max-md:grid max-md:w-full"
+                >
+                    <a
+                        href={contactInfo.phone.href}
+                        class="btn btn-primary"
+                    >
                         {t.callLabel}
                     </a>
 
@@ -205,18 +241,32 @@ const serviceSchema = {
                 >
                 </div>
 
-                <div class="service-detail-slider relative aspect-4/5 overflow-hidden rounded-4xl border border-[color-mix(in_srgb,var(--color-secondary)_28%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-surface)_76%,transparent)] shadow-(--shadow-card)">
+                <div
+                    class="relative aspect-4/5 overflow-hidden rounded-4xl border border-[color-mix(in_srgb,var(--color-secondary)_28%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-surface)_76%,transparent)] shadow-(--shadow-card)"
+                    data-service-slider
+                    aria-label={t.galleryLabel}
+                >
                     {
                         serviceImages.map((image, index) => (
                             <figure
-                                class="service-detail-slide absolute inset-0"
-                                style={`--slide-delay: ${index * 5}s; --slide-duration: ${slideDuration}s;`}
+                                class:list={[
+                                    "absolute inset-0 transition-[opacity,transform] duration-700 ease-in-out motion-reduce:transition-none",
+                                    index === 0
+                                        ? "z-[1] scale-100 opacity-100"
+                                        : "z-0 scale-105 opacity-0",
+                                ]}
+                                data-service-slide
+                                aria-hidden={
+                                    index === 0 ? "false" : "true"
+                                }
                             >
                                 <img
                                     src={image.src}
                                     alt={image.alt[currentLanguage]}
                                     class="h-full w-full object-cover"
-                                    loading={index === 0 ? "eager" : "lazy"}
+                                    loading={
+                                        index === 0 ? "eager" : "lazy"
+                                    }
                                     decoding="async"
                                 />
                             </figure>
@@ -224,43 +274,73 @@ const serviceSchema = {
                     }
 
                     <div
-                        class="absolute inset-0 bg-[radial-gradient(circle_at_50%_28%,transparent,color-mix(in_srgb,var(--color-bg)_18%,transparent)_72%)]"
+                        class="pointer-events-none absolute inset-0 z-[2] bg-[radial-gradient(circle_at_50%_28%,transparent,color-mix(in_srgb,var(--color-bg)_18%,transparent)_72%)]"
                         aria-hidden="true"
                     >
                     </div>
 
-                    <div class="absolute left-4 top-4 z-10 flex gap-2" aria-hidden="true">
-                        {
-                            serviceImages.map((_, index) => (
-                                <span
-                                    class="service-detail-slider-dot block h-1.5 w-8 rounded-full bg-white/45"
-                                    style={`--dot-delay: ${index * 5}s; --slide-duration: ${slideDuration}s;`}
-                                />
-                            ))
-                        }
-                    </div>
+                    {
+                        serviceImages.length > 1 && (
+                            <div
+                                class="absolute left-4 top-4 z-10 flex gap-2"
+                                role="tablist"
+                                aria-label={t.galleryLabel}
+                            >
+                                {serviceImages.map((_, index) => (
+                                    <button
+                                        type="button"
+                                        class:list={[
+                                            "block h-1.5 w-8 origin-left rounded-full transition-[transform,opacity,background-color] duration-300 motion-reduce:transition-none",
+                                            index === 0
+                                                ? "scale-x-100 bg-white opacity-100"
+                                                : "scale-x-50 bg-white/45 opacity-60",
+                                        ]}
+                                        data-service-dot
+                                        role="tab"
+                                        aria-label={`${t.showImageLabel} ${index + 1}`}
+                                        aria-selected={
+                                            index === 0
+                                                ? "true"
+                                                : "false"
+                                        }
+                                        tabindex={
+                                            index === 0 ? 0 : -1
+                                        }
+                                    />
+                                ))}
+                            </div>
+                        )
+                    }
                 </div>
             </div>
         </div>
     </section>
 
     <section class="section-padding-sm">
-        <div class="site-container glow-panel grid items-start gap-[clamp(1.25rem,4vw,3rem)] p-[clamp(1.25rem,3vw,2rem)] max-md:rounded-[1.65rem]">
+        <div
+            class="site-container glow-panel grid items-start gap-[clamp(1.25rem,4vw,3rem)] p-[clamp(1.25rem,3vw,2rem)] max-md:rounded-[1.65rem]"
+        >
             <div>
                 <span class="section-kicker">{t.overviewLabel}</span>
 
-                <h2 class="max-w-[640px] text-[clamp(2.1rem,4.8vw,4.4rem)] text-[var(--color-heading)]">
+                <h2
+                    class="max-w-[640px] text-[clamp(2.1rem,4.8vw,4.4rem)] text-[var(--color-heading)]"
+                >
                     {service.shortTitle[currentLanguage]}
                 </h2>
             </div>
 
-            <p class="text-[clamp(1rem,1.35vw,1.12rem)] text-[var(--color-text-soft)]">
+            <p
+                class="text-[clamp(1rem,1.35vw,1.12rem)] text-[var(--color-text-soft)]"
+            >
                 {service.overview[currentLanguage]}
             </p>
         </div>
     </section>
 
-    <section class="relative isolate overflow-hidden section-padding">
+    <section
+        class="section-padding relative isolate overflow-hidden"
+    >
         <div
             class="pointer-events-none absolute -right-20 top-[10%] -z-10 aspect-square w-[22rem] rounded-full bg-[color-mix(in_srgb,var(--color-secondary)_22%,transparent)] opacity-45 blur-[58px]"
             aria-hidden="true"
@@ -268,86 +348,143 @@ const serviceSchema = {
         </div>
 
         <div class="site-container">
-            <div class="mb-[clamp(1.75rem,4vw,3rem)] grid gap-[clamp(1rem,4vw,3rem)]">
+            <div
+                class="mb-[clamp(1.75rem,4vw,3rem)] grid gap-[clamp(1rem,4vw,3rem)]"
+            >
                 <div>
-                    <span class="section-kicker">{t.reasonsKicker}</span>
+                    <span class="section-kicker">
+                        {t.reasonsKicker}
+                    </span>
 
-                    <h2 class="text-[clamp(2.25rem,5vw,4.8rem)] text-[var(--color-heading)]">
+                    <h2
+                        class="text-[clamp(2.25rem,5vw,4.8rem)] text-[var(--color-heading)]"
+                    >
                         {t.reasonsTitle}
                     </h2>
                 </div>
 
-                <p class="text-[clamp(1rem,1.35vw,1.12rem)] text-[var(--color-text-soft)]">
+                <p
+                    class="text-[clamp(1rem,1.35vw,1.12rem)] text-[var(--color-text-soft)]"
+                >
                     {service.shortDescription[currentLanguage]}
                 </p>
             </div>
 
             <div class="grid gap-4 md:grid-cols-3">
                 {
-                    service.reasonsToSeekCare.map((item, index) => (
-                        <article
-                            class="medical-card group relative min-h-64 overflow-hidden p-[clamp(1rem,2vw,1.25rem)] animate-fade-up max-md:min-h-0"
-                            style={`animation-delay: ${index * 80}ms;`}
-                        >
-                            <div
-                                class="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                                style="background: radial-gradient(circle at top right, color-mix(in srgb, var(--color-heart) 16%, transparent), transparent 12rem), radial-gradient(circle at bottom left, color-mix(in srgb, var(--color-secondary) 14%, transparent), transparent 12rem);"
-                                aria-hidden="true"
+                    service.reasonsToSeekCare.map(
+                        (item, index) => (
+                            <article
+                                class:list={[
+                                    "medical-card group relative min-h-64 overflow-hidden p-[clamp(1rem,2vw,1.25rem)] animate-fade-up max-md:min-h-0",
+                                    getAnimationDelayClass(index),
+                                ]}
                             >
-                            </div>
+                                <div
+                                    class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,color-mix(in_srgb,var(--color-heart)_16%,transparent),transparent_12rem),radial-gradient(circle_at_bottom_left,color-mix(in_srgb,var(--color-secondary)_14%,transparent),transparent_12rem)] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                                    aria-hidden="true"
+                                >
+                                </div>
 
-                            <div class="relative z-10">
-                                <span class="font-heading text-4xl font-extrabold text-[color-mix(in_srgb,var(--color-accent)_76%,var(--color-text-muted))] opacity-60">
-                                    {String(index + 1).padStart(2, "0")}
-                                </span>
+                                <div class="relative z-10">
+                                    <span
+                                        class="font-heading text-4xl font-extrabold text-[color-mix(in_srgb,var(--color-accent)_76%,var(--color-text-muted))] opacity-60"
+                                    >
+                                        {
+                                            String(index + 1).padStart(
+                                                2,
+                                                "0",
+                                            )
+                                        }
+                                    </span>
 
-                                <h3 class="mt-8 font-heading text-[clamp(1.45rem,2.4vw,2.15rem)] text-[var(--color-heading)]">
-                                    {item.title[currentLanguage]}
-                                </h3>
+                                    <h3
+                                        class="mt-8 font-heading text-[clamp(1.45rem,2.4vw,2.15rem)] text-[var(--color-heading)]"
+                                    >
+                                        {
+                                            item.title[
+                                                currentLanguage
+                                            ]
+                                        }
+                                    </h3>
 
-                                <p class="mt-3 text-base text-[var(--color-text-soft)]">
-                                    {item.description[currentLanguage]}
-                                </p>
-                            </div>
-                        </article>
-                    ))
+                                    <p
+                                        class="mt-3 text-base text-[var(--color-text-soft)]"
+                                    >
+                                        {
+                                            item.description[
+                                                currentLanguage
+                                            ]
+                                        }
+                                    </p>
+                                </div>
+                            </article>
+                        ),
+                    )
                 }
             </div>
 
-            <p class="mt-[clamp(1.25rem,3vw,2rem)] rounded-[1.25rem] border border-[color-mix(in_srgb,var(--color-heart)_28%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-heart-soft)_38%,transparent)] p-4 text-sm font-extrabold text-[var(--color-heart)]">
+            <p
+                class="mt-[clamp(1.25rem,3vw,2rem)] rounded-[1.25rem] border border-[color-mix(in_srgb,var(--color-heart)_28%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-heart-soft)_38%,transparent)] p-4 text-sm font-extrabold text-[var(--color-heart)]"
+            >
                 {t.emergencyNote}
             </p>
         </div>
     </section>
 
     <section class="section-padding">
-        <div class="site-container grid gap-[clamp(2rem,6vw,5rem)] lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
+        <div
+            class="site-container grid gap-[clamp(2rem,6vw,5rem)] lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]"
+        >
             <div class="lg:sticky lg:top-28 lg:self-start">
-                <span class="section-kicker">{t.expectKicker}</span>
+                <span class="section-kicker">
+                    {t.expectKicker}
+                </span>
 
-                <h2 class="max-w-[720px] text-[clamp(2.25rem,5vw,4.8rem)] text-[var(--color-heading)]">
+                <h2
+                    class="max-w-[720px] text-[clamp(2.25rem,5vw,4.8rem)] text-[var(--color-heading)]"
+                >
                     {t.expectTitle}
                 </h2>
             </div>
 
-            <div class="relative grid gap-4 before:absolute before:bottom-4 before:left-6 before:top-4 before:w-px before:bg-[linear-gradient(180deg,transparent,color-mix(in_srgb,var(--color-secondary)_38%,var(--color-border)),color-mix(in_srgb,var(--color-accent)_34%,var(--color-border)),transparent)] before:content-['']">
+            <div
+                class="relative grid gap-4 before:absolute before:bottom-4 before:left-6 before:top-4 before:w-px before:bg-[linear-gradient(180deg,transparent,color-mix(in_srgb,var(--color-secondary)_38%,var(--color-border)),color-mix(in_srgb,var(--color-accent)_34%,var(--color-border)),transparent)] before:content-['']"
+            >
                 {
                     service.whatToExpect.map((item, index) => (
                         <article
-                            class="medical-card relative grid grid-cols-[auto_1fr] gap-4 overflow-hidden p-[clamp(1rem,2vw,1.2rem)] animate-fade-up"
-                            style={`animation-delay: ${index * 80}ms;`}
+                            class:list={[
+                                "medical-card relative grid grid-cols-[auto_1fr] gap-4 overflow-hidden p-[clamp(1rem,2vw,1.2rem)] animate-fade-up",
+                                getAnimationDelayClass(index),
+                            ]}
                         >
-                            <span class="relative z-10 grid size-12 place-items-center rounded-2xl border border-[color-mix(in_srgb,var(--color-secondary)_34%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-surface)_86%,transparent)] font-heading text-lg font-extrabold text-[var(--color-secondary)] shadow-[0_14px_34px_rgba(15,23,42,0.07)]">
-                                {String(index + 1).padStart(2, "0")}
+                            <span
+                                class="relative z-10 grid size-12 place-items-center rounded-2xl border border-[color-mix(in_srgb,var(--color-secondary)_34%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-surface)_86%,transparent)] font-heading text-lg font-extrabold text-[var(--color-secondary)] shadow-[0_14px_34px_rgba(15,23,42,0.07)]"
+                            >
+                                {
+                                    String(index + 1).padStart(
+                                        2,
+                                        "0",
+                                    )
+                                }
                             </span>
 
                             <div class="relative z-10">
-                                <h3 class="font-heading text-[clamp(1.35rem,2vw,1.85rem)] text-[var(--color-heading)]">
+                                <h3
+                                    class="font-heading text-[clamp(1.35rem,2vw,1.85rem)] text-[var(--color-heading)]"
+                                >
                                     {item.title[currentLanguage]}
                                 </h3>
 
-                                <p class="mt-2 text-[0.96rem] text-[var(--color-text-soft)]">
-                                    {item.description[currentLanguage]}
+                                <p
+                                    class="mt-2 text-[0.96rem] text-[var(--color-text-soft)]"
+                                >
+                                    {
+                                        item.description[
+                                            currentLanguage
+                                        ]
+                                    }
                                 </p>
                             </div>
                         </article>
@@ -357,18 +494,24 @@ const serviceSchema = {
         </div>
     </section>
 
-    <section class="relative isolate overflow-hidden section-padding">
+    <section
+        class="section-padding relative isolate overflow-hidden"
+    >
         <div
             class="pointer-events-none absolute -left-20 bottom-[8%] -z-10 aspect-square w-[20rem] rounded-full bg-[color-mix(in_srgb,var(--color-heart)_14%,transparent)] opacity-45 blur-[58px]"
             aria-hidden="true"
         >
         </div>
 
-        <div class="site-container grid gap-[clamp(2rem,6vw,5rem)] lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)]">
+        <div
+            class="site-container grid gap-[clamp(2rem,6vw,5rem)] lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)]"
+        >
             <div class="lg:sticky lg:top-28 lg:self-start">
                 <span class="section-kicker">{t.faqKicker}</span>
 
-                <h2 class="max-w-[720px] text-[clamp(2.25rem,5vw,4.8rem)] text-[var(--color-heading)]">
+                <h2
+                    class="max-w-[720px] text-[clamp(2.25rem,5vw,4.8rem)] text-[var(--color-heading)]"
+                >
                     {t.faqTitle}
                 </h2>
             </div>
@@ -377,16 +520,24 @@ const serviceSchema = {
                 {
                     service.faqs.map((faq, index) => (
                         <details
-                            class="medical-card group overflow-hidden p-0 animate-fade-up"
-                            style={`animation-delay: ${index * 80}ms;`}
+                            class:list={[
+                                "medical-card group overflow-hidden p-0 animate-fade-up",
+                                getAnimationDelayClass(index),
+                            ]}
                             open={index === 0}
                         >
-                            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 p-[clamp(1rem,2vw,1.2rem)] [&::-webkit-details-marker]:hidden">
-                                <span class="font-heading text-[clamp(1.25rem,2vw,1.65rem)] font-extrabold text-[var(--color-heading)]">
+                            <summary
+                                class="flex cursor-pointer list-none items-center justify-between gap-4 p-[clamp(1rem,2vw,1.2rem)] [&::-webkit-details-marker]:hidden"
+                            >
+                                <span
+                                    class="font-heading text-[clamp(1.25rem,2vw,1.65rem)] font-extrabold text-[var(--color-heading)]"
+                                >
                                     {faq.question[currentLanguage]}
                                 </span>
 
-                                <span class="grid size-10 shrink-0 place-items-center rounded-full border border-[color-mix(in_srgb,var(--color-secondary)_28%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-surface)_78%,transparent)] text-[var(--color-secondary)] transition-transform duration-300 group-open:rotate-45 group-open:text-[var(--color-heart)]">
+                                <span
+                                    class="grid size-10 shrink-0 place-items-center rounded-full border border-[color-mix(in_srgb,var(--color-secondary)_28%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-surface)_78%,transparent)] text-[var(--color-secondary)] transition-transform duration-300 group-open:rotate-45 group-open:text-[var(--color-heart)]"
+                                >
                                     <svg
                                         viewBox="0 0 24 24"
                                         width="18"
@@ -398,13 +549,15 @@ const serviceSchema = {
                                         stroke-linejoin="round"
                                         aria-hidden="true"
                                     >
-                                        <path d="M12 5v14" />
-                                        <path d="M5 12h14" />
+                                        <path d="M12 5v14"></path>
+                                        <path d="M5 12h14"></path>
                                     </svg>
                                 </span>
                             </summary>
 
-                            <p class="px-[clamp(1rem,2vw,1.2rem)] pb-[clamp(1rem,2vw,1.2rem)] text-[0.98rem] text-[var(--color-text-soft)]">
+                            <p
+                                class="px-[clamp(1rem,2vw,1.2rem)] pb-[clamp(1rem,2vw,1.2rem)] text-[0.98rem] text-[var(--color-text-soft)]"
+                            >
                                 {faq.answer[currentLanguage]}
                             </p>
                         </details>
@@ -416,20 +569,31 @@ const serviceSchema = {
 
     <section class="section-padding-sm">
         <div class="site-container">
-            <div class="glow-panel grid items-center gap-5 p-[clamp(1.25rem,3vw,2rem)] max-md:rounded-[1.65rem] lg:grid-cols-[1fr_auto]">
+            <div
+                class="glow-panel grid items-center gap-5 p-[clamp(1.25rem,3vw,2rem)] max-md:rounded-[1.65rem] lg:grid-cols-[1fr_auto]"
+            >
                 <div>
-                    <span class="section-kicker">{t.appointmentKicker}</span>
+                    <span class="section-kicker">
+                        {t.appointmentKicker}
+                    </span>
 
-                    <h2 class="text-[clamp(2rem,4vw,3.75rem)] text-[var(--color-heading)]">
+                    <h2
+                        class="text-[clamp(2rem,4vw,3.75rem)] text-[var(--color-heading)]"
+                    >
                         {t.appointmentTitle}
                     </h2>
 
-                    <p class="mt-3 max-w-[720px] text-base text-[var(--color-text-soft)]">
+                    <p
+                        class="mt-3 max-w-[720px] text-base text-[var(--color-text-soft)]"
+                    >
                         {t.appointmentDescription}
                     </p>
                 </div>
 
-                <a href={contactInfo.phone.href} class="btn btn-primary max-lg:w-fit max-md:w-full">
+                <a
+                    href={contactInfo.phone.href}
+                    class="btn btn-primary max-lg:w-fit max-md:w-full"
+                >
                     {t.callLabel}
                 </a>
             </div>
@@ -438,10 +602,16 @@ const serviceSchema = {
 
     <section class="section-padding">
         <div class="site-container">
-            <div class="mb-[clamp(1.75rem,4vw,3rem)] max-w-[780px]">
-                <span class="section-kicker">{t.relatedKicker}</span>
+            <div
+                class="mb-[clamp(1.75rem,4vw,3rem)] max-w-[780px]"
+            >
+                <span class="section-kicker">
+                    {t.relatedKicker}
+                </span>
 
-                <h2 class="text-[clamp(2.25rem,5vw,4.8rem)] text-[var(--color-heading)]">
+                <h2
+                    class="text-[clamp(2.25rem,5vw,4.8rem)] text-[var(--color-heading)]"
+                >
                     {t.relatedTitle}
                 </h2>
             </div>
@@ -453,32 +623,52 @@ const serviceSchema = {
 
                         return (
                             <a
-                                href={getCardiologyServiceHref(related, currentLanguage)}
-                                class="medical-card group relative overflow-hidden p-[clamp(1rem,2vw,1.25rem)] text-inherit animate-fade-up"
-                                style={`animation-delay: ${index * 80}ms;`}
+                                href={getCardiologyServiceHref(
+                                    related,
+                                    currentLanguage,
+                                )}
+                                class:list={[
+                                    "medical-card group relative overflow-hidden p-[clamp(1rem,2vw,1.25rem)] text-inherit animate-fade-up",
+                                    getAnimationDelayClass(index),
+                                ]}
                                 aria-label={`${t.exploreService}: ${related.title[currentLanguage]}`}
                             >
                                 <div
-                                    class="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                                    style="background: radial-gradient(circle at top right, color-mix(in srgb, var(--color-secondary) 18%, transparent), transparent 12rem);"
+                                    class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,color-mix(in_srgb,var(--color-secondary)_18%,transparent),transparent_12rem)] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
                                     aria-hidden="true"
                                 >
                                 </div>
 
                                 <div class="relative z-10">
-                                    <span class="grid size-12 p-2 place-items-center rounded-2xl border border-[color-mix(in_srgb,var(--color-secondary)_32%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-surface)_76%,transparent)] text-[var(--color-secondary)]">
+                                    <span
+                                        class="grid size-12 place-items-center rounded-2xl border border-[color-mix(in_srgb,var(--color-secondary)_32%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-surface)_76%,transparent)] p-2 text-[var(--color-secondary)]"
+                                    >
                                         <RelatedIcon />
                                     </span>
 
-                                    <h3 class="mt-6 font-heading text-[clamp(1.35rem,2vw,1.85rem)] text-[var(--color-heading)]">
-                                        {related.title[currentLanguage]}
+                                    <h3
+                                        class="mt-6 font-heading text-[clamp(1.35rem,2vw,1.85rem)] text-[var(--color-heading)]"
+                                    >
+                                        {
+                                            related.title[
+                                                currentLanguage
+                                            ]
+                                        }
                                     </h3>
 
-                                    <p class="mt-3 text-sm  text-[var(--color-text-soft)]">
-                                        {related.shortDescription[currentLanguage]}
+                                    <p
+                                        class="mt-3 text-sm text-[var(--color-text-soft)]"
+                                    >
+                                        {
+                                            related.shortDescription[
+                                                currentLanguage
+                                            ]
+                                        }
                                     </p>
 
-                                    <span class="mt-5 inline-flex w-fit items-center gap-2 text-sm font-black text-[var(--color-secondary)] transition-transform duration-300 group-hover:translate-x-1">
+                                    <span
+                                        class="mt-5 inline-flex w-fit items-center gap-2 text-sm font-black text-[var(--color-secondary)] transition-transform duration-300 group-hover:translate-x-1"
+                                    >
                                         {t.exploreService}
 
                                         <svg
@@ -492,8 +682,10 @@ const serviceSchema = {
                                             stroke-linejoin="round"
                                             aria-hidden="true"
                                         >
-                                            <path d="M5 12h14" />
-                                            <path d="m12 5 7 7-7 7" />
+                                            <path d="M5 12h14">
+                                            </path>
+                                            <path d="m12 5 7 7-7 7">
+                                            </path>
                                         </svg>
                                     </span>
                                 </div>
@@ -506,138 +698,226 @@ const serviceSchema = {
     </section>
 </MainLayout>
 
-<style>
-    .service-detail-floating {
-        animation: service-detail-floating 6.5s ease-in-out infinite;
-        will-change: transform;
-    }
+<script>
+    type ServiceSliderElement = HTMLElement & {
+        serviceSliderController?: AbortController;
+    };
 
-    .service-detail-floating :global(svg) {
-        width: 3.25rem;
-        height: 3.25rem;
-    }
+    const activeSlideClasses = [
+        "z-[1]",
+        "scale-100",
+        "opacity-100",
+    ];
 
-    .service-detail-slide {
-        opacity: 0;
-        animation-name: service-detail-slide-fade;
-        animation-duration: var(--slide-duration);
-        animation-timing-function: ease-in-out;
-        animation-iteration-count: infinite;
-        animation-delay: var(--slide-delay);
-        will-change: opacity;
-    }
+    const inactiveSlideClasses = [
+        "z-0",
+        "scale-105",
+        "opacity-0",
+    ];
 
-    .service-detail-slide img {
-        transform: scale(1.06);
-        transform-origin: center center;
-        animation-name: service-detail-ken-burns;
-        animation-duration: var(--slide-duration);
-        animation-timing-function: ease-in-out;
-        animation-iteration-count: infinite;
-        animation-delay: var(--slide-delay);
-        will-change: transform;
-    }
+    const activeDotClasses = [
+        "scale-x-100",
+        "bg-white",
+        "opacity-100",
+    ];
 
-    .service-detail-slider-dot {
-        opacity: 0.35;
-        transform: scaleX(0.2);
-        transform-origin: left center;
-        animation-name: service-detail-dot-progress;
-        animation-duration: var(--slide-duration);
-        animation-timing-function: ease-in-out;
-        animation-iteration-count: infinite;
-        animation-delay: var(--dot-delay);
-        will-change: transform, opacity;
-    }
+    const inactiveDotClasses = [
+        "scale-x-50",
+        "bg-white/45",
+        "opacity-60",
+    ];
 
-    @keyframes service-detail-floating {
-        0%,
-        100% {
-            transform: translate3d(0, 0, 0) rotate(-1deg);
-        }
+    const toggleClasses = (
+        element: HTMLElement,
+        classes: string[],
+        enabled: boolean,
+    ) => {
+        classes.forEach((className) => {
+            element.classList.toggle(className, enabled);
+        });
+    };
 
-        50% {
-            transform: translate3d(0, -14px, 0) rotate(1deg);
-        }
-    }
+    const initializeServiceSliders = () => {
+        const sliders =
+            document.querySelectorAll<ServiceSliderElement>(
+                "[data-service-slider]",
+            );
 
-    @keyframes service-detail-slide-fade {
-        0% {
-            opacity: 0;
-        }
+        sliders.forEach((slider) => {
+            slider.serviceSliderController?.abort();
 
-        5% {
-            opacity: 1;
-        }
+            const controller = new AbortController();
+            slider.serviceSliderController = controller;
 
-        31% {
-            opacity: 1;
-        }
+            const slides = Array.from(
+                slider.querySelectorAll<HTMLElement>(
+                    "[data-service-slide]",
+                ),
+            );
 
-        36% {
-            opacity: 0;
-        }
+            const dots = Array.from(
+                slider.querySelectorAll<HTMLButtonElement>(
+                    "[data-service-dot]",
+                ),
+            );
 
-        100% {
-            opacity: 0;
-        }
-    }
+            if (slides.length === 0) {
+                return;
+            }
 
-    @keyframes service-detail-ken-burns {
-        0% {
-            transform: scale(1.06) translate3d(0, 0, 0);
-        }
+            let activeIndex = 0;
+            let intervalId: number | undefined;
 
-        31% {
-            transform: scale(1.18) translate3d(-2%, -1.5%, 0);
-        }
+            const reducedMotionQuery = window.matchMedia(
+                "(prefers-reduced-motion: reduce)",
+            );
 
-        100% {
-            transform: scale(1.18) translate3d(-2%, -1.5%, 0);
-        }
-    }
+            const setActiveSlide = (nextIndex: number) => {
+                activeIndex =
+                    (nextIndex + slides.length) % slides.length;
 
-    @keyframes service-detail-dot-progress {
-        0% {
-            opacity: 0.35;
-            transform: scaleX(0.2);
-        }
+                slides.forEach((slide, index) => {
+                    const isActive = index === activeIndex;
 
-        5% {
-            opacity: 1;
-            transform: scaleX(0.35);
-        }
+                    toggleClasses(
+                        slide,
+                        activeSlideClasses,
+                        isActive,
+                    );
 
-        31% {
-            opacity: 1;
-            transform: scaleX(1);
-        }
+                    toggleClasses(
+                        slide,
+                        inactiveSlideClasses,
+                        !isActive,
+                    );
 
-        36% {
-            opacity: 0.35;
-            transform: scaleX(0.2);
-        }
+                    slide.setAttribute(
+                        "aria-hidden",
+                        String(!isActive),
+                    );
+                });
 
-        100% {
-            opacity: 0.35;
-            transform: scaleX(0.2);
-        }
-    }
+                dots.forEach((dot, index) => {
+                    const isActive = index === activeIndex;
 
-    @media (prefers-reduced-motion: reduce) {
-        .service-detail-floating,
-        .service-detail-slide,
-        .service-detail-slide img,
-        .service-detail-slider-dot {
-            animation: none;
-        }
+                    toggleClasses(
+                        dot,
+                        activeDotClasses,
+                        isActive,
+                    );
 
-        .service-detail-slide:first-child {
-            opacity: 1;
-        }
+                    toggleClasses(
+                        dot,
+                        inactiveDotClasses,
+                        !isActive,
+                    );
 
-        .service-detail-slide img {
-            transform: scale(1);
-        }
-    }
-</style>
+                    dot.setAttribute(
+                        "aria-selected",
+                        String(isActive),
+                    );
+
+                    dot.tabIndex = isActive ? 0 : -1;
+                });
+            };
+
+            const stopAutoplay = () => {
+                if (intervalId === undefined) {
+                    return;
+                }
+
+                window.clearInterval(intervalId);
+                intervalId = undefined;
+            };
+
+            const startAutoplay = () => {
+                stopAutoplay();
+
+                if (
+                    slides.length <= 1 ||
+                    reducedMotionQuery.matches
+                ) {
+                    return;
+                }
+
+                intervalId = window.setInterval(() => {
+                    setActiveSlide(activeIndex + 1);
+                }, 5000);
+            };
+
+            dots.forEach((dot, index) => {
+                dot.addEventListener(
+                    "click",
+                    () => {
+                        setActiveSlide(index);
+                        startAutoplay();
+                    },
+                    { signal: controller.signal },
+                );
+            });
+
+            slider.addEventListener(
+                "mouseenter",
+                stopAutoplay,
+                { signal: controller.signal },
+            );
+
+            slider.addEventListener(
+                "mouseleave",
+                startAutoplay,
+                { signal: controller.signal },
+            );
+
+            slider.addEventListener(
+                "focusin",
+                stopAutoplay,
+                { signal: controller.signal },
+            );
+
+            slider.addEventListener(
+                "focusout",
+                (event) => {
+                    const nextTarget = event.relatedTarget;
+
+                    if (
+                        !(nextTarget instanceof Node) ||
+                        !slider.contains(nextTarget)
+                    ) {
+                        startAutoplay();
+                    }
+                },
+                { signal: controller.signal },
+            );
+
+            reducedMotionQuery.addEventListener(
+                "change",
+                () => {
+                    if (reducedMotionQuery.matches) {
+                        stopAutoplay();
+                        setActiveSlide(0);
+                        return;
+                    }
+
+                    startAutoplay();
+                },
+                { signal: controller.signal },
+            );
+
+            controller.signal.addEventListener(
+                "abort",
+                stopAutoplay,
+                { once: true },
+            );
+
+            setActiveSlide(0);
+            startAutoplay();
+        });
+    };
+
+    document.addEventListener(
+        "astro:page-load",
+        initializeServiceSliders,
+    );
+
+    initializeServiceSliders();
+</script>

@@ -1,6 +1,7 @@
 ---
-import { ArrowRight } from "@lucide/astro";
+// src/components/home/LocationsPreview.astro
 
+import { ArrowRight } from "@lucide/astro";
 import { Image } from "astro:assets";
 
 import { getLanguageFromUrl } from "../../data/i18n/language";
@@ -17,12 +18,28 @@ interface Props {
 
 const { language } = Astro.props as Props;
 
-const currentLanguage = language ?? getLanguageFromUrl(Astro.url.pathname);
+const currentLanguage =
+    language ?? getLanguageFromUrl(Astro.url.pathname);
+
+const animationDelayClasses = [
+    "[animation-delay:0ms]",
+    "[animation-delay:70ms]",
+    "[animation-delay:140ms]",
+    "[animation-delay:210ms]",
+    "[animation-delay:280ms]",
+    "[animation-delay:350ms]",
+];
+
+const getAnimationDelayClass = (index: number) =>
+    animationDelayClasses[
+        Math.min(index, animationDelayClasses.length - 1)
+    ];
 
 const content = {
     en: {
         kicker: "Areas served",
-        title: "Cardiology care for patients across Miami-Dade County.",
+        title:
+            "Cardiology care for patients across Miami-Dade County.",
         description:
             "The main office is located in Hialeah, with convenient access for patients from Miami, Miami Lakes, Doral, Hialeah Gardens, Miami Gardens, and nearby communities.",
         viewAll: "View all locations",
@@ -30,12 +47,15 @@ const content = {
         officeLabel: "Main office",
         officeName: "Hialeah Office",
         viewLocation: "View location",
-        mapTitle: "Map of Victor Pazos, MD. PA. office in Hialeah",
+        mapTitle:
+            "Victor Pazos, MD. PA. office near Palmetto Medical Plaza in Hialeah",
         href: "/locations/",
     },
+
     es: {
         kicker: "Áreas servidas",
-        title: "Atención cardiológica para pacientes de Miami-Dade County.",
+        title:
+            "Atención cardiológica para pacientes de Miami-Dade County.",
         description:
             "La oficina principal está ubicada en Hialeah, con acceso conveniente para pacientes de Miami, Miami Lakes, Doral, Hialeah Gardens, Miami Gardens y comunidades cercanas.",
         viewAll: "Ver todas las ubicaciones",
@@ -43,26 +63,31 @@ const content = {
         officeLabel: "Oficina principal",
         officeName: "Oficina en Hialeah",
         viewLocation: "Ver ubicación",
-        mapTitle: "Mapa de la oficina de Victor Pazos, MD. PA. en Hialeah",
+        mapTitle:
+            "Oficina de Victor Pazos, MD. PA. cerca de Palmetto Medical Plaza en Hialeah",
         href: "/es/locations/",
     },
 };
 
 const t = content[currentLanguage];
 
-const locations = featuredMiamiDadeLocations
+const locations = [...featuredMiamiDadeLocations]
     .sort((a, b) => a.priority - b.priority)
     .slice(0, 6);
 ---
 
-<section class="relative isolate overflow-hidden section-padding">
+<section
+    class="section-padding relative isolate overflow-hidden"
+>
     <div
         class="pointer-events-none absolute right-[-5rem] top-[12%] z-[-1] aspect-square w-[22rem] rounded-full bg-[color-mix(in_srgb,var(--color-secondary)_22%,transparent)] opacity-45 blur-[58px]"
+        aria-hidden="true"
     >
     </div>
 
     <div
         class="pointer-events-none absolute bottom-[10%] left-[-5rem] z-[-1] aspect-square w-72 rounded-full bg-[color-mix(in_srgb,var(--color-accent)_18%,transparent)] opacity-45 blur-[58px]"
+        aria-hidden="true"
     >
     </div>
 
@@ -70,7 +95,9 @@ const locations = featuredMiamiDadeLocations
         class="site-container relative z-[1] grid grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] items-center gap-[clamp(2rem,6vw,5rem)] max-[1060px]:grid-cols-1"
     >
         <div class="grid content-center">
-            <span class="section-kicker">{t.kicker}</span>
+            <span class="section-kicker">
+                {t.kicker}
+            </span>
 
             <h2
                 class="text-[clamp(2.35rem,5.5vw,5rem)] text-[var(--color-heading)] max-[440px]:text-[clamp(2.25rem,12vw,3.85rem)]"
@@ -99,11 +126,15 @@ const locations = featuredMiamiDadeLocations
                     {t.officeName}
                 </strong>
 
-                <p class="text-[0.96rem] text-[var(--color-text-soft)]">
+                <p
+                    class="text-[0.96rem] text-[var(--color-text-soft)]"
+                >
                     {contactInfo.address.display}
                 </p>
 
-                <div class="mt-[0.8rem] flex flex-wrap gap-3 max-[720px]:grid">
+                <div
+                    class="mt-[0.8rem] flex flex-wrap gap-3 max-[720px]:grid"
+                >
                     <a
                         href={contactInfo.map.googleMapsUrl}
                         class="btn btn-primary"
@@ -113,7 +144,10 @@ const locations = featuredMiamiDadeLocations
                         {t.directions}
                     </a>
 
-                    <a href={t.href} class="btn btn-secondary">
+                    <a
+                        href={t.href}
+                        class="btn btn-secondary"
+                    >
                         {t.viewAll}
                     </a>
                 </div>
@@ -129,15 +163,19 @@ const locations = featuredMiamiDadeLocations
                     width={720}
                     height={480}
                     alt={t.mapTitle}
-                    class="office-map absolute inset-0 h-full w-full border-0 contrast-[1.04] saturate-[0.88]"
+                    class="absolute inset-0 h-full w-full object-cover contrast-[1.04] saturate-[0.88] dark:brightness-[0.72] dark:contrast-[1.05] dark:saturate-[0.78]"
                     loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade"
+                    decoding="async"
                 />
 
-                <div class="map-overlay pointer-events-none absolute inset-0" aria-hidden="true"></div>
+                <div
+                    class="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,color-mix(in_srgb,var(--color-bg)_10%,transparent),color-mix(in_srgb,var(--color-bg)_24%,transparent)),radial-gradient(circle_at_50%_50%,transparent_0%,color-mix(in_srgb,var(--color-bg)_18%,transparent)_72%)]"
+                    aria-hidden="true"
+                >
+                </div>
 
                 <div
-                    class="absolute bottom-4 left-4 z-[2] grid w-[min(calc(100%-2rem),280px)] gap-1 rounded-[1.25rem] border border-[color-mix(in_srgb,var(--color-secondary)_34%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-surface)_86%,transparent)] px-4 py-[0.95rem] shadow-[var(--shadow-card)] backdrop-blur-[18px] max-[720px]:bottom-3 max-[720px]:left-3 max-[720px]:w-[min(calc(100%-1.5rem),260px)]"
+                    class="absolute bottom-4 left-4 z-[2] grid w-[min(280px,calc(100%_-_2rem))] gap-1 rounded-[1.25rem] border border-[color-mix(in_srgb,var(--color-secondary)_34%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-surface)_86%,transparent)] px-4 py-[0.95rem] shadow-[var(--shadow-card)] backdrop-blur-[18px] max-[720px]:bottom-3 max-[720px]:left-3 max-[720px]:w-[min(260px,calc(100%_-_1.5rem))]"
                 >
                     <span
                         class="text-[0.72rem] font-black uppercase text-[var(--color-text-soft)]"
@@ -153,30 +191,59 @@ const locations = featuredMiamiDadeLocations
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-[0.85rem] max-[720px]:grid-cols-1">
+            <div
+                class="grid grid-cols-2 gap-[0.85rem] max-[720px]:grid-cols-1"
+            >
                 {
                     locations.map((location, index) => (
                         <a
-                            href={getMiamiDadeLocationHref(location, currentLanguage)}
-                            class="location-card medical-card group relative flex min-h-36 justify-between gap-4 overflow-hidden p-4 text-inherit max-[720px]:min-h-0"
-                            style={`--location-delay: ${index * 70}ms;`}
+                            href={getMiamiDadeLocationHref(
+                                location,
+                                currentLanguage,
+                            )}
+                            class:list={[
+                                "medical-card group relative flex min-h-36 justify-between gap-4 overflow-hidden p-4 text-inherit animate-fade-up max-[720px]:min-h-0",
+                                getAnimationDelayClass(index),
+                            ]}
                             aria-label={`${t.viewLocation}: ${location.title[currentLanguage]}`}
                         >
+                            <div
+                                class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,color-mix(in_srgb,var(--color-secondary)_18%,transparent),transparent_10rem)] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                                aria-hidden="true"
+                            >
+                            </div>
+
                             <div class="relative z-[1]">
-                                <h3 class="font-heading text-[1.45rem] text-[var(--color-heading)]">
-                                    {location.shortTitle[currentLanguage]}
+                                <h3
+                                    class="font-heading text-[1.45rem] text-[var(--color-heading)]"
+                                >
+                                    {
+                                        location.shortTitle[
+                                            currentLanguage
+                                        ]
+                                    }
                                 </h3>
 
-                                <p class="mt-[0.45rem] text-sm text-[var(--color-text-soft)]">
-                                    {location.shortDescription[currentLanguage]}
+                                <p
+                                    class="mt-[0.45rem] text-sm text-[var(--color-text-soft)]"
+                                >
+                                    {
+                                        location
+                                            .shortDescription[
+                                            currentLanguage
+                                        ]
+                                    }
                                 </p>
                             </div>
 
                             <span
-                                class="location-arrow relative z-[1] inline-grid size-9 flex-none place-items-center rounded-full border border-[color-mix(in_srgb,var(--color-secondary)_28%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-surface)_78%,transparent)] text-[var(--color-secondary)] transition-[transform,color] duration-200 group-hover:translate-x-[0.2rem] group-hover:text-[var(--color-accent-dark)] dark:group-hover:text-[var(--color-accent)]"
+                                class="relative z-[1] inline-grid size-9 flex-none place-items-center rounded-full border border-[color-mix(in_srgb,var(--color-secondary)_28%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-surface)_78%,transparent)] text-[var(--color-secondary)] transition-[transform,color] duration-200 group-hover:translate-x-[0.2rem] group-hover:text-[var(--color-accent-dark)] dark:group-hover:text-[var(--color-accent)]"
                                 aria-hidden="true"
                             >
-                                <ArrowRight size={18} />
+                                <ArrowRight
+                                    size={18}
+                                    stroke-width={2}
+                                />
                             </span>
                         </a>
                     ))
@@ -185,62 +252,3 @@ const locations = featuredMiamiDadeLocations
         </div>
     </div>
 </section>
-
-<style>
-    .office-map {
-        filter: saturate(0.88) contrast(1.04);
-    }
-
-    :global(.dark) .office-map {
-        filter: saturate(0.78) contrast(1.05) brightness(0.72);
-    }
-
-    .map-overlay {
-        background:
-            linear-gradient(
-                180deg,
-                color-mix(in srgb, var(--color-bg) 10%, transparent),
-                color-mix(in srgb, var(--color-bg) 24%, transparent)
-            ),
-            radial-gradient(
-                circle at 50% 50%,
-                transparent 0%,
-                color-mix(in srgb, var(--color-bg) 18%, transparent) 72%
-            );
-    }
-
-    .location-card {
-        animation: location-card-in 620ms var(--motion-smooth) both;
-        animation-delay: var(--location-delay);
-    }
-
-    .location-card::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        opacity: 0;
-        background: radial-gradient(
-            circle at top right,
-            color-mix(in srgb, var(--color-secondary) 18%, transparent),
-            transparent 10rem
-        );
-        pointer-events: none;
-        transition: opacity 220ms var(--motion-smooth);
-    }
-
-    .location-card:hover::before {
-        opacity: 1;
-    }
-
-    @keyframes location-card-in {
-        from {
-            opacity: 0;
-            transform: translateY(1rem);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-</style>

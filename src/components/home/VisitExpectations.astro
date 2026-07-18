@@ -1,4 +1,6 @@
 ---
+// src/components/home/VisitExpectations.astro
+
 import { getLanguageFromUrl } from "../../data/i18n/language";
 import type { LanguageCode } from "../../data/site/siteConfig";
 import { contactInfo } from "../../data/site/contact";
@@ -9,15 +11,32 @@ interface Props {
 
 const { language } = Astro.props as Props;
 
-const currentLanguage = language ?? getLanguageFromUrl(Astro.url.pathname);
+const currentLanguage =
+    language ?? getLanguageFromUrl(Astro.url.pathname);
+
+const animationDelayClasses = [
+    "[animation-delay:0ms]",
+    "[animation-delay:80ms]",
+    "[animation-delay:160ms]",
+    "[animation-delay:240ms]",
+    "[animation-delay:320ms]",
+    "[animation-delay:400ms]",
+];
+
+const getAnimationDelayClass = (index: number) =>
+    animationDelayClasses[
+        Math.min(index, animationDelayClasses.length - 1)
+    ];
 
 const content = {
     en: {
         kicker: "What to expect",
-        title: "Your cardiology visit should feel clear, organized, and supportive.",
+        title:
+            "Your cardiology visit should feel clear, organized, and supportive.",
         description:
             "A cardiology appointment is an opportunity to understand your symptoms, review your risk factors, and discuss the next steps for your heart health.",
         cta: "Call to Schedule",
+        patientNoteLabel: "Patient note",
         note:
             "Every patient is different. Testing and recommendations depend on your symptoms, history, and clinical evaluation.",
         steps: [
@@ -53,12 +72,15 @@ const content = {
             },
         ],
     },
+
     es: {
         kicker: "Qué esperar",
-        title: "Su visita cardiológica debe sentirse clara, organizada y con apoyo.",
+        title:
+            "Su visita cardiológica debe sentirse clara, organizada y con apoyo.",
         description:
             "Una cita de cardiología es una oportunidad para entender sus síntomas, revisar sus factores de riesgo y hablar sobre los próximos pasos para su salud cardíaca.",
         cta: "Llamar para cita",
+        patientNoteLabel: "Nota para pacientes",
         note:
             "Cada paciente es diferente. Las pruebas y recomendaciones dependen de sus síntomas, historial y evaluación clínica.",
         steps: [
@@ -99,22 +121,30 @@ const content = {
 const t = content[currentLanguage];
 ---
 
-<section class="relative isolate overflow-hidden section-padding">
+<section
+    class="section-padding relative isolate overflow-hidden"
+>
     <div
         class="pointer-events-none absolute right-[-5rem] top-[12%] z-[-1] aspect-square w-[22rem] rounded-full bg-[color-mix(in_srgb,var(--color-secondary)_20%,transparent)] opacity-[0.42] blur-[58px]"
+        aria-hidden="true"
     >
     </div>
 
     <div
         class="pointer-events-none absolute bottom-[8%] left-[-5rem] z-[-1] aspect-square w-80 rounded-full bg-[color-mix(in_srgb,var(--color-accent)_18%,transparent)] opacity-[0.42] blur-[58px]"
+        aria-hidden="true"
     >
     </div>
 
     <div
         class="site-container relative z-[1] grid grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] items-start gap-[clamp(2rem,6vw,5rem)] max-[1060px]:grid-cols-1"
     >
-        <div class="sticky top-28 grid content-start max-[1060px]:relative max-[1060px]:top-auto">
-            <span class="section-kicker">{t.kicker}</span>
+        <div
+            class="sticky top-28 grid content-start max-[1060px]:relative max-[1060px]:top-auto"
+        >
+            <span class="section-kicker">
+                {t.kicker}
+            </span>
 
             <h2
                 class="text-[clamp(2.35rem,5.5vw,5rem)] text-[var(--color-heading)] max-[440px]:text-[clamp(2.25rem,12vw,3.85rem)]"
@@ -134,10 +164,12 @@ const t = content[currentLanguage];
                 <span
                     class="text-xs font-black uppercase text-[var(--color-secondary)]"
                 >
-                    {currentLanguage === "es" ? "Nota para pacientes" : "Patient note"}
+                    {t.patientNoteLabel}
                 </span>
 
-                <p class="text-[0.94rem]  text-[var(--color-text-soft)]">
+                <p
+                    class="text-[0.94rem] text-[var(--color-text-soft)]"
+                >
                     {t.note}
                 </p>
             </div>
@@ -150,32 +182,55 @@ const t = content[currentLanguage];
             </a>
         </div>
 
-        <div class="visit-timeline relative grid gap-[0.85rem]">
+        <div class="relative grid gap-[0.85rem]">
+            <div
+                class="pointer-events-none absolute bottom-4 left-[1.6rem] top-4 z-0 w-px bg-gradient-to-b from-transparent via-[color-mix(in_srgb,var(--color-secondary)_38%,var(--color-border))] to-transparent max-[720px]:left-[1.45rem]"
+                aria-hidden="true"
+            >
+            </div>
+
             {
                 t.steps.map((step, index) => (
                     <article
-                        class="visit-step medical-card relative grid grid-cols-[auto_1fr] gap-4 overflow-hidden p-[clamp(1rem,2vw,1.2rem)] max-[720px]:gap-[0.85rem] max-[440px]:rounded-[1.4rem]"
-                        style={`--visit-delay: ${index * 80}ms;`}
+                        class:list={[
+                            "medical-card group relative grid grid-cols-[auto_1fr] gap-4 overflow-hidden p-[clamp(1rem,2vw,1.2rem)] animate-fade-up max-[720px]:gap-[0.85rem] max-[440px]:rounded-[1.4rem]",
+                            getAnimationDelayClass(index),
+                        ]}
                     >
                         <div
-                            class="visit-step-marker relative z-[1] inline-grid size-[3.2rem] place-items-center rounded-[1.05rem] border border-[color-mix(in_srgb,var(--color-secondary)_34%,var(--color-border))] text-[var(--color-secondary)] shadow-[0_14px_34px_rgba(15,23,42,0.07)] max-[720px]:size-[2.9rem]"
+                            class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,color-mix(in_srgb,var(--color-secondary)_18%,transparent),transparent_12rem),radial-gradient(circle_at_bottom_left,color-mix(in_srgb,var(--color-accent)_14%,transparent),transparent_12rem)] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                            aria-hidden="true"
+                        >
+                        </div>
+
+                        <div
+                            class="relative z-[1] inline-grid size-[3.2rem] place-items-center rounded-[1.05rem] border border-[color-mix(in_srgb,var(--color-secondary)_34%,var(--color-border))] bg-[radial-gradient(circle_at_top,color-mix(in_srgb,var(--color-secondary)_18%,transparent),transparent_4rem),color-mix(in_srgb,var(--color-surface)_86%,transparent)] text-[var(--color-secondary)] shadow-[0_14px_34px_rgba(15,23,42,0.07)] transition-transform duration-300 group-hover:-translate-y-1 group-hover:scale-105 max-[720px]:size-[2.9rem]"
                             aria-hidden="true"
                         >
                             <span
                                 class="font-heading text-xl font-extrabold"
                             >
-                                {String(index + 1).padStart(2, "0")}
+                                {
+                                    String(index + 1).padStart(
+                                        2,
+                                        "0",
+                                    )
+                                }
                             </span>
                         </div>
 
-                        <div class="relative z-[1] grid gap-[0.45rem]">
+                        <div
+                            class="relative z-[1] grid gap-[0.45rem]"
+                        >
                             <h3
                                 class="font-heading text-[clamp(1.35rem,2vw,1.85rem)] text-[var(--color-heading)]"
                             >
                                 {step.title}
                             </h3>
 
-                            <p class="text-[0.94rem] text-[var(--color-text-soft)]">
+                            <p
+                                class="text-[0.94rem] text-[var(--color-text-soft)]"
+                            >
                                 {step.description}
                             </p>
                         </div>
@@ -185,79 +240,3 @@ const t = content[currentLanguage];
         </div>
     </div>
 </section>
-
-<style>
-    .visit-timeline::before {
-        content: "";
-        position: absolute;
-        top: 1rem;
-        bottom: 1rem;
-        left: 1.6rem;
-        width: 1px;
-        background: linear-gradient(
-            180deg,
-            transparent,
-            color-mix(in srgb, var(--color-secondary) 38%, var(--color-border)),
-            color-mix(in srgb, var(--color-accent) 34%, var(--color-border)),
-            transparent
-        );
-        pointer-events: none;
-    }
-
-    .visit-step {
-        animation: visit-step-in 640ms var(--motion-smooth) both;
-        animation-delay: var(--visit-delay);
-    }
-
-    .visit-step::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        opacity: 0;
-        background:
-            radial-gradient(
-                circle at top right,
-                color-mix(in srgb, var(--color-secondary) 18%, transparent),
-                transparent 12rem
-            ),
-            radial-gradient(
-                circle at bottom left,
-                color-mix(in srgb, var(--color-accent) 14%, transparent),
-                transparent 12rem
-            );
-        pointer-events: none;
-        transition: opacity 220ms var(--motion-smooth);
-    }
-
-    .visit-step:hover::before {
-        opacity: 1;
-    }
-
-    .visit-step-marker {
-        background:
-            radial-gradient(
-                circle at top,
-                color-mix(in srgb, var(--color-secondary) 18%, transparent),
-                transparent 4rem
-            ),
-            color-mix(in srgb, var(--color-surface) 86%, transparent);
-    }
-
-    @keyframes visit-step-in {
-        from {
-            opacity: 0;
-            transform: translateY(1rem);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    @media (max-width: 720px) {
-        .visit-timeline::before {
-            left: 1.45rem;
-        }
-    }
-</style>

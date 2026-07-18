@@ -1,7 +1,6 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
 import HomeHero from "../components/home/HomeHero.astro";
-import TrustStrip from "../components/home/TrustStrip.astro";
 import TrustStripShared from "../components/shared/TrustStripShared.astro";
 import ServicesPreview from "../components/home/ServicesPreview.astro";
 import SymptomsPreview from "../components/home/SymptomsPreview.astro";
@@ -24,6 +23,7 @@ const metadata = homeMetadata;
 
 <MainLayout
     fullTitle
+    language="en"
     title={metadata.title.en}
     description={metadata.description.en}
     canonical={metadata.canonical.en}
@@ -41,15 +41,24 @@ const metadata = homeMetadata;
     ]}
 >
     <HomeHero language="en" />
-    <TrustStrip language="en" />
-    <TrustStripShared language="en" variant="full"/>
+
+    <TrustStripShared language="en" />
+
     <ServicesPreview language="en" />
+
     <SymptomsPreview language="en" />
-    <!-- <AboutDoctorPreview language="en" /> -->
+
+    <AboutDoctorPreview language="en" />
+
     <VisitExpectations language="en" />
+
     <WhyChooseUs language="en" />
+
     <LocationsPreview language="en" />
+
     <AppointmentCTA language="en" />
-	<HomeFAQ language="en" />
+
+    <HomeFAQ language="en" />
+
     <FinalCTA language="en" />
 </MainLayout>

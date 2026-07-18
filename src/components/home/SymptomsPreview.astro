@@ -1,4 +1,6 @@
 ---
+// src/components/home/SymptomsPreview.astro
+
 import { HeartPulse } from "@lucide/astro";
 
 import { getLanguageFromUrl } from "../../data/i18n/language";
@@ -11,12 +13,30 @@ interface Props {
 
 const { language } = Astro.props as Props;
 
-const currentLanguage = language ?? getLanguageFromUrl(Astro.url.pathname);
+const currentLanguage =
+    language ?? getLanguageFromUrl(Astro.url.pathname);
+
+const animationDelayClasses = [
+    "[animation-delay:0ms]",
+    "[animation-delay:70ms]",
+    "[animation-delay:140ms]",
+    "[animation-delay:210ms]",
+    "[animation-delay:280ms]",
+    "[animation-delay:350ms]",
+    "[animation-delay:420ms]",
+    "[animation-delay:490ms]",
+];
+
+const getAnimationDelayClass = (index: number) =>
+    animationDelayClasses[
+        Math.min(index, animationDelayClasses.length - 1)
+    ];
 
 const content = {
     en: {
         kicker: "Symptoms we help evaluate",
-        title: "When heart symptoms need answers, a cardiology evaluation can help.",
+        title:
+            "When heart symptoms need answers, a cardiology evaluation can help.",
         description:
             "Patients often contact the office when they are experiencing symptoms, risk factors, or abnormal results that may involve the heart.",
         cta: "Call to Schedule",
@@ -65,9 +85,11 @@ const content = {
             },
         ],
     },
+
     es: {
         kicker: "Síntomas que evaluamos",
-        title: "Cuando los síntomas del corazón necesitan respuestas, una evaluación cardiológica puede ayudar.",
+        title:
+            "Cuando los síntomas del corazón necesitan respuestas, una evaluación cardiológica puede ayudar.",
         description:
             "Los pacientes suelen comunicarse con la oficina cuando tienen síntomas, factores de riesgo o resultados anormales que pueden involucrar el corazón.",
         cta: "Llamar para cita",
@@ -121,14 +143,18 @@ const content = {
 const t = content[currentLanguage];
 ---
 
-<section class="relative isolate overflow-hidden section-padding">
+<section
+    class="section-padding relative isolate overflow-hidden"
+>
     <div
         class="pointer-events-none absolute left-[-5rem] top-[10%] z-[-1] aspect-square w-80 rounded-full bg-[color-mix(in_srgb,var(--color-heart)_16%,transparent)] opacity-[0.42] blur-[58px]"
+        aria-hidden="true"
     >
     </div>
 
     <div
         class="pointer-events-none absolute bottom-[8%] right-[-5rem] z-[-1] aspect-square w-[22rem] rounded-full bg-[color-mix(in_srgb,var(--color-secondary)_20%,transparent)] opacity-[0.42] blur-[58px]"
+        aria-hidden="true"
     >
     </div>
 
@@ -136,23 +162,32 @@ const t = content[currentLanguage];
         <div
             class="relative z-[1] mb-[clamp(1.75rem,4vw,3rem)] grid gap-[0.85rem]"
         >
-            <span class="section-kicker">{t.kicker}</span>
+            <span class="section-kicker">
+                {t.kicker}
+            </span>
 
-            <div class="grid items-end gap-[clamp(1.25rem,5vw,4rem)]">
+            <div
+                class="grid items-end gap-[clamp(1.25rem,5vw,4rem)]"
+            >
                 <h2
                     class="text-[clamp(2.3rem,5.5vw,5.15rem)] text-[var(--color-heading)]"
                 >
                     {t.title}
                 </h2>
 
-                <div class="grid justify-items-start gap-5 max-[680px]:justify-items-stretch">
+                <div
+                    class="grid justify-items-start gap-5 max-[680px]:justify-items-stretch"
+                >
                     <p
                         class="text-[clamp(1rem,1.35vw,1.15rem)] text-[var(--color-text-soft)]"
                     >
                         {t.description}
                     </p>
 
-                    <a href={contactInfo.phone.href} class="btn btn-primary">
+                    <a
+                        href={contactInfo.phone.href}
+                        class="btn btn-primary"
+                    >
                         {t.cta}
                     </a>
                 </div>
@@ -165,14 +200,25 @@ const t = content[currentLanguage];
             {
                 t.symptoms.map((symptom, index) => (
                     <article
-                        class="symptom-card medical-card relative grid min-h-60 content-start gap-4 overflow-hidden p-[clamp(1rem,2vw,1.2rem)] max-[680px]:min-h-0"
-                        style={`--symptom-delay: ${index * 70}ms;`}
+                        class:list={[
+                            "medical-card group relative grid min-h-60 content-start gap-4 overflow-hidden p-[clamp(1rem,2vw,1.2rem)] animate-fade-up max-[680px]:min-h-0",
+                            getAnimationDelayClass(index),
+                        ]}
                     >
                         <div
-                            class="symptom-icon relative z-[1] inline-grid size-12 place-items-center rounded-2xl border border-[color-mix(in_srgb,var(--color-heart)_28%,var(--color-border))] text-[var(--color-heart)] shadow-[0_14px_34px_rgba(15,23,42,0.07)]"
+                            class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,color-mix(in_srgb,var(--color-heart)_18%,transparent),transparent_10rem),radial-gradient(circle_at_bottom_left,color-mix(in_srgb,var(--color-secondary)_14%,transparent),transparent_11rem)] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
                             aria-hidden="true"
                         >
-                            <HeartPulse size={22} strokeWidth={2} />
+                        </div>
+
+                        <div
+                            class="relative z-[1] inline-grid size-12 place-items-center rounded-2xl border border-[color-mix(in_srgb,var(--color-heart)_28%,var(--color-border))] bg-[radial-gradient(circle_at_top,color-mix(in_srgb,var(--color-heart)_18%,transparent),transparent_4rem),color-mix(in_srgb,var(--color-surface)_76%,transparent)] text-[var(--color-heart)] shadow-[0_14px_34px_rgba(15,23,42,0.07)] transition-transform duration-300 group-hover:-translate-y-1 group-hover:scale-105"
+                            aria-hidden="true"
+                        >
+                            <HeartPulse
+                                size={22}
+                                stroke-width={2}
+                            />
                         </div>
 
                         <div class="relative z-[1]">
@@ -182,7 +228,9 @@ const t = content[currentLanguage];
                                 {symptom.title}
                             </h3>
 
-                            <p class="mt-[0.6rem] text-sm  text-[var(--color-text-soft)]">
+                            <p
+                                class="mt-[0.6rem] text-sm text-[var(--color-text-soft)]"
+                            >
                                 {symptom.description}
                             </p>
                         </div>
@@ -198,56 +246,3 @@ const t = content[currentLanguage];
         </p>
     </div>
 </section>
-
-<style>
-    .symptom-card {
-        animation: symptom-card-in 620ms var(--motion-smooth) both;
-        animation-delay: var(--symptom-delay);
-    }
-
-    .symptom-card::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        opacity: 0;
-        background:
-            radial-gradient(
-                circle at top right,
-                color-mix(in srgb, var(--color-heart) 18%, transparent),
-                transparent 10rem
-            ),
-            radial-gradient(
-                circle at bottom left,
-                color-mix(in srgb, var(--color-secondary) 14%, transparent),
-                transparent 11rem
-            );
-        pointer-events: none;
-        transition: opacity 220ms var(--motion-smooth);
-    }
-
-    .symptom-card:hover::before {
-        opacity: 1;
-    }
-
-    .symptom-icon {
-        background:
-            radial-gradient(
-                circle at top,
-                color-mix(in srgb, var(--color-heart) 18%, transparent),
-                transparent 4rem
-            ),
-            color-mix(in srgb, var(--color-surface) 76%, transparent);
-    }
-
-    @keyframes symptom-card-in {
-        from {
-            opacity: 0;
-            transform: translateY(1rem) scale(0.985);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-    }
-</style>

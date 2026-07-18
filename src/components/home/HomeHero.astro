@@ -1,10 +1,5 @@
 ---
-const heroBackgroundImages = [
-    "/images/home/hero/cardiology-office.webp",
-    "/images/home/hero/heart-care-miami.webp",
-    "/images/home/hero/doctor-consultation.webp",
-    "/images/home/hero/medical-technology.webp",
-];
+// src/components/home/HomeHero.astro
 
 import { contactInfo } from "../../data/site/contact";
 import { ctaNavigation } from "../../data/site/navigation";
@@ -19,12 +14,22 @@ interface Props {
 
 const { language } = Astro.props as Props;
 
-const currentLanguage = language ?? getLanguageFromUrl(Astro.url.pathname);
+const currentLanguage =
+    language ?? getLanguageFromUrl(Astro.url.pathname);
+
+const heroBackgroundImages = [
+    "/images/home/hero/cardiology-office.webp",
+    "/images/home/hero/heart-care-miami.webp",
+    "/images/home/hero/doctor-consultation.webp",
+    "/images/home/hero/medical-technology.webp",
+];
 
 const content = {
     en: {
-        eyebrow: "Cardiologist in Hialeah serving Miami-Dade",
-        title: "Heart care with experience, clarity, and personal attention.",
+        eyebrow:
+            "Cardiologist in Hialeah serving Miami-Dade",
+        title:
+            "Heart care with experience, clarity, and personal attention.",
         highlighted: "Victor Pazos, MD.",
         description:
             "Cardiology and interventional cardiology care for patients in Hialeah, Miami, and nearby communities. Call the office to request an appointment.",
@@ -36,12 +41,15 @@ const content = {
         statTwoLabel: "Serving Miami-Dade patients",
         cardTitle: "Victor Pazos, MD. PA.",
         cardSubtitle: "Cardiology Specialist",
-        pulseLabel: "Live heart rhythm visual",
+        pulseLabel: "Heart rhythm visual",
         locationLabel: "Office Location",
     },
+
     es: {
-        eyebrow: "Cardiólogo en Hialeah sirviendo a Miami-Dade",
-        title: "Cuidado del corazón con experiencia, claridad y atención personal.",
+        eyebrow:
+            "Cardiólogo en Hialeah sirviendo a Miami-Dade",
+        title:
+            "Cuidado del corazón con experiencia, claridad y atención personal.",
         highlighted: "Victor Pazos, MD.",
         description:
             "Atención en cardiología y cardiología intervencionista para pacientes en Hialeah, Miami y comunidades cercanas. Llame a la oficina para solicitar una cita.",
@@ -62,23 +70,37 @@ const t = content[currentLanguage];
 ---
 
 <section
-    class="home-hero medical-grid-bg relative isolate -mt-25 overflow-hidden section-padding-lg max-[720px]:flex max-[720px]:min-h-svh max-[720px]:items-center"
+    class="medical-grid-bg section-padding-lg relative isolate -mt-25 overflow-hidden max-[720px]:flex max-[720px]:min-h-svh max-[720px]:items-center"
 >
     <div
         class="pointer-events-none absolute inset-0 z-[-4] overflow-hidden"
         aria-hidden="true"
+        data-hero-background-slider
     >
         {
             heroBackgroundImages.map((image, index) => (
                 <div
-                    class="hero-bg-slide absolute inset-0 opacity-0"
-                    style={`--slide-delay: ${index * 6}s;`}
+                    class:list={[
+                        "absolute inset-0 transition-opacity duration-1000 ease-in-out motion-reduce:transition-none",
+                        index === 0
+                            ? "opacity-[0.22]"
+                            : "opacity-0",
+                    ]}
+                    data-hero-background-slide
                 >
                     <img
                         src={image}
                         alt=""
-                        class="hero-bg-image absolute inset-0 h-full w-full max-w-none scale-105 object-cover object-center contrast-[1.05] saturate-[0.9]"
-                        loading={index === 0 ? "eager" : "lazy"}
+                        class:list={[
+                            "absolute inset-0 h-full w-full max-w-none object-cover object-center contrast-[1.05] saturate-[0.9] transition-transform duration-[6000ms] ease-in-out dark:brightness-75 dark:saturate-[0.85] motion-reduce:transition-none",
+                            index === 0
+                                ? "scale-[1.16]"
+                                : "scale-105",
+                        ]}
+                        data-hero-background-image
+                        loading={
+                            index === 0 ? "eager" : "lazy"
+                        }
                         decoding="async"
                     />
                 </div>
@@ -87,23 +109,26 @@ const t = content[currentLanguage];
     </div>
 
     <div
-        class="hero-bg-overlay pointer-events-none absolute inset-0 z-[-3] opacity-75!"
+        class="pointer-events-none absolute inset-0 z-[-3] bg-[linear-gradient(90deg,var(--color-bg)_0%,color-mix(in_srgb,var(--color-bg)_88%,transparent)_34%,color-mix(in_srgb,var(--color-bg)_66%,transparent)_62%,color-mix(in_srgb,var(--color-bg)_78%,transparent)_100%),radial-gradient(circle_at_68%_48%,color-mix(in_srgb,var(--color-secondary)_18%,transparent),transparent_30rem),radial-gradient(circle_at_20%_20%,color-mix(in_srgb,var(--color-accent)_12%,transparent),transparent_24rem)] opacity-75 dark:bg-[linear-gradient(90deg,var(--color-bg)_0%,color-mix(in_srgb,var(--color-bg)_88%,transparent)_36%,color-mix(in_srgb,var(--color-bg)_70%,transparent)_64%,color-mix(in_srgb,var(--color-bg)_84%,transparent)_100%),radial-gradient(circle_at_68%_48%,color-mix(in_srgb,var(--color-secondary)_16%,transparent),transparent_30rem),radial-gradient(circle_at_20%_20%,color-mix(in_srgb,var(--color-accent)_10%,transparent),transparent_24rem)] max-[720px]:bg-[linear-gradient(180deg,var(--color-bg)_0%,color-mix(in_srgb,var(--color-bg)_82%,transparent)_42%,var(--color-bg)_100%)]"
         aria-hidden="true"
     >
     </div>
 
     <div
         class="pointer-events-none absolute left-[4%] top-[8%] z-0 size-72 rounded-full bg-[color-mix(in_srgb,var(--color-secondary)_35%,transparent)] opacity-[0.52] blur-[60px]"
+        aria-hidden="true"
     >
     </div>
 
     <div
         class="pointer-events-none absolute right-[8%] top-[16%] z-0 size-96 rounded-full bg-[color-mix(in_srgb,var(--color-accent)_28%,transparent)] opacity-[0.52] blur-[60px]"
+        aria-hidden="true"
     >
     </div>
 
     <div
         class="pointer-events-none absolute bottom-[10%] right-[28%] z-0 size-72 rounded-full bg-[color-mix(in_srgb,var(--color-heart)_16%,transparent)] opacity-[0.52] blur-[60px]"
+        aria-hidden="true"
     >
     </div>
 
@@ -115,7 +140,7 @@ const t = content[currentLanguage];
         >
             <span class="eyebrow-pill animate-blur-in">
                 <span
-                    class="hero-eyebrow-dot size-[0.55rem] rounded-full bg-[var(--color-heart)]"
+                    class="animate-pulse-glow size-[0.55rem] rounded-full bg-[var(--color-heart)] shadow-[0_0_0_4px_color-mix(in_srgb,var(--color-heart)_12%,transparent)] motion-reduce:animate-none"
                     aria-hidden="true"
                 >
                 </span>
@@ -124,12 +149,12 @@ const t = content[currentLanguage];
             </span>
 
             <h1
-                class="hero-title mt-[1.35rem] max-w-[820px] overflow-visible text-5xl text-[var(--color-heading)] animate-fade-up animation-delay-100 md:text-5xl lg:text-6xl"
+                class="mt-[1.35rem] max-w-[820px] overflow-visible text-5xl text-[var(--color-heading)] animate-fade-up animation-delay-100 md:text-5xl lg:text-6xl"
             >
                 {t.title}
 
                 <span
-                    class="hero-title-highlight mt-1 inline-block overflow-visible bg-gradient-to-br from-[var(--color-primary-dark)] via-[var(--color-secondary)] to-[var(--color-accent)] bg-clip-text pb-[0.12em] text-transparent"
+                    class="mt-1 inline-block overflow-visible bg-gradient-to-br from-[var(--color-primary-dark)] via-[var(--color-secondary)] to-[var(--color-accent)] bg-clip-text pb-[0.12em] text-transparent dark:from-[var(--color-heading)]"
                 >
                     {t.highlighted}
                 </span>
@@ -149,7 +174,7 @@ const t = content[currentLanguage];
                     class="btn btn-primary relative overflow-hidden"
                 >
                     <span
-                        class="btn-pulse size-[0.65rem] rounded-full bg-current opacity-90 shadow-[0_0_0_0_currentColor]"
+                        class="animate-pulse-glow size-[0.65rem] rounded-full bg-current opacity-90 motion-reduce:animate-none"
                         aria-hidden="true"
                     >
                     </span>
@@ -158,7 +183,11 @@ const t = content[currentLanguage];
                 </a>
 
                 <a
-                    href={ctaNavigation.appointment.href[currentLanguage]}
+                    href={
+                        ctaNavigation.appointment.href[
+                            currentLanguage
+                        ]
+                    }
                     class="btn btn-secondary"
                 >
                     {t.appointment}
@@ -174,41 +203,59 @@ const t = content[currentLanguage];
                 aria-label={t.pulseLabel}
             >
                 <div
-                    class="heart-halo absolute aspect-square w-[min(90vw,640px)] rounded-full opacity-80 blur-[8px]"
+                    class="animate-pulse-glow absolute aspect-square w-[min(90vw,640px)] rounded-full bg-[radial-gradient(circle,color-mix(in_srgb,var(--color-heart)_18%,transparent),transparent_46%),radial-gradient(circle,color-mix(in_srgb,var(--color-secondary)_20%,transparent),transparent_62%),radial-gradient(circle,color-mix(in_srgb,var(--color-accent)_12%,transparent),transparent_76%)] opacity-80 blur-[8px] motion-reduce:animate-none"
+                    aria-hidden="true"
                 >
                 </div>
 
                 <div
-                    class="hero-heart-card relative grid aspect-square w-[min(100%,500px)] place-items-center overflow-hidden border border-[color-mix(in_srgb,var(--color-secondary)_32%,var(--color-border))] shadow-[0_36px_90px_rgba(15,23,42,0.14),inset_0_1px_0_rgba(255,255,255,0.32)] backdrop-blur-3xl max-[1080px]:w-[min(100%,470px)]"
+                    class="relative grid aspect-square w-[min(100%,500px)] place-items-center overflow-hidden rounded-[42%_58%_52%_48%/45%_43%_57%_55%] border border-[color-mix(in_srgb,var(--color-secondary)_32%,var(--color-border))] bg-[radial-gradient(circle_at_50%_42%,color-mix(in_srgb,var(--color-heart)_14%,transparent),transparent_11rem),radial-gradient(circle_at_52%_48%,color-mix(in_srgb,var(--color-secondary)_24%,transparent),transparent_17rem),linear-gradient(145deg,color-mix(in_srgb,var(--color-surface)_86%,transparent),color-mix(in_srgb,var(--color-surface-soft)_72%,transparent))] shadow-[0_36px_90px_rgba(15,23,42,0.14),inset_0_1px_0_rgba(255,255,255,0.32)] backdrop-blur-3xl dark:shadow-[0_36px_110px_rgba(0,0,0,0.36),inset_0_1px_0_rgba(255,255,255,0.08)] max-[1080px]:w-[min(100%,470px)]"
                 >
-                    <div class="heart-grid absolute inset-0 opacity-[0.52]"></div>
-
                     <div
-                        class="hero-heart-illustration-shell absolute z-0 grid aspect-square w-[960px] place-items-center rounded-full text-[var(--color-heart)] opacity-45"
+                        class="absolute inset-0 bg-[linear-gradient(to_right,color-mix(in_srgb,var(--color-border)_72%,transparent)_1px,transparent_1px),linear-gradient(to_bottom,color-mix(in_srgb,var(--color-border)_72%,transparent)_1px,transparent_1px)] bg-[length:34px_34px] opacity-[0.52] [mask-image:radial-gradient(circle_at_center,black,transparent_70%)]"
                         aria-hidden="true"
                     >
-                        <AnatomicHeart class="hero-anatomic-heart" />
+                    </div>
+
+                    <div
+                        class="animate-pulse-glow absolute z-0 grid aspect-square w-[960px] place-items-center rounded-full text-[var(--color-heart)] opacity-45 [filter:drop-shadow(0_24px_40px_rgba(15,23,42,0.16))_drop-shadow(0_0_28px_color-mix(in_srgb,var(--color-heart)_18%,transparent))] motion-reduce:animate-none"
+                        aria-hidden="true"
+                    >
+                        <AnatomicHeart
+                            class="h-[128%] w-[128%] overflow-visible fill-current text-[var(--color-heart)] [&_.heart-main-layer]:fill-[url(#heartBrandGradient)] [&_.heart-main-layer_path]:fill-[url(#heartBrandGradient)] [&_.heart-main-layer_path]:stroke-none [&_.heart-glow-layer]:fill-[url(#heartBrandGlow)] [&_.heart-glow-layer_ellipse]:fill-[url(#heartBrandGlow)]"
+                        />
                     </div>
 
                     <svg
-                        class="heartbeat-line pointer-events-none absolute left-1/2 top-1/2 z-[8] w-[128%] -translate-x-1/2 -translate-y-1/2"
+                        class="pointer-events-none absolute left-1/2 top-1/2 z-[8] w-[128%] -translate-x-1/2 -translate-y-1/2 [filter:drop-shadow(0_0_14px_color-mix(in_srgb,var(--color-accent)_58%,transparent))]"
                         viewBox="0 0 720 180"
                         fill="none"
                         aria-hidden="true"
                     >
                         <path
-                            class="heartbeat-shadow"
+                            class="stroke-[color-mix(in_srgb,var(--color-accent)_18%,transparent)] stroke-[13px] [stroke-linecap:round] [stroke-linejoin:round]"
                             d="M0 92H150L178 92L205 92L230 32L270 150L305 92H360L385 92L410 62L440 122L470 92H720"
-                        ></path>
+                        >
+                        </path>
 
                         <path
-                            class="heartbeat-path"
+                            class="stroke-[var(--color-accent)] stroke-[5px] [stroke-linecap:round] [stroke-linejoin:round]"
                             d="M0 92H150L178 92L205 92L230 32L270 150L305 92H360L385 92L410 62L440 122L470 92H720"
-                        ></path>
+                        >
+                        </path>
                     </svg>
 
-                    <div class="heart-beat-ring absolute inset-[9%] opacity-0"></div>
-                    <div class="heart-beat-ring ring-two absolute inset-[9%] opacity-0"></div>
+                    <div
+                        class="animate-pulse-glow absolute inset-[9%] rounded-[inherit] border border-[color-mix(in_srgb,var(--color-secondary)_35%,transparent)] opacity-0 motion-reduce:animate-none"
+                        aria-hidden="true"
+                    >
+                    </div>
+
+                    <div
+                        class="animate-pulse-glow animation-delay-300 absolute inset-[9%] rounded-[inherit] border border-[color-mix(in_srgb,var(--color-secondary)_28%,transparent)] opacity-0 motion-reduce:animate-none"
+                        aria-hidden="true"
+                    >
+                    </div>
                 </div>
 
                 <div
@@ -228,15 +275,16 @@ const t = content[currentLanguage];
 
                     <div
                         class="my-1 h-0.5 w-full rounded-full bg-gradient-to-r from-[var(--color-secondary)] via-[var(--color-heart)] to-[var(--color-accent)]"
+                        aria-hidden="true"
                     >
                     </div>
                 </div>
 
                 <div
-                    class="medical-card hero-stat-left absolute left-5 top-[4.25rem] z-[7] grid gap-1 p-4"
+                    class="medical-card animate-float-soft absolute left-5 top-[4.25rem] z-[7] grid gap-1 p-4 motion-reduce:animate-none"
                 >
                     <strong
-                        class="font-heading text-[2.25rem]  text-[var(--color-heading)]"
+                        class="font-heading text-[2.25rem] text-[var(--color-heading)]"
                     >
                         {t.statOne}
                     </strong>
@@ -249,10 +297,10 @@ const t = content[currentLanguage];
                 </div>
 
                 <div
-                    class="medical-card hero-stat-right absolute right-1 top-[6.25rem] z-[7] grid gap-1 p-4"
+                    class="medical-card floating-card-alt absolute right-1 top-[6.25rem] z-[7] grid gap-1 p-4 motion-reduce:animate-none"
                 >
                     <strong
-                        class="font-heading text-[2.25rem]  text-[var(--color-heading)]"
+                        class="font-heading text-[2.25rem] text-[var(--color-heading)]"
                     >
                         {t.statTwo}
                     </strong>
@@ -273,7 +321,9 @@ const t = content[currentLanguage];
                         {t.locationLabel}
                     </span>
 
-                    <strong class="text-[0.95rem] font-black text-[var(--color-heading)]">
+                    <strong
+                        class="text-[0.95rem] font-black text-[var(--color-heading)]"
+                    >
                         Hialeah, FL
                     </strong>
                 </div>
@@ -282,471 +332,143 @@ const t = content[currentLanguage];
     </div>
 </section>
 
-<style>
-    .hero-bg-slide {
-        animation: hero-bg-fade 24s ease-in-out infinite;
-        animation-delay: var(--slide-delay);
-        will-change: opacity;
-    }
+<script>
+    type HeroSliderElement = HTMLElement & {
+        heroSliderController?: AbortController;
+    };
 
-    .hero-bg-image {
-        transform-origin: center center;
-        animation: hero-bg-ken-burns-image 24s ease-in-out infinite;
-        animation-delay: var(--slide-delay);
-        will-change: transform;
-    }
+    const activeSlideClasses = ["opacity-[0.22]"];
+    const inactiveSlideClasses = ["opacity-0"];
 
-    .hero-bg-overlay {
-        background:
-            linear-gradient(
-                90deg,
-                var(--color-bg) 0%,
-                color-mix(in srgb, var(--color-bg) 88%, transparent) 34%,
-                color-mix(in srgb, var(--color-bg) 66%, transparent) 62%,
-                color-mix(in srgb, var(--color-bg) 78%, transparent) 100%
-            ),
-            radial-gradient(
-                circle at 68% 48%,
-                color-mix(in srgb, var(--color-secondary) 18%, transparent),
-                transparent 30rem
-            ),
-            radial-gradient(
-                circle at 20% 20%,
-                color-mix(in srgb, var(--color-accent) 12%, transparent),
-                transparent 24rem
+    const activeImageClasses = ["scale-[1.16]"];
+    const inactiveImageClasses = ["scale-105"];
+
+    const toggleClassList = (
+        element: HTMLElement,
+        classes: string[],
+        enabled: boolean,
+    ) => {
+        classes.forEach((className) => {
+            element.classList.toggle(className, enabled);
+        });
+    };
+
+    const initializeHeroBackgroundSliders = () => {
+        const sliders =
+            document.querySelectorAll<HeroSliderElement>(
+                "[data-hero-background-slider]",
             );
-    }
 
-    :global(.dark) .hero-bg-image {
-        filter: saturate(0.85) contrast(1.05) brightness(0.75);
-    }
+        sliders.forEach((slider) => {
+            slider.heroSliderController?.abort();
 
-    :global(.dark) .hero-bg-overlay {
-        background:
-            linear-gradient(
-                90deg,
-                var(--color-bg) 0%,
-                color-mix(in srgb, var(--color-bg) 88%, transparent) 36%,
-                color-mix(in srgb, var(--color-bg) 70%, transparent) 64%,
-                color-mix(in srgb, var(--color-bg) 84%, transparent) 100%
-            ),
-            radial-gradient(
-                circle at 68% 48%,
-                color-mix(in srgb, var(--color-secondary) 16%, transparent),
-                transparent 30rem
-            ),
-            radial-gradient(
-                circle at 20% 20%,
-                color-mix(in srgb, var(--color-accent) 10%, transparent),
-                transparent 24rem
+            const controller = new AbortController();
+            slider.heroSliderController = controller;
+
+            const slides = Array.from(
+                slider.querySelectorAll<HTMLElement>(
+                    "[data-hero-background-slide]",
+                ),
             );
-    }
 
-    .hero-eyebrow-dot {
-        box-shadow: 0 0 0 0 rgba(185, 28, 28, 0.4);
-        animation: hero-dot-pulse 1.55s ease-in-out infinite;
-    }
-
-    :global(.dark) .hero-title-highlight {
-        background: linear-gradient(
-            135deg,
-            var(--color-heading),
-            var(--color-secondary),
-            var(--color-accent)
-        );
-        background-clip: text;
-        -webkit-background-clip: text;
-    }
-
-    .btn-pulse {
-        animation: button-heartbeat 1.5s ease-in-out infinite;
-    }
-
-    .hero-heart-card {
-        border-radius: 42% 58% 52% 48% / 45% 43% 57% 55%;
-        background:
-            radial-gradient(
-                circle at 50% 42%,
-                color-mix(in srgb, var(--color-heart) 14%, transparent),
-                transparent 11rem
-            ),
-            radial-gradient(
-                circle at 52% 48%,
-                color-mix(in srgb, var(--color-secondary) 24%, transparent),
-                transparent 17rem
-            ),
-            linear-gradient(
-                145deg,
-                color-mix(in srgb, var(--color-surface) 86%, transparent),
-                color-mix(in srgb, var(--color-surface-soft) 72%, transparent)
+            const images = Array.from(
+                slider.querySelectorAll<HTMLElement>(
+                    "[data-hero-background-image]",
+                ),
             );
-        animation:
-            organic-heart-morph 9s ease-in-out infinite,
-            heart-soft-beat 1.55s ease-in-out infinite;
-    }
 
-    :global(.dark) .hero-heart-card {
-        box-shadow:
-            0 36px 110px rgba(0, 0, 0, 0.36),
-            inset 0 1px 0 rgba(255, 255, 255, 0.08);
-    }
+            if (slides.length <= 1) {
+                return;
+            }
 
-    .heart-grid {
-        background-image:
-            linear-gradient(
-                to right,
-                color-mix(in srgb, var(--color-border) 72%, transparent) 1px,
-                transparent 1px
-            ),
-            linear-gradient(
-                to bottom,
-                color-mix(in srgb, var(--color-border) 72%, transparent) 1px,
-                transparent 1px
+            const reducedMotionQuery = window.matchMedia(
+                "(prefers-reduced-motion: reduce)",
             );
-        background-size: 34px 34px;
-        mask-image: radial-gradient(circle at center, black, transparent 70%);
-    }
 
-    .heart-halo {
-        background:
-            radial-gradient(
-                circle,
-                color-mix(in srgb, var(--color-heart) 18%, transparent),
-                transparent 46%
-            ),
-            radial-gradient(
-                circle,
-                color-mix(in srgb, var(--color-secondary) 20%, transparent),
-                transparent 62%
-            ),
-            radial-gradient(
-                circle,
-                color-mix(in srgb, var(--color-accent) 12%, transparent),
-                transparent 76%
+            let activeIndex = 0;
+            let intervalId: number | undefined;
+
+            const setActiveSlide = (nextIndex: number) => {
+                activeIndex =
+                    (nextIndex + slides.length) %
+                    slides.length;
+
+                slides.forEach((slide, index) => {
+                    const isActive = index === activeIndex;
+
+                    toggleClassList(
+                        slide,
+                        activeSlideClasses,
+                        isActive,
+                    );
+
+                    toggleClassList(
+                        slide,
+                        inactiveSlideClasses,
+                        !isActive,
+                    );
+                });
+
+                images.forEach((image, index) => {
+                    const isActive = index === activeIndex;
+
+                    toggleClassList(
+                        image,
+                        activeImageClasses,
+                        isActive,
+                    );
+
+                    toggleClassList(
+                        image,
+                        inactiveImageClasses,
+                        !isActive,
+                    );
+                });
+            };
+
+            const stopSlider = () => {
+                if (intervalId === undefined) {
+                    return;
+                }
+
+                window.clearInterval(intervalId);
+                intervalId = undefined;
+            };
+
+            const startSlider = () => {
+                stopSlider();
+
+                if (reducedMotionQuery.matches) {
+                    setActiveSlide(0);
+                    return;
+                }
+
+                intervalId = window.setInterval(() => {
+                    setActiveSlide(activeIndex + 1);
+                }, 6000);
+            };
+
+            reducedMotionQuery.addEventListener(
+                "change",
+                startSlider,
+                { signal: controller.signal },
             );
-        animation: halo-heartbeat 1.55s ease-in-out infinite;
-    }
 
-    .hero-heart-illustration-shell {
-        filter:
-            drop-shadow(0 24px 40px rgba(15, 23, 42, 0.16))
-            drop-shadow(
-                0 0 28px color-mix(in srgb, var(--color-heart) 18%, transparent)
+            controller.signal.addEventListener(
+                "abort",
+                stopSlider,
+                { once: true },
             );
-        animation: anatomic-heartbeat 1.55s ease-in-out infinite;
-    }
 
-    :global(.hero-anatomic-heart) {
-        display: block;
-        width: 128%;
-        height: 128%;
-        overflow: visible;
-        color: var(--color-heart);
-        fill: currentColor;
-        transform-origin: center;
-        animation: anatomic-heart-inner-beat 1.55s ease-in-out infinite;
-    }
+            setActiveSlide(0);
+            startSlider();
+        });
+    };
 
-    :global(.hero-anatomic-heart .heart-main-layer),
-    :global(.hero-anatomic-heart .heart-main-layer path) {
-        fill: url("#heartBrandGradient");
-        stroke: none;
-    }
+    document.addEventListener(
+        "astro:page-load",
+        initializeHeroBackgroundSliders,
+    );
 
-    :global(.hero-anatomic-heart .heart-glow-layer),
-    :global(.hero-anatomic-heart .heart-glow-layer ellipse) {
-        fill: url("#heartBrandGlow");
-    }
-
-    .heartbeat-line {
-        filter: drop-shadow(
-            0 0 14px color-mix(in srgb, var(--color-accent) 58%, transparent)
-        );
-    }
-
-    .heartbeat-shadow,
-    .heartbeat-path {
-        stroke-linecap: round;
-        stroke-linejoin: round;
-    }
-
-    .heartbeat-shadow {
-        stroke: color-mix(in srgb, var(--color-accent) 18%, transparent);
-        stroke-width: 13;
-    }
-
-    .heartbeat-path {
-        stroke: var(--color-accent);
-        stroke-width: 5;
-        stroke-dasharray: 930;
-        stroke-dashoffset: 930;
-        animation: draw-heartbeat 3.25s ease-in-out infinite;
-    }
-
-    .heart-beat-ring {
-        border: 1px solid color-mix(in srgb, var(--color-secondary) 35%, transparent);
-        border-radius: inherit;
-        animation: heartbeat-ring 1.55s ease-out infinite;
-    }
-
-    .ring-two {
-        animation-delay: 0.3s;
-    }
-
-    .hero-stat-left {
-        animation: float-soft 6.5s ease-in-out infinite;
-    }
-
-    .hero-stat-right {
-        animation: float-soft 7.4s ease-in-out infinite reverse;
-    }
-
-    @media (max-width: 720px) {
-        .hero-bg-overlay {
-            background: linear-gradient(
-                180deg,
-                var(--color-bg) 0%,
-                color-mix(in srgb, var(--color-bg) 82%, transparent) 42%,
-                var(--color-bg) 100%
-            );
-        }
-    }
-
-    @keyframes hero-bg-fade {
-        0% {
-            opacity: 0;
-        }
-
-        6% {
-            opacity: 0.22;
-        }
-
-        25% {
-            opacity: 0.22;
-        }
-
-        31% {
-            opacity: 0;
-        }
-
-        100% {
-            opacity: 0;
-        }
-    }
-
-    @keyframes hero-bg-ken-burns-image {
-        0% {
-            transform: scale(1.05);
-        }
-
-        25% {
-            transform: scale(1.16);
-        }
-
-        31% {
-            transform: scale(1.2);
-        }
-
-        100% {
-            transform: scale(1.2);
-        }
-    }
-
-    @keyframes draw-heartbeat {
-        0% {
-            stroke-dashoffset: 930;
-            opacity: 0;
-        }
-
-        12% {
-            opacity: 1;
-        }
-
-        48% {
-            stroke-dashoffset: 0;
-            opacity: 1;
-        }
-
-        70% {
-            stroke-dashoffset: 0;
-            opacity: 0.9;
-        }
-
-        100% {
-            stroke-dashoffset: -930;
-            opacity: 0;
-        }
-    }
-
-    @keyframes heart-soft-beat {
-        0%,
-        100% {
-            transform: scale(1);
-        }
-
-        10% {
-            transform: scale(1.018);
-        }
-
-        18% {
-            transform: scale(1);
-        }
-
-        28% {
-            transform: scale(1.012);
-        }
-
-        36% {
-            transform: scale(1);
-        }
-    }
-
-    @keyframes anatomic-heartbeat {
-        0%,
-        100% {
-            transform: scale(1);
-            filter:
-                drop-shadow(0 24px 40px rgba(15, 23, 42, 0.16))
-                drop-shadow(
-                    0 0 22px color-mix(in srgb, var(--color-heart) 16%, transparent)
-                );
-        }
-
-        10% {
-            transform: scale(1.055);
-            filter:
-                drop-shadow(0 28px 46px rgba(15, 23, 42, 0.2))
-                drop-shadow(
-                    0 0 34px color-mix(in srgb, var(--color-heart) 28%, transparent)
-                );
-        }
-
-        18% {
-            transform: scale(1);
-        }
-
-        28% {
-            transform: scale(1.035);
-        }
-
-        36% {
-            transform: scale(1);
-        }
-    }
-
-    @keyframes anatomic-heart-inner-beat {
-        0%,
-        100% {
-            transform: scale(1) rotate(-1deg);
-        }
-
-        10% {
-            transform: scale(1.045) rotate(1deg);
-        }
-
-        18% {
-            transform: scale(1) rotate(-1deg);
-        }
-
-        28% {
-            transform: scale(1.025) rotate(0.5deg);
-        }
-
-        36% {
-            transform: scale(1) rotate(-1deg);
-        }
-    }
-
-    @keyframes halo-heartbeat {
-        0%,
-        100% {
-            opacity: 0.55;
-            transform: scale(0.96);
-        }
-
-        10% {
-            opacity: 0.92;
-            transform: scale(1.04);
-        }
-
-        18% {
-            opacity: 0.62;
-            transform: scale(0.98);
-        }
-
-        28% {
-            opacity: 0.82;
-            transform: scale(1.025);
-        }
-
-        36% {
-            opacity: 0.58;
-            transform: scale(0.98);
-        }
-    }
-
-    @keyframes heartbeat-ring {
-        0% {
-            opacity: 0.4;
-            transform: scale(0.9);
-        }
-
-        70% {
-            opacity: 0;
-            transform: scale(1.12);
-        }
-
-        100% {
-            opacity: 0;
-            transform: scale(1.12);
-        }
-    }
-
-    @keyframes organic-heart-morph {
-        0%,
-        100% {
-            border-radius: 42% 58% 52% 48% / 45% 43% 57% 55%;
-        }
-
-        35% {
-            border-radius: 50% 50% 45% 55% / 47% 55% 45% 53%;
-        }
-
-        70% {
-            border-radius: 46% 54% 58% 42% / 55% 45% 55% 45%;
-        }
-    }
-
-    @keyframes hero-dot-pulse {
-        0%,
-        100% {
-            box-shadow: 0 0 0 0
-                color-mix(in srgb, var(--color-heart) 44%, transparent);
-            transform: scale(1);
-        }
-
-        50% {
-            box-shadow: 0 0 0 8px
-                color-mix(in srgb, var(--color-heart) 0%, transparent);
-            transform: scale(1.16);
-        }
-    }
-
-    @keyframes button-heartbeat {
-        0%,
-        100% {
-            transform: scale(1);
-            opacity: 0.9;
-        }
-
-        18% {
-            transform: scale(1.45);
-            opacity: 0.65;
-        }
-
-        32% {
-            transform: scale(1);
-            opacity: 0.9;
-        }
-    }
-</style>
+    initializeHeroBackgroundSliders();
+</script>

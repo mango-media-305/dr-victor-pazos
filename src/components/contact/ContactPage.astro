@@ -19,7 +19,6 @@ const { language } = Astro.props as Props;
 
 const currentLanguage = language;
 const metadata = contactMetadata;
-
 const formName = siteConfig.forms.appointment.netlifyName;
 
 const content = {
@@ -28,6 +27,7 @@ const content = {
         title: "Request a cardiology appointment in Hialeah, FL.",
         description:
             "Contact Victor Pazos, MD. PA. to request an appointment, call the office, or get directions to the Hialeah cardiology location.",
+
         callLabel: contactInfo.appointment.primaryCta.en,
         emailLabel: contactInfo.appointment.secondaryCta.en,
         directionsLabel: contactInfo.map.directionsLabel.en,
@@ -70,14 +70,6 @@ const content = {
             "Other",
         ],
 
-        officeKicker: "Office information",
-        officeTitle: "Hialeah cardiology office",
-        addressLabel: "Address",
-        phoneInfoLabel: "Phone",
-        emailInfoLabel: "Email",
-        languagesLabel: "Languages",
-        hoursLabel: "Hours",
-
         mapKicker: "Directions",
         mapTitle: "Find the office on Google Maps.",
         mapDescription:
@@ -91,11 +83,13 @@ const content = {
         privacyNote:
             "Please do not include sensitive medical details in this form. A team member may contact you to discuss appointment availability and next steps.",
     },
+
     es: {
         kicker: "Contacte la oficina",
         title: "Solicite una cita de cardiología en Hialeah, FL.",
         description:
             "Contacte a Victor Pazos, MD. PA. para solicitar una cita, llamar a la oficina u obtener direcciones a la ubicación de cardiología en Hialeah.",
+
         callLabel: contactInfo.appointment.primaryCta.es,
         emailLabel: contactInfo.appointment.secondaryCta.es,
         directionsLabel: contactInfo.map.directionsLabel.es,
@@ -137,14 +131,6 @@ const content = {
             "Seguimiento de enfermedad cardíaca",
             "Otro",
         ],
-
-        officeKicker: "Información de la oficina",
-        officeTitle: "Oficina de cardiología en Hialeah",
-        addressLabel: "Dirección",
-        phoneInfoLabel: "Teléfono",
-        emailInfoLabel: "Email",
-        languagesLabel: "Idiomas",
-        hoursLabel: "Horario",
 
         mapKicker: "Direcciones",
         mapTitle: "Encuentre la oficina en Google Maps.",
@@ -216,7 +202,9 @@ const contactPageSchema = {
         contactPageSchema,
     ]}
 >
-    <section class="relative isolate overflow-hidden section-padding-lg medical-grid-bg">
+    <section
+        class="medical-grid-bg section-padding-lg relative isolate overflow-hidden"
+    >
         <div
             class="pointer-events-none absolute -left-20 top-[12%] -z-10 aspect-square w-88 rounded-full bg-[color-mix(in_srgb,var(--color-secondary)_24%,transparent)] opacity-45 blur-[58px]"
             aria-hidden="true"
@@ -229,24 +217,38 @@ const contactPageSchema = {
         >
         </div>
 
-        <div class="site-container relative z-10 grid items-center gap-[clamp(2rem,6vw,5rem)] lg:grid-cols-[minmax(0,1fr)_minmax(320px,0.48fr)]">
-            <div class="grid content-center">
-                <span class="section-kicker">{t.kicker}</span>
+        <div class="site-container relative z-10">
+            <div class="grid max-w-[980px] content-center">
+                <span class="section-kicker">
+                    {t.kicker}
+                </span>
 
-                <h1 class="text-[clamp(3rem,7vw,6.7rem)] text-(--color-heading) max-[440px]:text-[clamp(2.75rem,15vw,4.25rem)]">
+                <h1
+                    class="text-[clamp(3rem,7vw,6.7rem)] text-(--color-heading) max-[440px]:text-[clamp(2.75rem,15vw,4.25rem)]"
+                >
                     {t.title}
                 </h1>
 
-                <p class="mt-5text-[clamp(1.05rem,1.5vw,1.22rem)] text-(--color-text-soft)">
+                <p
+                    class="mt-5 max-w-[780px] text-[clamp(1.05rem,1.5vw,1.22rem)] text-(--color-text-soft)"
+                >
                     {t.description}
                 </p>
 
-                <div class="mt-8 flex flex-wrap gap-3 max-md:grid max-md:w-full">
-                    <a href={contactInfo.phone.href} class="btn btn-primary">
+                <div
+                    class="mt-8 flex flex-wrap gap-3 max-md:grid max-md:w-full"
+                >
+                    <a
+                        href={contactInfo.phone.href}
+                        class="btn btn-primary"
+                    >
                         {t.callLabel}
                     </a>
 
-                    <a href={contactInfo.email.href} class="btn btn-secondary">
+                    <a
+                        href={contactInfo.email.href}
+                        class="btn btn-secondary"
+                    >
                         {t.emailLabel}
                     </a>
 
@@ -260,113 +262,67 @@ const contactPageSchema = {
                     </a>
                 </div>
             </div>
-
-            <!-- <aside class="contact-office-card relative overflow-hidden rounded-[2rem] border border-[color-mix(in_srgb,var(--color-secondary)_28%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-surface)_78%,transparent)] p-[clamp(1.1rem,2.5vw,1.5rem)] shadow-[var(--shadow-card)] backdrop-blur-xl">
-                <div
-                    class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,color-mix(in_srgb,var(--color-secondary)_20%,transparent),transparent_14rem),radial-gradient(circle_at_bottom_left,color-mix(in_srgb,var(--color-heart)_12%,transparent),transparent_13rem)]"
-                    aria-hidden="true"
-                >
-                </div>
-
-                <div class="relative z-10 grid gap-4">
-                    <span class="section-kicker">{t.officeKicker}</span>
-
-                    <strong class="font-heading text-[clamp(1.8rem,3.2vw,2.75rem)] text-[var(--color-heading)]">
-                        {t.officeTitle}
-                    </strong>
-
-                    <div class="grid gap-3">
-                        <div class="rounded-[1.35rem] border border-[color-mix(in_srgb,var(--color-border)_82%,transparent)] bg-[color-mix(in_srgb,var(--color-surface)_76%,transparent)] p-4">
-                            <span class="text-xs font-black uppercase text-[var(--color-secondary)]">
-                                {t.addressLabel}
-                            </span>
-
-                            <p class="mt-2 text-sm font-black text-[var(--color-heading)]">
-                                {contactInfo.address.display}
-                            </p>
-                        </div>
-
-                        <div class="grid gap-3 sm:grid-cols-2">
-                            <a
-                                href={contactInfo.phone.href}
-                                class="rounded-[1.35rem] border border-[color-mix(in_srgb,var(--color-border)_82%,transparent)] bg-[color-mix(in_srgb,var(--color-surface)_76%,transparent)] p-4 transition-transform duration-300 hover:-translate-y-1"
-                            >
-                                <span class="text-xs font-black uppercase text-[var(--color-secondary)]">
-                                    {t.phoneInfoLabel}
-                                </span>
-
-                                <p class="mt-2 text-sm font-black text-[var(--color-heading)]">
-                                    {contactInfo.phone.label}
-                                </p>
-                            </a>
-
-                            <a
-                                href={contactInfo.email.href}
-                                class="rounded-[1.35rem] border border-[color-mix(in_srgb,var(--color-border)_82%,transparent)] bg-[color-mix(in_srgb,var(--color-surface)_76%,transparent)] p-4 transition-transform duration-300 hover:-translate-y-1"
-                            >
-                                <span class="text-xs font-black uppercase text-[var(--color-secondary)]">
-                                    {t.emailInfoLabel}
-                                </span>
-
-                                <p class="mt-2 break-all text-sm font-black text-[var(--color-heading)]">
-                                    {contactInfo.email.label}
-                                </p>
-                            </a>
-                        </div>
-
-                        <div class="rounded-[1.35rem] border border-[color-mix(in_srgb,var(--color-border)_82%,transparent)] bg-[color-mix(in_srgb,var(--color-surface)_76%,transparent)] p-4">
-                            <span class="text-xs font-black uppercase text-[var(--color-secondary)]">
-                                {t.languagesLabel}
-                            </span>
-
-                            <p class="mt-2 text-sm font-black text-[var(--color-heading)]">
-                                {contactInfo.languages.display[currentLanguage]}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </aside> -->
         </div>
     </section>
 
     <section class="section-padding-sm">
         <div class="site-container">
-            <div class="rounded-[1.65rem] border border-[color-mix(in_srgb,var(--color-heart)_28%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-heart-soft)_30%,transparent)] p-[clamp(1rem,2vw,1.25rem)]">
-                <span class="text-xs font-black uppercase text-[var(--color-heart)]">
+            <div
+                class="rounded-[1.65rem] border border-[color-mix(in_srgb,var(--color-heart)_28%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-heart-soft)_30%,transparent)] p-[clamp(1rem,2vw,1.25rem)]"
+            >
+                <span
+                    class="text-xs font-black uppercase text-[var(--color-heart)]"
+                >
                     {t.emergencyKicker}
                 </span>
 
-                <h2 class="mt-2 font-heading text-[clamp(1.45rem,2.5vw,2.15rem)] text-[var(--color-heading)]">
+                <h2
+                    class="mt-2 font-heading text-[clamp(1.45rem,2.5vw,2.15rem)] text-[var(--color-heading)]"
+                >
                     {t.emergencyTitle}
                 </h2>
 
-                <p class="mt-3 max-w-[980px] text-sm font-bold text-[var(--color-text-soft)]">
+                <p
+                    class="mt-3 max-w-[980px] text-sm font-bold text-[var(--color-text-soft)]"
+                >
                     {t.emergencyDescription}
                 </p>
             </div>
         </div>
     </section>
 
-    <section class="relative isolate overflow-hidden section-padding">
+    <section
+        class="section-padding relative isolate overflow-hidden"
+    >
         <div
             class="pointer-events-none absolute -right-20 top-[10%] -z-10 aspect-square w-[22rem] rounded-full bg-[color-mix(in_srgb,var(--color-secondary)_22%,transparent)] opacity-45 blur-[58px]"
             aria-hidden="true"
         >
         </div>
 
-        <div class="site-container grid gap-[clamp(2rem,6vw,5rem)] lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+        <div
+            class="site-container grid gap-[clamp(2rem,6vw,5rem)] lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]"
+        >
             <div class="lg:sticky lg:top-28 lg:self-start">
-                <span class="section-kicker">{t.formKicker}</span>
+                <span class="section-kicker">
+                    {t.formKicker}
+                </span>
 
-                <h2 class="max-w-[720px] text-[clamp(2.25rem,5vw,4.8rem)] text-[var(--color-heading)]">
+                <h2
+                    class="max-w-[720px] text-[clamp(2.25rem,5vw,4.8rem)] text-[var(--color-heading)]"
+                >
                     {t.formTitle}
                 </h2>
 
-                <p class="mt-5 max-w-[620px] text-[clamp(1rem,1.35vw,1.12rem)] text-[var(--color-text-soft)]">
+                <p
+                    class="mt-5 max-w-[620px] text-[clamp(1rem,1.35vw,1.12rem)] text-[var(--color-text-soft)]"
+                >
                     {t.formDescription}
                 </p>
 
-                <p class="mt-5 max-w-[620px] rounded-[1.25rem] border border-[color-mix(in_srgb,var(--color-border)_86%,transparent)] bg-[color-mix(in_srgb,var(--color-surface)_76%,transparent)] p-4 text-sm font-bold text-[var(--color-text-soft)]">
+                <p
+                    class="mt-5 max-w-[620px] rounded-[1.25rem] border border-[color-mix(in_srgb,var(--color-border)_86%,transparent)] bg-[color-mix(in_srgb,var(--color-surface)_76%,transparent)] p-4 text-sm font-bold text-[var(--color-text-soft)]"
+                >
                     {t.privacyNote}
                 </p>
             </div>
@@ -376,15 +332,28 @@ const contactPageSchema = {
                 method="POST"
                 data-netlify="true"
                 netlify-honeypot="bot-field"
-                action={currentLanguage === "es" ? "/es/thank-you/" : "/thank-you/"}
+                action={
+                    currentLanguage === "es"
+                        ? "/es/thank-you/"
+                        : "/thank-you/"
+                }
                 class="medical-card grid gap-5 p-[clamp(1rem,2vw,1.35rem)]"
             >
-                <input type="hidden" name="form-name" value={formName} />
+                <input
+                    type="hidden"
+                    name="form-name"
+                    value={formName}
+                />
 
                 <p class="hidden">
                     <label>
                         Do not fill this out if you are human:
-                        <input name="bot-field" />
+
+                        <input
+                            name="bot-field"
+                            tabindex="-1"
+                            autocomplete="off"
+                        />
                     </label>
                 </p>
 
@@ -396,7 +365,9 @@ const contactPageSchema = {
 
                 <div class="grid gap-4 sm:grid-cols-2">
                     <label class="grid gap-2">
-                        <span class="text-sm font-black text-[var(--color-heading)]">
+                        <span
+                            class="text-sm font-black text-[var(--color-heading)]"
+                        >
                             {t.firstNameLabel}
                         </span>
 
@@ -404,13 +375,16 @@ const contactPageSchema = {
                             type="text"
                             name="firstName"
                             required
+                            autocomplete="given-name"
                             placeholder={t.firstNamePlaceholder}
-                            class="contact-input"
+                            class="font-bold"
                         />
                     </label>
 
                     <label class="grid gap-2">
-                        <span class="text-sm font-black text-[var(--color-heading)]">
+                        <span
+                            class="text-sm font-black text-[var(--color-heading)]"
+                        >
                             {t.lastNameLabel}
                         </span>
 
@@ -418,15 +392,18 @@ const contactPageSchema = {
                             type="text"
                             name="lastName"
                             required
+                            autocomplete="family-name"
                             placeholder={t.lastNamePlaceholder}
-                            class="contact-input"
+                            class="font-bold"
                         />
                     </label>
                 </div>
 
                 <div class="grid gap-4 sm:grid-cols-2">
                     <label class="grid gap-2">
-                        <span class="text-sm font-black text-[var(--color-heading)]">
+                        <span
+                            class="text-sm font-black text-[var(--color-heading)]"
+                        >
                             {t.phoneLabel}
                         </span>
 
@@ -434,53 +411,82 @@ const contactPageSchema = {
                             type="tel"
                             name="phone"
                             required
+                            autocomplete="tel"
+                            inputmode="tel"
                             placeholder={t.phonePlaceholder}
-                            class="contact-input"
+                            class="font-bold"
                         />
                     </label>
 
                     <label class="grid gap-2">
-                        <span class="text-sm font-black text-[var(--color-heading)]">
+                        <span
+                            class="text-sm font-black text-[var(--color-heading)]"
+                        >
                             {t.emailFieldLabel}
                         </span>
 
                         <input
                             type="email"
                             name="email"
+                            autocomplete="email"
+                            inputmode="email"
                             placeholder={t.emailPlaceholder}
-                            class="contact-input"
+                            class="font-bold"
                         />
                     </label>
                 </div>
 
                 <label class="grid gap-2">
-                    <span class="text-sm font-black text-[var(--color-heading)]">
+                    <span
+                        class="text-sm font-black text-[var(--color-heading)]"
+                    >
                         {t.preferredContactLabel}
                     </span>
 
-                    <select name="preferredContact" class="contact-input">
-                        <option value="phone">{t.contactOptions.phone}</option>
-                        <option value="email">{t.contactOptions.email}</option>
+                    <select
+                        name="preferredContact"
+                        class="font-bold"
+                    >
+                        <option value="phone">
+                            {t.contactOptions.phone}
+                        </option>
+
+                        <option value="email">
+                            {t.contactOptions.email}
+                        </option>
                     </select>
                 </label>
 
                 <label class="grid gap-2">
-                    <span class="text-sm font-black text-[var(--color-heading)]">
+                    <span
+                        class="text-sm font-black text-[var(--color-heading)]"
+                    >
                         {t.reasonLabel}
                     </span>
 
-                    <select name="reason" required class="contact-input">
-                        <option value="">{t.reasonPlaceholder}</option>
+                    <select
+                        name="reason"
+                        required
+                        class="font-bold"
+                    >
+                        <option value="">
+                            {t.reasonPlaceholder}
+                        </option>
+
                         {
                             t.reasons.map((reason) => (
-                                <option value={reason}>{reason}</option>
+                                <option value={reason}>
+                                    {reason}
+                                </option>
                             ))
                         }
                     </select>
                 </label>
 
                 <label class="grid gap-2">
-                    <span class="text-sm font-black text-[var(--color-heading)]">
+                    <span
+                        class="text-sm font-black text-[var(--color-heading)]"
+                    >
                         {t.messageLabel}
                     </span>
 
@@ -488,12 +494,14 @@ const contactPageSchema = {
                         name="message"
                         rows="5"
                         placeholder={t.messagePlaceholder}
-                        class="contact-input resize-y"
-                    >
-                    </textarea>
+                        class="font-bold"
+                    ></textarea>
                 </label>
 
-                <button type="submit" class="btn btn-primary w-full">
+                <button
+                    type="submit"
+                    class="btn btn-primary w-full"
+                >
                     {t.submitLabel}
                 </button>
             </form>
@@ -501,19 +509,29 @@ const contactPageSchema = {
     </section>
 
     <section class="section-padding">
-        <div class="site-container grid gap-[clamp(2rem,6vw,5rem)] lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)]">
+        <div
+            class="site-container grid gap-[clamp(2rem,6vw,5rem)] lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)]"
+        >
             <div class="lg:sticky lg:top-28 lg:self-start">
-                <span class="section-kicker">{t.mapKicker}</span>
+                <span class="section-kicker">
+                    {t.mapKicker}
+                </span>
 
-                <h2 class="max-w-[720px] text-[clamp(2.25rem,5vw,4.8rem)] text-[var(--color-heading)]">
+                <h2
+                    class="max-w-[720px] text-[clamp(2.25rem,5vw,4.8rem)] text-[var(--color-heading)]"
+                >
                     {t.mapTitle}
                 </h2>
 
-                <p class="mt-5 max-w-[620px] text-[clamp(1rem,1.35vw,1.12rem)] text-[var(--color-text-soft)]">
+                <p
+                    class="mt-5 max-w-[620px] text-[clamp(1rem,1.35vw,1.12rem)] text-[var(--color-text-soft)]"
+                >
                     {t.mapDescription}
                 </p>
 
-                <div class="mt-8 flex flex-wrap gap-3 max-md:grid max-md:w-full">
+                <div
+                    class="mt-8 flex flex-wrap gap-3 max-md:grid max-md:w-full"
+                >
                     <a
                         href={contactInfo.map.googleMapsUrl}
                         class="btn btn-primary"
@@ -523,13 +541,18 @@ const contactPageSchema = {
                         {t.directionsLabel}
                     </a>
 
-                    <a href={contactInfo.phone.href} class="btn btn-secondary">
+                    <a
+                        href={contactInfo.phone.href}
+                        class="btn btn-secondary"
+                    >
                         {t.callLabel}
                     </a>
                 </div>
             </div>
 
-            <div class="relative overflow-hidden rounded-[2rem] border border-[color-mix(in_srgb,var(--color-secondary)_24%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-surface)_78%,transparent)] p-2 shadow-[var(--shadow-card)]">
+            <div
+                class="relative overflow-hidden rounded-[2rem] border border-[color-mix(in_srgb,var(--color-secondary)_24%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-surface)_78%,transparent)] p-2 shadow-(--shadow-card)"
+            >
                 <iframe
                     src={contactInfo.map.embedUrl}
                     title={t.mapTitle}
@@ -542,52 +565,3 @@ const contactPageSchema = {
         </div>
     </section>
 </MainLayout>
-
-<style>
-    .contact-office-card {
-        animation: contact-office-float 6.5s ease-in-out infinite;
-        will-change: transform;
-    }
-
-    .contact-input {
-        width: 100%;
-        border: 1px solid color-mix(in srgb, var(--color-border) 86%, transparent);
-        border-radius: 1rem;
-        background: color-mix(in srgb, var(--color-surface) 78%, transparent);
-        padding: 0.9rem 1rem;
-        color: var(--color-heading);
-        font-weight: 700;
-        outline: none;
-        transition:
-            border-color var(--theme-transition),
-            background var(--theme-transition),
-            box-shadow 220ms var(--motion-smooth);
-    }
-
-    .contact-input::placeholder {
-        color: var(--color-text-muted);
-    }
-
-    .contact-input:focus {
-        border-color: color-mix(in srgb, var(--color-secondary) 58%, var(--color-border));
-        background: color-mix(in srgb, var(--color-surface) 94%, transparent);
-        box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-secondary) 14%, transparent);
-    }
-
-    @keyframes contact-office-float {
-        0%,
-        100% {
-            transform: translate3d(0, 0, 0) rotate(-1deg);
-        }
-
-        50% {
-            transform: translate3d(0, -12px, 0) rotate(1deg);
-        }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        .contact-office-card {
-            animation: none;
-        }
-    }
-</style>
