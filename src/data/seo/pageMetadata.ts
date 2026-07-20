@@ -23,20 +23,26 @@ export const homeMetadata: PageMetadata = {
     },
 };
 
-export const aboutMetadata: PageMetadata = {
+export const teamMetadata: PageMetadata = {
     title: {
-        en: "About Victor Pazos, MD | Cardiologist in Hialeah, FL",
-        es: "Sobre Victor Pazos, MD | Cardiólogo en Hialeah, FL",
+        en: "Meet Our Cardiology Team in Hialeah, FL | Victor Pazos, MD",
+        es: "Conozca Nuestro Equipo de Cardiología en Hialeah, FL",
     },
     description: {
-        en: "Learn about Victor Pazos, MD, a cardiologist in Hialeah serving Miami-Dade patients with cardiovascular evaluation, bilingual care, and heart-health guidance.",
-        es: "Conozca a Victor Pazos, MD, cardiólogo en Hialeah que atiende pacientes de Miami-Dade con evaluación cardiovascular, atención bilingüe y orientación cardíaca.",
+        en: "Meet the physicians, nurse practitioner, medical assistants, diagnostic technologists, and patient-service team providing cardiovascular care in Hialeah, FL.",
+        es: "Conozca a los médicos, enfermera practicante, asistentes, tecnólogos diagnósticos y personal que ofrece atención cardiovascular en Hialeah, FL.",
     },
     canonical: {
         en: "/about/",
         es: "/es/about/",
     },
 };
+
+/**
+ * Retained for compatibility with the existing About page imports.
+ * The /about/ route now represents the full cardiology team.
+ */
+export const aboutMetadata = teamMetadata;
 
 export const servicesIndexMetadata: PageMetadata = {
     title: {

@@ -22,16 +22,16 @@ export const mainNavigation: NavigationItem[] = [
     },
     {
         label: {
-            en: "About",
-            es: "Sobre el Doctor",
+            en: "Meet Our Team",
+            es: "Nuestro Equipo",
         },
         href: {
             en: "/about/",
             es: "/es/about/",
         },
         description: {
-            en: "Learn about Dr. Victor Pazos, his medical experience, credentials, and approach to cardiology care.",
-            es: "Conozca al Dr. Victor Pazos, su experiencia médica, credenciales y enfoque en el cuidado cardiológico.",
+            en: "Meet the physicians, nurse practitioner, diagnostic technologists, medical assistants, and patient-service professionals supporting cardiovascular care in Hialeah.",
+            es: "Conozca a los médicos, enfermera practicante, tecnólogos diagnósticos, asistentes y profesionales que apoyan la atención cardiovascular en Hialeah.",
         },
     },
     {
@@ -154,8 +154,8 @@ export const footerNavigation = {
     practice: [
         {
             label: {
-                en: "About Dr. Pazos",
-                es: "Sobre el Dr. Pazos",
+                en: "Meet Our Team",
+                es: "Nuestro Equipo",
             },
             href: {
                 en: "/about/",
